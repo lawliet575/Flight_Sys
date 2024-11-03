@@ -4,6 +4,7 @@ const jobRoutes = require("./routes/jobRoutes");
 const authMiddleware = require("./middlewares/authMiddleware");
 const departmentRoutes = require("./routes/departmentRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
+const flightRoutes = require("./routes/FlightRoutes");
 const locationRoutes = require("./routes/locationRoutes");
 
 const db = require("./config/db");
@@ -22,9 +23,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api", jobRoutes);
-app.use("/api", employeeRoutes);
+//app.use("/api", employeeRoutes);
 app.use("/api", departmentRoutes);
 app.use("/api", locationRoutes);
+app.use("/api", flightRoutes);
 
 // Catch-all route to verify that the app is running
 app.use("/", (req, res) => {

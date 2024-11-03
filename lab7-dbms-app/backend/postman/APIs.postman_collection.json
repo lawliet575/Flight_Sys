@@ -32,12 +32,12 @@
 			"response": []
 		},
 		{
-			"name": "List All Employees",
+			"name": "List All Flights",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3001/api/employees",
+					"raw": "http://localhost:3001/api/flights",
 					"protocol": "http",
 					"host": [
 						"localhost"
