@@ -6,6 +6,10 @@ const departmentRoutes = require("./routes/departmentRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const flightRoutes = require("./routes/FlightRoutes");
 const locationRoutes = require("./routes/locationRoutes");
+const passengerRoutes = require("./routes/PassengerRoutes");
+const bookingRoutes = require("./routes/BookingRoutes"); 
+const airlineRoutes = require("./routes/AirlineRoutes");
+const aircraftRoutes = require("./routes/AircraftRoutes");
 
 const db = require("./config/db");
 const bodyParser = require("body-parser");
@@ -27,6 +31,10 @@ app.use("/api", jobRoutes);
 app.use("/api", departmentRoutes);
 app.use("/api", locationRoutes);
 app.use("/api", flightRoutes);
+app.use("/api", passengerRoutes);
+app.use("/api", bookingRoutes);  // Register the booking routes
+app.use("/api", airlineRoutes);
+app.use("/api", aircraftRoutes);
 
 // Catch-all route to verify that the app is running
 app.use("/", (req, res) => {
