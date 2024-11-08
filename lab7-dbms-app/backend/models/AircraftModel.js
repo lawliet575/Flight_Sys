@@ -1,26 +1,32 @@
 const oracledb = require("oracledb");
 
 // Create the Aircraft model
-async function createAircraft(modelNo, capacity, airlineId) {
-  const query = `INSERT INTO aircraft (model_no, capacity, airline_id) 
-                 VALUES (:modelNo, :capacity, :airlineId)`;
+async function createAircraft(aircraftID, modelno, a_capacity, airlineID) {
+  const query = `INSERT INTO aircraft (aircraftID, modelno, a_capacity, airlineID) 
+                 VALUES (:aircraftID, :modelno, :a_capacity, :airlineID)`;
 
   const binds = {
-    modelNo,
-    capacity,
-    airlineId
+    aircraftID,
+    modelno,
+    a_capacity,
+    airlineID
   };
 
   let connection;
   try {
     connection = await oracledb.getConnection();
     await connection.execute(query, binds, { autoCommit: true });
+  } catch (error) {
+    console.error("Error inserting aircraft:", error);
+    throw error;
   } finally {
     if (connection) {
       await connection.close();
     }
   }
 }
+
+
 
 // Get all aircrafts
 async function listAllAircrafts() {
@@ -38,40 +44,43 @@ async function listAllAircrafts() {
   }
 }
 
-// Get aircraft by ID
-async function findAircraftById(aircraftId) {
-  const query = `SELECT * FROM aircraft WHERE aircraft_id = :aircraftId`;
-
-  let connection;
-  try {
-    connection = await oracledb.getConnection();
-    const result = await connection.execute(query, [aircraftId]);
-    return result.rows[0]; // Returns the aircraft object
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
-}
 
 // Update aircraft details
-async function updateAircraft(aircraftId, modelNo, capacity, airlineId) {
-  const query = `UPDATE aircraft 
-                 SET model_no = :modelNo, capacity = :capacity, airline_id = :airlineId
-                 WHERE aircraft_id = :aircraftId`;
+async function updateAircraft(id, data) {
+  let query = `UPDATE AIRCRAFT SET `;
+  const binds = { id };
+  const updates = [];
 
-  const binds = {
-    aircraftId,
-    modelNo,
-    capacity,
-    airlineId
-  };
+  // Build query parts for provided fields only
+  if (data.modelNo !== undefined) {
+    updates.push(`modelno = :modelNo`);
+    binds.modelNo = data.modelNo;
+  }
+  if (data.capacity !== undefined) {
+    updates.push(`a_capacity = :capacity`);
+    binds.capacity = data.capacity;
+  }
+  if (data.airlineId !== undefined) {
+    updates.push(`airlineID = :airlineId`);
+    binds.airlineId = data.airlineId;
+  }
+
+  // If no fields provided, return early
+  if (updates.length === 0) {
+    throw new Error("No fields provided for update");
+  }
+
+  // Join the update fields and finalize the query
+  query += updates.join(", ") + ` WHERE AIRCRAFTID = :id`;
 
   let connection;
   try {
     connection = await oracledb.getConnection();
     const result = await connection.execute(query, binds, { autoCommit: true });
-    return result.rowsAffected; // Returns number of affected rows
+    return result.rowsAffected;
+  } catch (error) {
+    console.error("Error updating aircraft:", error);
+    throw error;
   } finally {
     if (connection) {
       await connection.close();
@@ -79,26 +88,10 @@ async function updateAircraft(aircraftId, modelNo, capacity, airlineId) {
   }
 }
 
-// Delete aircraft by ID
-async function deleteAircraft(aircraftId) {
-  const query = `DELETE FROM aircraft WHERE aircraft_id = :aircraftId`;
 
-  let connection;
-  try {
-    connection = await oracledb.getConnection();
-    const result = await connection.execute(query, [aircraftId], { autoCommit: true });
-    return result.rowsAffected; // Returns number of affected rows
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
-}
 
 module.exports = {
   createAircraft,
   listAllAircrafts,
-  findAircraftById,
-  updateAircraft,
-  deleteAircraft
+  updateAircraft
 };

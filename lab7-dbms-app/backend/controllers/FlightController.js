@@ -1,7 +1,7 @@
 const {
     listAllFlights,
     newFlight,
-    updateFlightbyID
+    updateFlightByID
   } = require("../models/FlightModel");
   const db = require("../config/db");
   
@@ -43,7 +43,7 @@ async function addFlight(req, res) {
       const updatedData = req.body;
       console.log(updatedData);
   
-      const result = await updateFlightbyID(updatedData);
+      const result = await updateFlightByID(updatedData);
   
       if (result.rowsAffected > 0) {
         res.json({ message: "Flight updated successfully" });
@@ -51,9 +51,12 @@ async function addFlight(req, res) {
         res.status(404).json({ message: "Flight not found" });
       }
     } catch (err) {
-      res.status(500).json({ message: "Error updating flight", error: err });
+      res.status(500).json({ message: "Error updating flight sad", error: err });
     }
   }
+  
+
+
   module.exports = {
     getAllFlights,
     addFlight,

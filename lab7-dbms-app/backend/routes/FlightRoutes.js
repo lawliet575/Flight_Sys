@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const FlightController = require("../controllers/FlightController");
 
-//http://localhost:3001/api/employees
-router.post("/flights", FlightController.addFlight);
+//http://localhost:3001/api/flights
 router.get("/flights", FlightController.getAllFlights);
-router.put("/flights/", FlightController.updateFlight);
+router.post("/flights", FlightController.addFlight);
+router.put("/flights", FlightController.updateFlight);
 
 module.exports = router; 

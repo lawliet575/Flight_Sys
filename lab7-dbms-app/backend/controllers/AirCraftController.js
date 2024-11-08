@@ -1,4 +1,5 @@
-const { createAircraft, listAllAircrafts, findAircraftById, updateAircraft,/* deleteAircraft*/ } = require("../models/AircraftModel");
+const { createAircraft, listAllAircrafts, updateAircraft,/* ,deleteAircraft*/ }
+ = require("../models/AircraftModel");
 
 /**
  * Add a new aircraft
@@ -6,15 +7,17 @@ const { createAircraft, listAllAircrafts, findAircraftById, updateAircraft,/* de
  * @param {Object} res - Response object
  */
 async function addAircraft(req, res) {
-  const { modelNo, capacity, airlineId } = req.body;
+  const { aircraftID, modelNo, capacity, airlineId } = req.body;
 
   try {
-    await createAircraft(modelNo, capacity, airlineId);
+    await createAircraft(aircraftID, modelNo, capacity, airlineId);
     res.status(201).json({ message: "Aircraft added successfully" });
   } catch (err) {
+    console.error("Error adding aircraft:", err);
     res.status(500).json({ message: "Error adding aircraft", error: err.message });
   }
 }
+
 
 /**
  * Get all aircrafts
@@ -35,20 +38,6 @@ async function getAllAircrafts(req, res) {
  * @param {Object} req - Request object
  * @param {Object} res - Response object
  */
-async function getAircraftById(req, res) {
-  const { id } = req.params;
-
-  try {
-    const aircraft = await findAircraftById(id);
-    if (aircraft) {
-      res.json({ data: aircraft });
-    } else {
-      res.status(404).json({ message: "Aircraft not found" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching aircraft", error: err.message });
-  }
-}
 
 /**
  * Update aircraft details
@@ -56,10 +45,14 @@ async function getAircraftById(req, res) {
  * @param {Object} res - Response object
  */
 async function updateAircraftDetails(req, res) {
-  const { id } = req.params;
-  const { modelNo, capacity, airlineId } = req.body;
+  const { id, modelNo, capacity, airlineId } = req.body;
+
+  if (!id) {
+    return res.status(400).json({ message: "Aircraft ID is required" });
+  }
 
   try {
+    // Call model function to update aircraft with only provided fields
     const result = await updateAircraft(id, modelNo, capacity, airlineId);
     if (result > 0) {
       res.json({ message: "Aircraft updated successfully" });
@@ -67,34 +60,16 @@ async function updateAircraftDetails(req, res) {
       res.status(404).json({ message: "Aircraft not found" });
     }
   } catch (err) {
+    console.error("Error updating aircraft:", err);
     res.status(500).json({ message: "Error updating aircraft", error: err.message });
   }
 }
 
-/**
- * Delete aircraft by ID
- * @param {Object} req - Request object
- * @param {Object} res - Response object
- */
-async function deleteAircraft(req, res) {
-  const { id } = req.params;
 
-  try {
-    const result = await deleteAircraft(id);
-    if (result > 0) {
-      res.json({ message: "Aircraft deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Aircraft not found" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: "Error deleting aircraft", error: err.message });
-  }
-}
+
 
 module.exports = {
   addAircraft,
   getAllAircrafts,
-  getAircraftById,
-  updateAircraftDetails,
-  deleteAircraft
+  updateAircraftDetails
 };
