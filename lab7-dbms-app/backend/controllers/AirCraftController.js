@@ -1,4 +1,4 @@
-const { createAircraft, listAllAircrafts, findAircraftById, updateAircraft, deleteAircraft } = require("../models/AircraftModel");
+const { createAircraft, listAllAircrafts, findAircraftById, updateAircraft,/* deleteAircraft*/ } = require("../models/AircraftModel");
 
 /**
  * Add a new aircraft

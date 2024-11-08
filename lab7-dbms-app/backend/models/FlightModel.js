@@ -18,13 +18,6 @@ async function listAllFlights() {
 }
 
 async function newFlight(flightData) {
-    // Convert ISO date string to JavaScript Date object
-    // const hireDate = new Date(employeeData.hire_date);
-    // const email = employeeData.email.substring(
-    //   0,
-    //   employeeData.email.indexOf("@")
-    // );
-  
     let conn;
     try {
       conn = await oracledb.getConnection();

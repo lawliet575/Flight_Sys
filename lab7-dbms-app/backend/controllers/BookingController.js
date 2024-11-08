@@ -3,7 +3,7 @@ const {
     newBooking,
     updateBookingByID,
     deleteBookingByID  // Import the delete function from the model
-  } = require("../models/BookingModel");
+  } = require("../models/BookingModels");
   
   /**
    * Get all bookings
@@ -72,6 +72,8 @@ const {
       res.status(500).json({ message: "Error deleting booking", error: err });
     }
   }
+
+  
   
   module.exports = {
     getAllBookings,

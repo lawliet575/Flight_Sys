@@ -1,97 +1,67 @@
 const oracledb = require("oracledb");
 
-// Create the Airline model
 async function createAirline(airlineName, foundingDate, scope) {
-  const query = `INSERT INTO airline (airline_name, founding_date, scope) 
-                 VALUES (:airlineName, :foundingDate, :scope)`;
-
-  const binds = {
-    airlineName,
-    foundingDate,
-    scope
-  };
-
+  const query = `INSERT INTO Airline (AirlineName, FoundingDate, Scope) VALUES (:airlineName, :foundingDate, :scope)`;
+  const binds = { airlineName, foundingDate, scope };
   let connection;
   try {
     connection = await oracledb.getConnection();
     await connection.execute(query, binds, { autoCommit: true });
   } finally {
-    if (connection) {
-      await connection.close();
-    }
+    if (connection) await connection.close();
   }
 }
 
-// Get all airlines
 async function listAllAirlines() {
-  const query = "SELECT * FROM airline";
-
+  const query = `SELECT * FROM Airline`;
   let connection;
   try {
     connection = await oracledb.getConnection();
     const result = await connection.execute(query);
-    return result.rows; // Returns array of rows (airlines)
+    return result.rows;
   } finally {
-    if (connection) {
-      await connection.close();
-    }
+    if (connection) await connection.close();
   }
 }
 
-// Get airline by ID
-async function findAirlineById(airlineId) {
-  const query = `SELECT * FROM airline WHERE airline_id = :airlineId`;
-
+async function findAirlineById(id) {
+  const query = `SELECT * FROM Airline WHERE AirlineID = :id`;
   let connection;
   try {
     connection = await oracledb.getConnection();
-    const result = await connection.execute(query, [airlineId]);
-    return result.rows[0]; // Returns the airline object
+    const result = await connection.execute(query, [id]);
+    return result.rows[0];
   } finally {
-    if (connection) {
-      await connection.close();
-    }
+    if (connection) await connection.close();
   }
 }
 
-// Update airline details
-async function updateAirline(airlineId, airlineName, foundingDate, scope) {
-  const query = `UPDATE airline 
-                 SET airline_name = :airlineName, founding_date = :foundingDate, scope = :scope
-                 WHERE airline_id = :airlineId`;
-
-  const binds = {
-    airlineId,
-    airlineName,
-    foundingDate,
-    scope
-  };
-
+async function updateAirline(id, airlineName, foundingDate, scope) {
+  const query = `
+    UPDATE Airline
+    SET AirlineName = :airlineName, FoundingDate = :foundingDate, Scope = :scope
+    WHERE AirlineID = :id
+  `;
+  const binds = { id, airlineName, foundingDate, scope };
   let connection;
   try {
     connection = await oracledb.getConnection();
     const result = await connection.execute(query, binds, { autoCommit: true });
-    return result.rowsAffected; // Returns number of affected rows
+    return result.rowsAffected;
   } finally {
-    if (connection) {
-      await connection.close();
-    }
+    if (connection) await connection.close();
   }
 }
 
-// Delete airline by ID
-async function deleteAirline(airlineId) {
-  const query = `DELETE FROM airline WHERE airline_id = :airlineId`;
-
+async function deleteAirline(id) {
+  const query = `DELETE FROM Airline WHERE AirlineID = :id`;
   let connection;
   try {
     connection = await oracledb.getConnection();
-    const result = await connection.execute(query, [airlineId], { autoCommit: true });
-    return result.rowsAffected; // Returns number of affected rows
+    const result = await connection.execute(query, [id], { autoCommit: true });
+    return result.rowsAffected;
   } finally {
-    if (connection) {
-      await connection.close();
-    }
+    if (connection) await connection.close();
   }
 }
 

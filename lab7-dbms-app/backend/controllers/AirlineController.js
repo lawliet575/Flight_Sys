@@ -1,4 +1,4 @@
-const { createAirline, listAllAirlines, findAirlineById, updateAirline, deleteAirline } = require("../models/AirlineModel");
+const { createAirline, listAllAirlines, findAirlineById, updateAirline /*,deleteAirline*/ } = require("../models/AirlineModel");
 
 /**
  * Add a new airline

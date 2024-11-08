@@ -1,15 +1,12 @@
 const express = require("express");
 const authRoutes = require("./routes/authRoutes");
-const jobRoutes = require("./routes/jobRoutes");
 const authMiddleware = require("./middlewares/authMiddleware");
-const departmentRoutes = require("./routes/departmentRoutes");
-const employeeRoutes = require("./routes/employeeRoutes");
 const flightRoutes = require("./routes/FlightRoutes");
-const locationRoutes = require("./routes/locationRoutes");
 const passengerRoutes = require("./routes/PassengerRoutes");
-const bookingRoutes = require("./routes/BookingRoutes"); 
 const airlineRoutes = require("./routes/AirlineRoutes");
 const aircraftRoutes = require("./routes/AircraftRoutes");
+const bookingRoutes = require("./routes/BookingRoutes"); 
+
 
 const db = require("./config/db");
 const bodyParser = require("body-parser");
@@ -26,10 +23,6 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api", jobRoutes);
-//app.use("/api", employeeRoutes);
-app.use("/api", departmentRoutes);
-app.use("/api", locationRoutes);
 app.use("/api", flightRoutes);
 app.use("/api", passengerRoutes);
 app.use("/api", bookingRoutes);  // Register the booking routes

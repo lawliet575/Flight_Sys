@@ -95,8 +95,30 @@ async function updateBookingByID(updatedData) {
   }
 }
 
+// Function to delete a booking by its ID
+async function deleteBookingByID(bookingID) {
+  const query = `DELETE FROM bookings WHERE booking_id = :bookingID`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query, { bookingID }, { autoCommit: true });
+    return result;
+  } catch (err) {
+    throw new Error(`Failed to delete booking with ID ${bookingID}: ${err.message}`);
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+
+
 module.exports = {
   listAllBookings,
   newBooking,
-  updateBookingByID
+  updateBookingByID,
+  deleteBookingByID
+
 };

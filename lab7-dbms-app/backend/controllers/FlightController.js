@@ -10,6 +10,8 @@ const {
    * @param req - Request object
    * @param res - Response object
    */
+
+  
   async function getAllFlights(req, res) {
     try {
       // get all flights
