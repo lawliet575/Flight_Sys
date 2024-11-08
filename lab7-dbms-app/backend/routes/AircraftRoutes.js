@@ -5,6 +5,6 @@ const aircraftController = require("../controllers/AircraftController");
 // Routes for aircraft operations
 router.post("/aircrafts", aircraftController.addAircraft); // Add new aircraft
 router.get("/aircrafts", aircraftController.getAllAircrafts); // Get all aircrafts
-router.put("/aircrafts", aircraftController.updateAircraftDetails); // Update aircraft
+router.put("/aircrafts", aircraftController.updateAircraftDetails);
 
 module.exports = router;

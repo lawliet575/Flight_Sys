@@ -53,15 +53,15 @@ async function updateAircraft(id, data) {
 
   // Build query parts for provided fields only
   if (data.modelNo !== undefined) {
-    updates.push(`modelno = :modelNo`);
+    updates.push(`MODELNO = :modelNo`);
     binds.modelNo = data.modelNo;
   }
   if (data.capacity !== undefined) {
-    updates.push(`a_capacity = :capacity`);
+    updates.push(`A_CAPACITY = :capacity`);
     binds.capacity = data.capacity;
   }
   if (data.airlineId !== undefined) {
-    updates.push(`airlineID = :airlineId`);
+    updates.push(`AIRLINEID = :airlineId`);
     binds.airlineId = data.airlineId;
   }
 
@@ -73,11 +73,14 @@ async function updateAircraft(id, data) {
   // Join the update fields and finalize the query
   query += updates.join(", ") + ` WHERE AIRCRAFTID = :id`;
 
+  console.log("Query:", query);  // Optional: Log the query to check for correctness
+  console.log("Binds:", binds);  // Optional: Log the bind parameters
+
   let connection;
   try {
     connection = await oracledb.getConnection();
     const result = await connection.execute(query, binds, { autoCommit: true });
-    return result.rowsAffected;
+    return result.rowsAffected; // Returns the number of affected rows
   } catch (error) {
     console.error("Error updating aircraft:", error);
     throw error;
