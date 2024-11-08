@@ -53,7 +53,7 @@ async function updateAircraftDetails(req, res) {
 
   try {
     // Call model function to update aircraft with only provided fields
-    const result = await updateAircraft(id, modelNo, capacity, airlineId);
+    const result = await updateAircraft(id , modelNo, capacity, airlineId);
     if (result > 0) {
       res.json({ message: "Aircraft updated successfully" });
     } else {
