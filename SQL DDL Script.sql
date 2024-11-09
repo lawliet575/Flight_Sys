@@ -1,185 +1,286 @@
-CREATE TABLE pilot (
-  Pilot_ID int PRIMARY KEY,
-  Pilot_Name varchar(255) NOT NULL,
-  Exp_Years int not NULL,
-  pilot_rank char(1) not null,
-  Date_of_birth date,
-  ContactNo varchar(255),
-  Email varchar(255),
-  Address varchar(255)
+BEGIN
+   FOR t IN (SELECT table_name FROM user_tables) LOOP
+      EXECUTE IMMEDIATE 'DROP TABLE ' || t.table_name || ' CASCADE CONSTRAINTS';
+   END LOOP;
+END;
+/
+
+CREATE TABLE PILOTS (
+    PILOT_ID VARCHAR(10) PRIMARY KEY,
+    PILOT_NAME VARCHAR(255) NOT NULL,
+    EXP_YEARS INT NOT NULL,
+    PILOT_RANK CHAR(1) NOT NULL,
+    DATE_OF_BIRTH DATE,
+    CONTACT_NO VARCHAR(255),
+    EMAIL VARCHAR(255),
+    ADDRESS VARCHAR(255)
 );
 
-create table airport(
-airport_id int PRIMARY KEY,
-airport_name varchar(255) not null,
-city varchar(255) not null
+CREATE TABLE AIRPORTS (
+    AIRPORT_ID VARCHAR(10) PRIMARY KEY,
+    AIRPORT_NAME VARCHAR(255) NOT NULL,
+    CITY VARCHAR(255) NOT NULL
 );
 
-
-create table Airline(
-AirlineID int primary key,
-airline_name varchar(255) not null,
-founding_date date,
-a_scope varchar(255) --domestic or international e.g
+CREATE TABLE AIRLINES (
+    AIRLINE_ID VARCHAR(10) PRIMARY KEY,
+    AIRLINE_NAME VARCHAR(255) NOT NULL,
+    FOUNDING_DATE DATE,
+    A_SCOPE VARCHAR(3) CHECK (A_SCOPE='DOM' OR A_SCOPE='INT') -- Domestic or international, e.g.
 );
 
-create table aircraft(
-aircraftID int primary key,
-modelno int not null,
-a_capacity int not null,
-airlineID int not null,
-constraint afk1 foreign key (airlineID) references Airline(AirlineID)
+CREATE TABLE AIRCRAFTS (
+    AIRCRAFT_ID VARCHAR(10) PRIMARY KEY,
+    MODELNO INT NOT NULL,
+    A_CAPACITY INT NOT NULL,
+    AIRLINE_ID VARCHAR(10) NOT NULL,
+    CONSTRAINT AFK1 FOREIGN KEY (AIRLINE_ID) REFERENCES AIRLINES(AIRLINE_ID)
 );
 
-create table flight(
-FlightID int primary key,
-Dep_airport_id int not null, --f2
-DepartureDate date not null,
-DepartureTime varchar(255) not null,
-Arr_airport_id int not null, --f3
-ArrivalDate date not null,
-ArrivalTime varchar(255) not null,
-Aircraft_ID int not null, --f1
-constraint f1 foreign key (Aircraft_ID) references aircraft(aircraftID),
-constraint f2 foreign key (Dep_airport_id) references airport(airport_id),
-constraint f3 foreign key (Arr_airport_id) references airport(airport_id)
-);
-
-create table FlightAssignments(
-FlightID int,
-PilotID int,
-constraint fa1 foreign key (FlightID) references flight(FlightID),
-constraint fa2 foreign key (PilotID) references pilot(Pilot_ID),
-Primary key(FlightID,PilotID)
-);
-
-
-create table passenger (
-PassengerID int primary key,
-passportID int not null unique,
-Firstname varchar(255) not null,
-Lastname varchar(255) not null,
-Email varchar(255),
-ContactNo varchar(255),
-Address varchar(255),
-Gender varchar(255),
-DateofBirth date
---HealthConcerns char(1)
-);
-
-create table flight_class(
-ClassID int primary key,
-Class_Description varchar(255) not null,
-BaggageAllowed decimal(10,2) not null
+CREATE TABLE FLIGHTS (
+    FLIGHT_ID VARCHAR(10) PRIMARY KEY,
+    DEP_AIRPORT_ID VARCHAR(10) NOT NULL, -- f2
+    DEPARTURE_DATE DATE NOT NULL,
+    DEPARTURE_TIME VARCHAR(255) NOT NULL,
+    ARR_AIRPORT_ID VARCHAR(10) NOT NULL, -- f3
+    ARRIVAL_DATE DATE NOT NULL,
+    ARRIVAL_TIME VARCHAR(255) NOT NULL,
+    AIRCRAFT_ID VARCHAR(10) NOT NULL, -- f1
+    CONSTRAINT F1 FOREIGN KEY (AIRCRAFT_ID) REFERENCES AIRCRAFTS(AIRCRAFT_ID),
+    CONSTRAINT F2 FOREIGN KEY (DEP_AIRPORT_ID) REFERENCES AIRPORTS(AIRPORT_ID),
+    CONSTRAINT F3 FOREIGN KEY (ARR_AIRPORT_ID) REFERENCES AIRPORTS(AIRPORT_ID)
 );
 
 
-create table Bookings(
-BookingID int primary key,
-PassengerID int not null,
-FLightID int not null,
-f_ClassID int not null,
-BookingDate date not null,
-SeatNo varchar(255) not null,
-TotalPrice decimal(10,2) not null,
-constraint bk1 foreign key (PassengerID) references passenger(PassengerID),
-constraint bk2 foreign key (FLightID) references flight(FlightID),
-constraint bk3 foreign key (f_ClassID) references flight_class(ClassID)
+CREATE TABLE FLIGHT_ASSIGNMENTS (
+    FLIGHT_ID VARCHAR(10),
+    PILOT_ID VARCHAR(10),
+    CONSTRAINT FA1 FOREIGN KEY (FLIGHT_ID) REFERENCES FLIGHTS(FLIGHT_ID),
+    CONSTRAINT FA2 FOREIGN KEY (PILOT_ID) REFERENCES PILOTS(PILOT_ID),
+    PRIMARY KEY(FLIGHT_ID, PILOT_ID)
 );
 
-create table sys_user(--normal users and admin yahi se ajayenge
-u_id int primary key,
-u_pw varchar(255),
-u_name varchar(255),
-email varchar(255)
+CREATE TABLE PASSENGERS(
+    PASSENGER_ID VARCHAR(10) PRIMARY KEY,
+    PASSPORT_ID INT NOT NULL UNIQUE,
+    FIRSTNAME VARCHAR(255) NOT NULL,
+    LASTNAME VARCHAR(255) NOT NULL,
+    EMAIL VARCHAR(255),
+    CONTACT_NO VARCHAR(255),
+    ADDRESS VARCHAR(255),
+    GENDER VARCHAR(1) CHECK (GENDER='M' OR GENDER='F'),
+    DATE_OF_BIRTH DATE
+    -- HealthConcerns CHAR(1)
 );
 
---INSERTING SOME SAMPLE FLIGHT DATA
---Airports
- INSERT INTO airport (airport_id, airport_name, city)
-VALUES (1, 'Jinnah International Airport', 'Karachi');
+CREATE TABLE FLIGHT_CLASS (
+    CLASS_ID VARCHAR(10) PRIMARY KEY,
+    CLASS_DESCRIPTION VARCHAR(255) NOT NULL,
+    BAGGAGE_ALLOWED DECIMAL(10,2) NOT NULL
+);
 
-INSERT INTO airport (airport_id, airport_name, city)
-VALUES (2, 'Iqbal International Airport', 'Lahore');
+CREATE TABLE BOOKINGS (
+    BOOKING_ID VARCHAR(10) PRIMARY KEY,
+    PASSENGER_ID VARCHAR(10) NOT NULL,
+    FLIGHT_ID VARCHAR(10) NOT NULL,
+    F_CLASS_ID VARCHAR(10) NOT NULL,
+    BOOKING_DATE DATE NOT NULL,
+    SEAT_NO VARCHAR(255) NOT NULL,
+    TOTAL_PRICE DECIMAL(10,2) NOT NULL,
+    CONSTRAINT BK1 FOREIGN KEY (PASSENGER_ID) REFERENCES PASSENGERS(PASSENGER_ID),
+    CONSTRAINT BK2 FOREIGN KEY (FLIGHT_ID) REFERENCES FLIGHTS(FLIGHT_ID),
+    CONSTRAINT BK3 FOREIGN KEY (F_CLASS_ID) REFERENCES FLIGHT_CLASS(CLASS_ID)
+);
 
-INSERT INTO airport (airport_id, airport_name, city)
-VALUES (3, 'Heathrow Airport', 'London');
+CREATE TABLE SYS_USER (
+    U_ID VARCHAR(10) PRIMARY KEY,
+    U_PW VARCHAR(255),
+    U_NAME VARCHAR(255),
+    EMAIL VARCHAR(255)
+);
 
---Airlines
 
-INSERT INTO Airline (AirlineID, airline_name, founding_date, a_scope)
-VALUES (10, 'Qatar', '5-june-2005', 'International');
+--SEQUENCES FOR EACH TABLE
 
-INSERT INTO Airline (AirlineID, airline_name, founding_date, a_scope)
-VALUES (20, 'PIA', '5-dec-1998', 'Domestic');
+--SEQUENCE FOR PILOT
+CREATE SEQUENCE PILOT_SEQ INCREMENT BY 1 START WITH 1;
 
-INSERT INTO Airline (AirlineID, airline_name, founding_date, a_scope)
-VALUES (30, 'Emirates', '5-june-1995', 'International');
+--SEQUENCE FOR AIRPORTS
+CREATE SEQUENCE AIRPORT_SEQ INCREMENT BY 1 START WITH 1;
 
---Aircrafts
-INSERT INTO aircraft (aircraftID, modelno, a_capacity, airlineID)
-VALUES (1, 20, 500, 10);
+--SEQUENCE FOR AIRLINE
+CREATE SEQUENCE AIRLINE_SEQ INCREMENT BY 1 START WITH 1;
 
-INSERT INTO aircraft (aircraftID, modelno, a_capacity, airlineID)
-VALUES (2, 15, 400, 20);
+--SEQUENCE FOR AIRCRAFT
+CREATE SEQUENCE AIRCRAFT_SEQ INCREMENT BY 1 START WITH 1;
 
-INSERT INTO aircraft (aircraftID, modelno, a_capacity, airlineID)
-VALUES (3, 12, 900, 30);
+--SEQUENCE FOR FLIGHT
+CREATE SEQUENCE FLIGHT_SEQ INCREMENT BY 1 START WITH 1;
+
+--SEQUENCE FOR PASSENGER
+CREATE SEQUENCE PASSENGER_SEQ INCREMENT BY 1 START WITH 1;
+
+--SEQUENCE FOR FLIGHT_CLASS
+CREATE SEQUENCE FLIGHT_CLASS_SEQ INCREMENT BY 1 START WITH 1;
+
+--SEQUENCE FOR BOOKING
+CREATE SEQUENCE BOOKING_SEQ INCREMENT BY 1 START WITH 1;
+
+--SEQUENCE FOR SYS_USER
+CREATE SEQUENCE SYS_USER_SEQ INCREMENT BY 1 START WITH 1;
+
+--CREATING TRIGGERS 
+
+-- TRIGGER FOR PILOT
+CREATE OR REPLACE TRIGGER PLIOT_BEFORE_INSERT
+BEFORE INSERT ON PILOTS
+FOR EACH ROW
+BEGIN
+    :NEW.PILOT_ID := 'P' || PLIOT_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE AIRLINE_ID WITH PREFIX 'A'
+END;
+
+-- TRIGGER FOR AIRPORTS
+CREATE OR REPLACE TRIGGER AIRPORT_BEFORE_INSERT
+BEFORE INSERT ON AIRPORTS
+FOR EACH ROW
+BEGIN
+    :NEW.AIRPORT_ID := 'AP' || AIRPORT_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE AIRLINE_ID WITH PREFIX 'A'
+END;
+
+-- TRIGGER FOR AIRLINE
+CREATE OR REPLACE TRIGGER AIRLINE_BEFORE_INSERT
+BEFORE INSERT ON AIRLINES
+FOR EACH ROW
+BEGIN
+    :NEW.AIRLINE_ID := 'AL' || AIRLINE_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE AIRLINE_ID WITH PREFIX 'A'
+END;
+
+-- TRIGGER FOR AIRCRAFT
+CREATE OR REPLACE TRIGGER AIRCRAFT_BEFORE_INSERT
+BEFORE INSERT ON AIRCRAFTS
+FOR EACH ROW
+BEGIN
+    :NEW.AIRCRAFT_ID := 'AC' || AIRCRAFT_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE AIRCRAFT_ID WITH PREFIX 'AC'
+END;
+
+-- TRIGGER FOR FLIGHT
+CREATE OR REPLACE TRIGGER FLIGHT_BEFORE_INSERT
+BEFORE INSERT ON FLIGHTS
+FOR EACH ROW
+BEGIN
+    :NEW.FLIGHT_ID := 'F' || FLIGHT_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE FLIGHT_ID WITH PREFIX 'F'
+END;
+
+-- TRIGGER FOR PASSENGER
+CREATE OR REPLACE TRIGGER PASSENGER_BEFORE_INSERT
+BEFORE INSERT ON PASSENGERS
+FOR EACH ROW
+BEGIN
+    :NEW.PASSENGER_ID := 'PS' || PASSENGER_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE PASSENGER_ID WITH PREFIX 'P'
+END;
+
+-- TRIGGER FOR FLIGHT_CLASS
+CREATE OR REPLACE TRIGGER FLIGHT_CLASS_BEFORE_INSERT
+BEFORE INSERT ON FLIGHT_CLASS
+FOR EACH ROW
+BEGIN
+    :NEW.CLASS_ID := 'C' || FLIGHT_CLASS_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE CLASS_ID WITH PREFIX 'C'
+END;
+
+-- TRIGGER FOR BOOKINGS
+
+CREATE OR REPLACE TRIGGER BOOKING_BEFORE_INSERT
+BEFORE INSERT ON BOOKINGS
+FOR EACH ROW
+BEGIN
+    :NEW.BOOKING_ID := 'B' || BOOKING_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE BOOKING_ID WITH PREFIX 'B'
+END;
+
+-- TRIGGER FOR SYS_USER
+CREATE OR REPLACE TRIGGER SYS_USER_BEFORE_INSERT
+BEFORE INSERT ON SYS_USER
+FOR EACH ROW
+BEGIN
+    :NEW.U_ID := 'U' || SYS_USER_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE U_ID WITH PREFIX 'U'
+END;
+
+--AIRPORTS
+INSERT INTO AIRPORTS (AIRPORT_NAME, CITY)
+VALUES ('JINNAH INTERNATIONAL AIRPORT', 'KARACHI');
+
+INSERT INTO AIRPORTS (AIRPORT_NAME, CITY)
+VALUES ('IQBAL INTERNATIONAL AIRPORT', 'LAHORE');
+
+INSERT INTO AIRPORTS (AIRPORT_NAME, CITY)
+VALUES ('HEATHROW AIRPORT', 'LONDON');
+SELECT * FROM AIRPORTS;
+
+--AIRLINES
+INSERT INTO AIRLINES (AIRLINE_NAME, FOUNDING_DATE, A_SCOPE)
+VALUES ('QATAR', TO_DATE('05-JUNE-2005', 'DD-MON-YYYY'), 'INT');
+
+INSERT INTO AIRLINES (AIRLINE_NAME, FOUNDING_DATE, A_SCOPE)
+VALUES ('PIA', TO_DATE('05-DEC-1998', 'DD-MON-YYYY'), 'DOM');
+
+INSERT INTO AIRLINES (AIRLINE_NAME, FOUNDING_DATE, A_SCOPE)
+VALUES ('EMIRATES', TO_DATE('05-JUNE-1995', 'DD-MON-YYYY'), 'INT');
+
+
+--AIRCRAFTS
+INSERT INTO AIRCRAFTS (MODELNO, A_CAPACITY, AIRLINE_ID)
+VALUES (20, 500, 'AL1');
+
+INSERT INTO AIRCRAFTS (MODELNO, A_CAPACITY, AIRLINE_ID)
+VALUES (15, 400, 'AL2');
+
+INSERT INTO AIRCRAFTS (MODELNO, A_CAPACITY, AIRLINE_ID)
+VALUES (12, 900, 'AL3');
 
 --FLIGHTS
-INSERT INTO flight (FlightID, Dep_airport_id, DepartureDate, DepartureTime, Arr_airport_id, ArrivalDate, ArrivalTime, Aircraft_ID)
-VALUES (1, 1, '5-june-2024', '08:00:00', 2, '6-june-2024', '11:00:00', 1);
+INSERT INTO FLIGHTS (DEP_AIRPORT_ID, DEPARTURE_DATE, DEPARTURE_TIME, ARR_AIRPORT_ID, ARRIVAL_DATE, ARRIVAL_TIME, AIRCRAFT_ID)
+VALUES ('AP1', TO_DATE('05-JUNE-2024', 'DD-MON-YYYY'), '08:00:00', 'AP2', TO_DATE('06-JUNE-2024', 'DD-MON-YYYY'), '11:00:00', 'AC1');
 
-INSERT INTO flight (FlightID, Dep_airport_id, DepartureDate, DepartureTime, Arr_airport_id, ArrivalDate, ArrivalTime, Aircraft_ID)
-VALUES (2, 2, '15-aug-2024', '12:30:00', 3, '17-aug-2024', '18:00:00', 2);
+INSERT INTO FLIGHTS (DEP_AIRPORT_ID, DEPARTURE_DATE, DEPARTURE_TIME, ARR_AIRPORT_ID, ARRIVAL_DATE, ARRIVAL_TIME, AIRCRAFT_ID)
+VALUES ('AP2', TO_DATE('15-AUG-2024', 'DD-MON-YYYY'), '12:30:00', 'AP3', TO_DATE('17-AUG-2024', 'DD-MON-YYYY'), '18:00:00', 'AC2');
 
-INSERT INTO flight (FlightID, Dep_airport_id, DepartureDate, DepartureTime, Arr_airport_id, ArrivalDate, ArrivalTime, Aircraft_ID)
-VALUES (3, 3, '18-dec-2024', '09:45:00', 1, '19-dec-2024', '17:30:00', 3);
+INSERT INTO FLIGHTS (DEP_AIRPORT_ID, DEPARTURE_DATE, DEPARTURE_TIME, ARR_AIRPORT_ID, ARRIVAL_DATE, ARRIVAL_TIME, AIRCRAFT_ID)
+VALUES ('AP3', TO_DATE('18-DEC-2024', 'DD-MON-YYYY'), '09:45:00', 'AP1', TO_DATE('19-DEC-2024', 'DD-MON-YYYY'), '17:30:00', 'AC3');
 
-INSERT INTO flight (FlightID, Dep_airport_id, DepartureDate, DepartureTime, Arr_airport_id, ArrivalDate, ArrivalTime, Aircraft_ID)
-VALUES (4, 1, '17-aug-2024', '10:00:00', 3, '18-aug-2024', '18:15:00', 1);
+INSERT INTO FLIGHTS (DEP_AIRPORT_ID, DEPARTURE_DATE, DEPARTURE_TIME, ARR_AIRPORT_ID, ARRIVAL_DATE, ARRIVAL_TIME, AIRCRAFT_ID)
+VALUES ('AP1', TO_DATE('17-AUG-2024', 'DD-MON-YYYY'), '10:00:00', 'AP3', TO_DATE('18-AUG-2024', 'DD-MON-YYYY'), '18:15:00', 'AC1');
 
-INSERT INTO flight (FlightID, Dep_airport_id, DepartureDate, DepartureTime, Arr_airport_id, ArrivalDate, ArrivalTime, Aircraft_ID)
-VALUES (5, 2, '18-jan-2024', '14:30:00', 3, '20-jan-2024', '22:45:00', 2);
+INSERT INTO FLIGHTS (DEP_AIRPORT_ID, DEPARTURE_DATE, DEPARTURE_TIME, ARR_AIRPORT_ID, ARRIVAL_DATE, ARRIVAL_TIME, AIRCRAFT_ID)
+VALUES ('AP2', TO_DATE('18-JAN-2024', 'DD-MON-YYYY'), '14:30:00', 'AP3', TO_DATE('20-JAN-2024', 'DD-MON-YYYY'), '22:45:00', 'AC2');
 
---for bookings first we need passengerid,flassid,and flightid to be filled 
-INSERT INTO Passenger (PassengerID, PassportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth)
-VALUES (1, 12345678, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', '123 Main St, Cityville', 'Male', TO_DATE('1990-01-15', 'YYYY-MM-DD'));
+--PASSENGERS
+INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH)
+VALUES (12345678, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', '123 Main St, Cityville', 'M', TO_DATE('1990-01-15', 'YYYY-MM-DD'));
 
-INSERT INTO Passenger (PassengerID, PassportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth)
-VALUES (2, 87654321, 'Jane', 'Smith', 'jane.smith@example.com', '098-765-4321', '456 Elm St, Townville', 'Female', TO_DATE('1985-03-22', 'YYYY-MM-DD'));
+INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH)
+VALUES (87654321, 'Jane', 'Smith', 'jane.smith@example.com', '098-765-4321', '456 Elm St, Townville', 'F', TO_DATE('1985-03-22', 'YYYY-MM-DD'));
 
-INSERT INTO Passenger (PassengerID, PassportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth)
-VALUES (3, 11223344, 'Alex', 'Johnson', 'alex.johnson@example.com', '555-123-4567', '789 Maple Ave, Villagetown', 'Female', TO_DATE('1995-08-30', 'YYYY-MM-DD'));
+INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH)
+VALUES (11223344, 'Alex', 'Johnson', 'alex.johnson@example.com', '555-123-4567', '789 Maple Ave, Villagetown', 'F', TO_DATE('1995-08-30', 'YYYY-MM-DD'));
 
---now we add classes business,economy
-INSERT INTO Flight_Class (ClassID, Class_Description, BaggageAllowed)
-VALUES (100, 'Economy', 23.00);
+--CLASSES
+INSERT INTO FLIGHT_CLASS (CLASS_DESCRIPTION, BAGGAGE_ALLOWED)
+VALUES ('Economy', 23.00);
 
-INSERT INTO Flight_Class (ClassID, Class_Description, BaggageAllowed)
-VALUES (200, 'Business', 32.00);
+INSERT INTO FLIGHT_CLASS (CLASS_DESCRIPTION, BAGGAGE_ALLOWED)
+VALUES ('Business', 32.00);
 
-INSERT INTO Flight_Class (ClassID, Class_Description, BaggageAllowed)
-VALUES (300, 'First Class', 40.00);
+INSERT INTO FLIGHT_CLASS (CLASS_DESCRIPTION, BAGGAGE_ALLOWED)
+VALUES ('First Class', 40.00);
 
---FINALLY BOOKINGS
-INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
-            VALUES (     1,           2,         5,         100,       TO_DATE('2024-11-15', 'YYYY-MM-DD'), 'A23', 500.00);
+--BOOKINGS
+INSERT INTO BOOKINGS (PASSENGER_ID, FLIGHT_ID, F_CLASS_ID, BOOKING_DATE, SEAT_NO, TOTAL_PRICE)
+VALUES ('PS2', 'F5', 'C1', TO_DATE('2024-11-15', 'YYYY-MM-DD'), 'A23', 500.00);
 
-INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
-VALUES (2, 1, 3, 200, TO_DATE('2024-11-16', 'YYYY-MM-DD'), 'B12', 1200.00);
+INSERT INTO BOOKINGS (PASSENGER_ID, FLIGHT_ID, F_CLASS_ID, BOOKING_DATE, SEAT_NO, TOTAL_PRICE)
+VALUES ('PS1', 'F3', 'C2', TO_DATE('2024-11-16', 'YYYY-MM-DD'), 'B12', 1200.00);
 
-INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
-VALUES (3, 3, 4, 300, TO_DATE('2024-11-17', 'YYYY-MM-DD'), 'C10', 450.00);
-
-
-
-select * from flight_Class;
-select * from bookings;
-
-
-
-
-
+INSERT INTO BOOKINGS (PASSENGER_ID, FLIGHT_ID, F_CLASS_ID, BOOKING_DATE, SEAT_NO, TOTAL_PRICE)
+VALUES ('PS3', 'F4', 'C3', TO_DATE('2024-11-17', 'YYYY-MM-DD'), 'C10', 450.00);
+SELECT * FROM BOOKINGS;
 
 
