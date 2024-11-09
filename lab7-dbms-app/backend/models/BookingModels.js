@@ -1,111 +1,19 @@
-const oracledb = require("oracledb");
+// bookingModel.js
 
-// Function to list all bookings
+const oracledb = require('oracledb');
+
+// List all bookings
 async function listAllBookings() {
-  let conn;
-  try {
-    conn = await oracledb.getConnection();
-    const result = await conn.execute(`SELECT * FROM booking`);
-    return result.rows;
-  } catch (err) {
-    throw err;
-  } finally {
-    if (conn) {
-      await conn.close();
-    }
-  }
-}
-
-// Function to create a new booking
-async function newBooking(bookingData) {
-  let conn;
-  try {
-    conn = await oracledb.getConnection();
-    await conn.execute(
-      `INSERT INTO booking (BookingID, PassengerID, FlightID, BookingDate, SeatNumber, Class, Status) 
-       VALUES (:BookingID, :PassengerID, :FlightID, :BookingDate, :SeatNumber, :Class, :Status)`,
-      {
-        BookingID: bookingData.bookingID,
-        PassengerID: bookingData.passengerID,
-        FlightID: bookingData.flightID,
-        BookingDate: bookingData.bookingDate,
-        SeatNumber: bookingData.seatNumber,
-        Class: bookingData.class,
-        Status: bookingData.status
-      },
-      { autoCommit: true }
-    );
-  } catch (err) {
-    throw err;
-  } finally {
-    if (conn) {
-      await conn.close();
-    }
-  }
-}
-
-// Function to update an existing booking by ID
-async function updateBookingByID(updatedData) {
-  let conn;
-  try {
-    conn = await oracledb.getConnection();
-
-    let fieldsToUpdate = [];
-    let values = { BookingID: updatedData.bookingID };
-
-    if (updatedData.passengerID) {
-      fieldsToUpdate.push("PassengerID = :passengerID");
-      values.passengerID = updatedData.passengerID;
-    }
-    if (updatedData.flightID) {
-      fieldsToUpdate.push("FlightID = :flightID");
-      values.flightID = updatedData.flightID;
-    }
-    if (updatedData.bookingDate) {
-      fieldsToUpdate.push("BookingDate = :bookingDate");
-      values.bookingDate = updatedData.bookingDate;
-    }
-    if (updatedData.seatNumber) {
-      fieldsToUpdate.push("SeatNumber = :seatNumber");
-      values.seatNumber = updatedData.seatNumber;
-    }
-    if (updatedData.class) {
-      fieldsToUpdate.push("Class = :class");
-      values.class = updatedData.class;
-    }
-    if (updatedData.status) {
-      fieldsToUpdate.push("Status = :status");
-      values.status = updatedData.status;
-    }
-
-    // If no fields to update, return
-    if (fieldsToUpdate.length === 0) {
-      throw new Error("No fields provided to update");
-    }
-
-    const sql = `UPDATE booking SET ${fieldsToUpdate.join(", ")} WHERE BookingID = :BookingID`;
-    const result = await conn.execute(sql, values, { autoCommit: true });
-    return result;
-  } catch (err) {
-    throw err;
-  } finally {
-    if (conn) {
-      await conn.close();
-    }
-  }
-}
-
-// Function to delete a booking by its ID
-async function deleteBookingByID(bookingID) {
-  const query = `DELETE FROM bookings WHERE booking_id = :bookingID`;
+  let query = `SELECT * FROM Bookings`;
   let connection;
 
   try {
     connection = await oracledb.getConnection();
-    const result = await connection.execute(query, { bookingID }, { autoCommit: true });
-    return result;
-  } catch (err) {
-    throw new Error(`Failed to delete booking with ID ${bookingID}: ${err.message}`);
+    const result = await connection.execute(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
   } finally {
     if (connection) {
       await connection.close();
@@ -113,12 +21,114 @@ async function deleteBookingByID(bookingID) {
   }
 }
 
+// Add a new booking
+async function newBooking(data) {
+  const { BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = data;
 
+  let query = `INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
+               VALUES (:BookingID, :PassengerID, :FlightID, :ClassID, :BookingDate, :SeatNo, :TotalPrice)`;
+  
+  const binds = {
+    BookingID,
+    PassengerID,
+    FlightID,
+    ClassID,
+    BookingDate,
+    SeatNo,
+    TotalPrice
+  };
+
+  let connection;
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query, binds, { autoCommit: true });
+    return result.rowsAffected ? BookingID : null; // Return the new BookingID if the insert was successful
+  } catch (error) {
+    console.error("Error adding booking:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+// Update an existing booking by ID
+async function updateBookingByID(BookingID, data) {
+  let query = `UPDATE Bookings SET `;
+  const binds = { BookingID };
+  const updates = [];
+
+  // Build query parts for provided fields only
+  if (data.PassengerID !== undefined) {
+    updates.push(`PassengerID = :PassengerID`);
+    binds.PassengerID = data.PassengerID;
+  }
+  if (data.FlightID !== undefined) {
+    updates.push(`FlightID = :FlightID`);
+    binds.FlightID = data.FlightID;
+  }
+  if (data.ClassID !== undefined) {
+    updates.push(`f_ClassID = :ClassID`);
+    binds.ClassID = data.ClassID;
+  }
+  if (data.BookingDate !== undefined) {
+    updates.push(`BookingDate = :BookingDate`);
+    binds.BookingDate = data.BookingDate;
+  }
+  if (data.SeatNo !== undefined) {
+    updates.push(`SeatNo = :SeatNo`);
+    binds.SeatNo = data.SeatNo;
+  }
+  if (data.TotalPrice !== undefined) {
+    updates.push(`TotalPrice = :TotalPrice`);
+    binds.TotalPrice = data.TotalPrice;
+  }
+
+  if (updates.length === 0) {
+    throw new Error("No fields provided for update");
+  }
+
+  query += updates.join(", ") + ` WHERE BookingID = :BookingID`;
+
+  let connection;
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query, binds, { autoCommit: true });
+    return result.rowsAffected; // Returns the number of affected rows
+  } catch (error) {
+    console.error("Error updating booking:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+// Delete a booking by ID
+async function deleteBookingByID(BookingID) {
+  const query = `DELETE FROM Bookings WHERE BookingID = :BookingID`;
+  const binds = { BookingID };
+
+  let connection;
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query, binds, { autoCommit: true });
+    return result.rowsAffected; // Returns the number of affected rows
+  } catch (error) {
+    console.error("Error deleting booking:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
 
 module.exports = {
   listAllBookings,
   newBooking,
   updateBookingByID,
   deleteBookingByID
-
 };

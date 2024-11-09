@@ -87,12 +87,11 @@ constraint bk2 foreign key (FLightID) references flight(FlightID),
 constraint bk3 foreign key (f_ClassID) references flight_class(ClassID)
 );
 
-create table sys_admin(
-ad_id int primary key,
-ad_pw varchar(255),
-ad_name varchar(255),
-email varchar(255),
-contact_no varchar(255)
+create table sys_user(--normal users and admin yahi se ajayenge
+u_id int primary key,
+u_pw varchar(255),
+u_name varchar(255),
+email varchar(255)
 );
 
 --INSERTING SOME SAMPLE FLIGHT DATA
@@ -142,6 +141,44 @@ VALUES (4, 1, '17-aug-2024', '10:00:00', 3, '18-aug-2024', '18:15:00', 1);
 
 INSERT INTO flight (FlightID, Dep_airport_id, DepartureDate, DepartureTime, Arr_airport_id, ArrivalDate, ArrivalTime, Aircraft_ID)
 VALUES (5, 2, '18-jan-2024', '14:30:00', 3, '20-jan-2024', '22:45:00', 2);
+
+--for bookings first we need passengerid,flassid,and flightid to be filled 
+INSERT INTO Passenger (PassengerID, PassportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth)
+VALUES (1, 12345678, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', '123 Main St, Cityville', 'Male', TO_DATE('1990-01-15', 'YYYY-MM-DD'));
+
+INSERT INTO Passenger (PassengerID, PassportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth)
+VALUES (2, 87654321, 'Jane', 'Smith', 'jane.smith@example.com', '098-765-4321', '456 Elm St, Townville', 'Female', TO_DATE('1985-03-22', 'YYYY-MM-DD'));
+
+INSERT INTO Passenger (PassengerID, PassportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth)
+VALUES (3, 11223344, 'Alex', 'Johnson', 'alex.johnson@example.com', '555-123-4567', '789 Maple Ave, Villagetown', 'Female', TO_DATE('1995-08-30', 'YYYY-MM-DD'));
+
+--now we add classes business,economy
+INSERT INTO Flight_Class (ClassID, Class_Description, BaggageAllowed)
+VALUES (100, 'Economy', 23.00);
+
+INSERT INTO Flight_Class (ClassID, Class_Description, BaggageAllowed)
+VALUES (200, 'Business', 32.00);
+
+INSERT INTO Flight_Class (ClassID, Class_Description, BaggageAllowed)
+VALUES (300, 'First Class', 40.00);
+
+--FINALLY BOOKINGS
+INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
+            VALUES (     1,           2,         5,         100,       TO_DATE('2024-11-15', 'YYYY-MM-DD'), 'A23', 500.00);
+
+INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
+VALUES (2, 1, 3, 200, TO_DATE('2024-11-16', 'YYYY-MM-DD'), 'B12', 1200.00);
+
+INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
+VALUES (3, 3, 4, 300, TO_DATE('2024-11-17', 'YYYY-MM-DD'), 'C10', 450.00);
+
+
+
+select * from flight_Class;
+
+
+
+
 
 
 

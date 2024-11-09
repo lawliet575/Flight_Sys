@@ -1,85 +1,85 @@
+// bookingController.js
+
 const {
-    listAllBookings,
-    newBooking,
-    updateBookingByID,
-    deleteBookingByID  // Import the delete function from the model
-  } = require("../models/BookingModels");
-  
-  /**
-   * Get all bookings
-   * @param req - Request object
-   * @param res - Response object
-   */
-  async function getAllBookings(req, res) {
-    try {
-      const bookings = await listAllBookings();
-      res.json({ data: bookings });
-    } catch (err) {
-      res.status(500).json({ message: "Error fetching bookings", error: err });
-    }
+  listAllBookings,
+  newBooking,
+  updateBookingByID,
+  deleteBookingByID
+} = require('../models/BookingModels');
+
+// Get all bookings
+async function getAllBookings(req, res) {
+  try {
+    const bookings = await listAllBookings();
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).json({ message: "Error fetching bookings", error: err.message });
   }
-  
-  /**
-   * Add a new booking
-   * @param req - Request object
-   * @param res - Response object
-   */
-  async function addBooking(req, res) {
-    try {
-      await newBooking(req.body);
-      res.status(201).json({ message: "Booking added successfully" });
-    } catch (err) {
-      res.status(500).json({ message: "Error adding booking", error: err });
-    }
-  }
-  
-  /**
-   * Update a booking by ID
-   * @param req - Request object
-   * @param res - Response object
-   */
-  async function updateBooking(req, res) {
-    try {
-      const updatedData = req.body;
-      const result = await updateBookingByID(updatedData);
-  
-      if (result.rowsAffected > 0) {
-        res.json({ message: "Booking updated successfully" });
-      } else {
-        res.status(404).json({ message: "Booking not found" });
-      }
-    } catch (err) {
-      res.status(500).json({ message: "Error updating booking", error: err });
-    }
-  }
-  
-  /**
-   * Delete a booking by ID
-   * @param req - Request object
-   * @param res - Response object
-   */
-  async function deleteBooking(req, res) {
-    try {
-      const bookingID = req.params.id;
-      const result = await deleteBookingByID(bookingID);
-  
-      if (result.rowsAffected > 0) {
-        res.json({ message: "Booking deleted successfully" });
-      } else {
-        res.status(404).json({ message: "Booking not found" });
-      }
-    } catch (err) {
-      res.status(500).json({ message: "Error deleting booking", error: err });
-    }
+}
+
+// Add a new booking
+async function addBooking(req, res) {
+  const { BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = req.body;
+
+  if (!BookingID || !PassengerID || !FlightID || !ClassID || !BookingDate || !SeatNo || !TotalPrice) {
+    return res.status(400).json({ message: "All fields are required" });
   }
 
-  
-  
-  module.exports = {
-    getAllBookings,
-    addBooking,
-    updateBooking,
-    deleteBooking  // Export the delete functio
-    
-  };
-  
+  try {
+    const result = await newBooking({ BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice });
+    res.status(201).json({ message: "Booking added successfully", bookingId: result });
+  } catch (err) {
+    console.error("Error adding booking:", err);
+    res.status(500).json({ message: "Error adding booking", error: err.message });
+  }
+}
+
+// Update an existing booking by ID
+async function updateBooking(req, res) {
+  const { BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = req.body;
+
+  if (!BookingID) {
+    return res.status(400).json({ message: "Booking ID is required" });
+  }
+
+  try {
+    const result = await updateBookingByID(BookingID, { PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice });
+    if (result > 0) {
+      res.json({ message: "Booking updated successfully" });
+    } else {
+      res.status(404).json({ message: "Booking not found" });
+    }
+  } catch (err) {
+    console.error("Error updating booking:", err);
+    res.status(500).json({ message: "Error updating booking", error: err.message });
+  }
+}
+
+// Delete a booking by ID
+async function deleteBooking(req, res) {
+  const { BookingID } = req.body;
+
+  if (!BookingID) {
+    return res.status(400).json({ message: "Booking ID is required" });
+  }
+
+  try {
+    const result = await deleteBookingByID(BookingID);
+    if (result > 0) {
+      res.json({ message: "Booking deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Booking not found" });
+    }
+  } catch (err) {
+    console.error("Error deleting booking:", err);
+    res.status(500).json({ message: "Error deleting booking", error: err.message });
+  }
+}
+
+module.exports = {
+  getAllBookings,
+  addBooking,
+  updateBooking,
+  deleteBooking
+};

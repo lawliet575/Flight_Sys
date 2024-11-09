@@ -5,7 +5,8 @@ const flightRoutes = require("./routes/FlightRoutes");
 const passengerRoutes = require("./routes/PassengerRoutes");
 const airlineRoutes = require("./routes/AirlineRoutes");
 const aircraftRoutes = require("./routes/AircraftRoutes");
-const bookingRoutes = require("./routes/BookingRoutes"); 
+const bookingRoutes = require("./routes/BookingRoutes");
+const flight_classRoutes = require("./routes/FlightClassRoutes");  
 
 
 const db = require("./config/db");
@@ -28,6 +29,7 @@ app.use("/api", passengerRoutes);
 app.use("/api", bookingRoutes);  // Register the booking routes
 app.use("/api", airlineRoutes);
 app.use("/api", aircraftRoutes);
+app.use("/api", flight_classRoutes);
 
 // Catch-all route to verify that the app is running
 app.use("/", (req, res) => {
