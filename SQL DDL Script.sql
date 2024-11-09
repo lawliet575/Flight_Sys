@@ -175,6 +175,7 @@ VALUES (3, 3, 4, 300, TO_DATE('2024-11-17', 'YYYY-MM-DD'), 'C10', 450.00);
 
 
 select * from flight_Class;
+select * from bookings;
 
 
 
