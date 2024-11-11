@@ -6,5 +6,9 @@ const FlightController = require("../controllers/FlightController");
 router.get("/flights", FlightController.getAllFlights);
 router.post("/flights", FlightController.addFlight);
 router.put("/flights", FlightController.updateFlight);
+router.get("/flights/:dep_date", FlightController.filterByDateController);
+router.get("/flights/:dep_airport_name/:arr_airport_name", FlightController.filterByArrDepController);
+router.get("/flights/:dep_date/:dep_airport_name/:arr_airport_name", FlightController.filterByDateArrDepController);
+
 
 module.exports = router; 

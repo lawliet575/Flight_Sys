@@ -1,12 +1,11 @@
 const oracledb = require("oracledb");
 
 // Create the Aircraft model
-async function createAircraft(aircraftID, modelno, a_capacity, airlineID) {
-  const query = `INSERT INTO aircraft (aircraftID, modelno, a_capacity, airlineID) 
-                 VALUES (:aircraftID, :modelno, :a_capacity, :airlineID)`;
+async function createAircraft(modelno, a_capacity, airlineID) {
+  const query = `INSERT INTO AIRCRAFTS (MODELNO, A_CAPACITY, AIRLINE_ID) 
+                 VALUES (:modelno, :a_capacity, :airlineID)`;
 
   const binds = {
-    aircraftID,
     modelno,
     a_capacity,
     airlineID
@@ -30,7 +29,7 @@ async function createAircraft(aircraftID, modelno, a_capacity, airlineID) {
 
 // Get all aircrafts
 async function listAllAircrafts() {
-  const query = "SELECT * FROM aircraft";
+  const query = "SELECT * FROM AIRCRAFTS";
 
   let connection;
   try {
@@ -45,24 +44,25 @@ async function listAllAircrafts() {
 }
 
 
+
 // Update aircraft details
-async function updateAircraft(id, data) {
-  let query = `UPDATE AIRCRAFT SET `;
-  const binds = { id };
+async function updateAircraft(aircraftID, data) {
+  let query = `UPDATE AIRCRAFTS SET `;
+  const binds = { aircraftID };
   const updates = [];
 
   // Build query parts for provided fields only
-  if (data.modelNo !== undefined) {
-    updates.push(`MODELNO = :modelNo`);
-    binds.modelNo = data.modelNo;
+  if (data.modelno !== undefined) {
+    updates.push(`MODELNO = :modelno`);
+    binds.modelno = data.modelno;
   }
-  if (data.capacity !== undefined) {
-    updates.push(`A_CAPACITY = :capacity`);
-    binds.capacity = data.capacity;
+  if (data.a_capacity !== undefined) {
+    updates.push(`A_CAPACITY = :a_capacity`);
+    binds.a_capacity = data.a_capacity;
   }
-  if (data.airlineId !== undefined) {
-    updates.push(`AIRLINEID = :airlineId`);
-    binds.airlineId = data.airlineId;
+  if (data.airlineID !== undefined) {
+    updates.push(`AIRLINE_ID = :airlineID`);
+    binds.airlineID = data.airlineID;
   }
 
   // If no fields provided, return early
@@ -71,7 +71,7 @@ async function updateAircraft(id, data) {
   }
 
   // Join the update fields and finalize the query
-  query += updates.join(", ") + ` WHERE AIRCRAFTID = :id`;
+  query += updates.join(", ") + ` WHERE AIRCRAFT_ID = :aircraftID`;
 
   console.log("Query:", query);  // Optional: Log the query to check for correctness
   console.log("Binds:", binds);  // Optional: Log the bind parameters
@@ -90,6 +90,7 @@ async function updateAircraft(id, data) {
     }
   }
 }
+
 
 
 

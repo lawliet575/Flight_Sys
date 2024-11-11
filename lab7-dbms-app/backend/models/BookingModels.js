@@ -23,13 +23,12 @@ async function listAllBookings() {
 
 // Add a new booking
 async function newBooking(data) {
-  const { BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = data;
+  const { PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = data;
 
   let query = `INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
-               VALUES (:BookingID, :PassengerID, :FlightID, :ClassID, :BookingDate, :SeatNo, :TotalPrice)`;
+               VALUES (:PassengerID, :FlightID, :ClassID, :BookingDate, :SeatNo, :TotalPrice)`;
   
   const binds = {
-    BookingID,
     PassengerID,
     FlightID,
     ClassID,

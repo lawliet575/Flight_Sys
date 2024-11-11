@@ -20,9 +20,9 @@ async function newPassenger(passengerData) {
   try {
     conn = await oracledb.getConnection();
     await conn.execute(
-      `INSERT INTO passenger (PassengerID, passportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth) VALUES (:PassengerID, :passportID, :Firstname, :Lastname, :Email, :ContactNo, :Address, :Gender, :DateofBirth)`,
+      `INSERT INTO passenger ( passportID, Firstname, Lastname, Email, ContactNo, Address, Gender, DateofBirth)
+       VALUES ( :passportID, :Firstname, :Lastname, :Email, :ContactNo, :Address, :Gender, :DateofBirth)`,
       {
-        PassengerID: passengerData.id,
         passportID: passengerData.passportId,
         Firstname: passengerData.firstName,
         Lastname: passengerData.lastName,
