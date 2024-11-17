@@ -21,7 +21,7 @@ async function getAllFlightClasses() {
 
 async function addFlightClass(data) {
   const { Class_Description, BaggageAllowed } = data;
-  const query = `INSERT INTO flight_class (Class_Description, BaggageAllowed) VALUES (:ID, :Class_Description, :BaggageAllowed)`;
+  const query = `INSERT INTO flight_class (Class_Description, BaggageAllowed) VALUES ( :Class_Description, :BaggageAllowed)`;
 
   const binds = {
     Class_Description,

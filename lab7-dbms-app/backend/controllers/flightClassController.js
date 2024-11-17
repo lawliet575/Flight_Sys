@@ -11,10 +11,10 @@ async function listAllFlightClasses(req, res) {
 }
 
 async function newFlightClass(req, res) {
-  const { ID, Class_Description, BaggageAllowed } = req.body;
+  const { Class_Description, BaggageAllowed } = req.body;
 
-  if (!ID || !Class_Description || !BaggageAllowed) {
-    return res.status(400).json({ message: "ID, Class description, and baggage allowance are required" });
+  if ( !Class_Description || !BaggageAllowed) {
+    return res.status(400).json({ message: "Class description, and baggage allowance are required" });
   }
 
   try {

@@ -20,14 +20,14 @@ async function getAllBookings(req, res) {
 
 // Add a new booking
 async function addBooking(req, res) {
-  const { BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = req.body;
+  const { PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = req.body;
 
-  if (!BookingID || !PassengerID || !FlightID || !ClassID || !BookingDate || !SeatNo || !TotalPrice) {
+  if ( !PassengerID || !FlightID || !ClassID || !BookingDate || !SeatNo || !TotalPrice) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    const result = await newBooking({ BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice });
+    const result = await newBooking({  PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice });
     res.status(201).json({ message: "Booking added successfully", bookingId: result });
   } catch (err) {
     console.error("Error adding booking:", err);

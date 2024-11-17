@@ -7,10 +7,10 @@ const { createAircraft, listAllAircrafts, updateAircraft,/* ,deleteAircraft*/ }
  * @param {Object} res - Response object
  */
 async function addAircraft(req, res) {
-  const { aircraftID, modelNo, capacity, airlineId } = req.body;
+  const { modelNo, capacity, airlineId } = req.body;
 
   try {
-    await createAircraft(aircraftID, modelNo, capacity, airlineId);
+    await createAircraft( modelNo, capacity, airlineId);
     res.status(201).json({ message: "Aircraft added successfully" });
   } catch (err) {
     console.error("Error adding aircraft:", err);

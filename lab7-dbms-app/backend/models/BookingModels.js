@@ -25,7 +25,7 @@ async function listAllBookings() {
 async function newBooking(data) {
   const { PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = data;
 
-  let query = `INSERT INTO Bookings (BookingID, PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
+  let query = `INSERT INTO Bookings (PassengerID, FlightID, f_ClassID, BookingDate, SeatNo, TotalPrice) 
                VALUES (:PassengerID, :FlightID, :ClassID, :BookingDate, :SeatNo, :TotalPrice)`;
   
   const binds = {
