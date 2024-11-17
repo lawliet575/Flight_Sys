@@ -290,5 +290,30 @@ SELECT * FROM BOOKINGS;
 
 desc bookings;
 desc flights;
+commit;
 
+
+--format for postman interaction
+{
+    "id": "F1",
+    "dep_airport_id": "AP2",
+    "dep_date": "15-aug-2024",
+    "dep_time": "09:45:00",
+    "arr_airport_id": "AP3",
+    "arr_date": "17-aug-2024",
+    "arr_time": "17:30:00",
+    "aircraft_id": "AC1"
+}
+
+{
+    "id": 4,
+    "passportId": 213214351,
+    "firstName": "Lionel",
+    "lastName": "Messi",
+    "email": "messi@gmail.com",
+    "contact": "555-123-4567",
+    "address": "789 Maple Ave, Villagetown",
+    "gender": "Male",
+    "dob": "5-june-1990"
+}
 

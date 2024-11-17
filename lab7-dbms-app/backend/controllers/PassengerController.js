@@ -29,10 +29,7 @@ const {
     try {
       // Validate request body against the database schema requirements
       const passengerData = req.body;
-      if (!passengerData.PassengerID || !passengerData.Name || !passengerData.Contact) {
-        return res.status(400).json({ message: "PassengerID, Name, and Contact are required fields." });
-      }
-  
+      
       // Call model function to add new passenger to the database
       await newPassenger(passengerData);
       res.status(201).json({ message: "Passenger added successfully" });
@@ -50,10 +47,6 @@ const {
     try {
       const updatedData = req.body;
       
-      // Ensure the request includes the necessary PassengerID to locate the passenger record
-      if (!updatedData.PassengerID) {
-        return res.status(400).json({ message: "PassengerID is required to update a passenger record." });
-      }
   
       // Update the passenger details in the database
       const result = await updatePassengerByID(updatedData);

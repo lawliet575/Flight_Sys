@@ -18,7 +18,7 @@ async function newFlightClass(req, res) {
   }
 
   try {
-    const result = await addFlightClass({ ID, Class_Description, BaggageAllowed });
+    const result = await addFlightClass({  Class_Description, BaggageAllowed });
     res.status(201).json({ message: "Flight class added successfully", classId: result });
   } catch (error) {
     console.error("Error adding flight class:", error);
