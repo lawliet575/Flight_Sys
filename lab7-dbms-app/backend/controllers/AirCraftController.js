@@ -1,5 +1,4 @@
-const { createAircraft, listAllAircrafts, updateAircraft,/* ,deleteAircraft*/ }
- = require("../models/AircraftModel");
+const { createAircraft, listAllAircrafts, updateAircraft } = require("../models/AircraftModel");
 
 /**
  * Add a new aircraft
@@ -7,17 +6,16 @@ const { createAircraft, listAllAircrafts, updateAircraft,/* ,deleteAircraft*/ }
  * @param {Object} res - Response object
  */
 async function addAircraft(req, res) {
-  const { modelNo, capacity, airlineId } = req.body;
+  const { modelNo, capacity, airlineId } = req.body; // Extract details from the body
 
   try {
-    await createAircraft( modelNo, capacity, airlineId);
-    res.status(201).json({ message: "Aircraft added successfully" });
+    await createAircraft(modelNo, capacity, airlineId); // Call the model function to create the aircraft
+    res.status(201).json({ message: "Aircraft added successfully" }); // Success response
   } catch (err) {
     console.error("Error adding aircraft:", err);
-    res.status(500).json({ message: "Error adding aircraft", error: err.message });
+    res.status(500).json({ message: "Error adding aircraft", error: err.message }); // Error handling
   }
 }
-
 
 /**
  * Get all aircrafts
@@ -26,18 +24,12 @@ async function addAircraft(req, res) {
  */
 async function getAllAircrafts(req, res) {
   try {
-    const aircrafts = await listAllAircrafts();
-    res.json({ data: aircrafts });
+    const aircrafts = await listAllAircrafts(); // Call the model function to list all aircrafts
+    res.json({ data: aircrafts }); // Return all aircrafts in the response
   } catch (err) {
-    res.status(500).json({ message: "Error fetching aircrafts", error: err.message });
+    res.status(500).json({ message: "Error fetching aircrafts", error: err.message }); // Error handling
   }
 }
-
-/**
- * Get aircraft by ID
- * @param {Object} req - Request object
- * @param {Object} res - Response object
- */
 
 /**
  * Update aircraft details
@@ -45,28 +37,22 @@ async function getAllAircrafts(req, res) {
  * @param {Object} res - Response object
  */
 async function updateAircraftDetails(req, res) {
-  const { id, modelNo, capacity, airlineId } = req.body;
-
-  if (!id) {
-    return res.status(400).json({ message: "Aircraft ID is required" });
-  }
-
   try {
-    // Call model function to update aircraft with only provided fields
-    const result = await updateAircraft(id, { modelNo, capacity, airlineId });
-    if (result > 0) {
+    const updatedData = req.body;
+    
+
+    // Update the passenger details in the database
+    const result = await updateAircraft(updatedData);
+
+    if (result.rowsAffected > 0) {
       res.json({ message: "Aircraft updated successfully" });
     } else {
       res.status(404).json({ message: "Aircraft not found" });
     }
   } catch (err) {
-    console.error("Error updating aircraft:", err);
-    res.status(500).json({ message: "Error updating aircraft", error: err.message });
+    res.status(500).json({ message: "Error updating Aircraft", error: err });
   }
 }
-
-
-
 
 module.exports = {
   addAircraft,

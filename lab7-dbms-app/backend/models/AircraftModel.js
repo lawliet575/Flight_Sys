@@ -1,6 +1,6 @@
 const oracledb = require("oracledb");
 
-// Create the Aircraft model
+// Create a new aircraft
 async function createAircraft(modelno, a_capacity, airlineID) {
   const query = `INSERT INTO AIRCRAFTS (MODELNO, A_CAPACITY, AIRLINE_ID) 
                  VALUES (:modelno, :a_capacity, :airlineID)`;
@@ -8,7 +8,7 @@ async function createAircraft(modelno, a_capacity, airlineID) {
   const binds = {
     modelno,
     a_capacity,
-    airlineID
+    airlineID,
   };
 
   let connection;
@@ -25,8 +25,6 @@ async function createAircraft(modelno, a_capacity, airlineID) {
   }
 }
 
-
-
 // Get all aircrafts
 async function listAllAircrafts() {
   const query = "SELECT * FROM AIRCRAFTS";
@@ -36,53 +34,8 @@ async function listAllAircrafts() {
     connection = await oracledb.getConnection();
     const result = await connection.execute(query);
     return result.rows; // Returns array of rows (aircrafts)
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
-}
-
-
-
-// Update aircraft details
-async function updateAircraft(aircraftID, data) {
-  let query = `UPDATE AIRCRAFTS SET `;
-  const binds = { aircraftID };
-  const updates = [];
-
-  // Build query parts for provided fields only
-  if (data.modelno !== undefined) {
-    updates.push(`MODELNO = :modelno`);
-    binds.modelno = data.modelno;
-  }
-  if (data.a_capacity !== undefined) {
-    updates.push(`A_CAPACITY = :a_capacity`);
-    binds.a_capacity = data.a_capacity;
-  }
-  if (data.airlineID !== undefined) {
-    updates.push(`AIRLINE_ID = :airlineID`);
-    binds.airlineID = data.airlineID;
-  }
-
-  // If no fields provided, return early
-  if (updates.length === 0) {
-    throw new Error("No fields provided for update");
-  }
-
-  // Join the update fields and finalize the query
-  query += updates.join(", ") + ` WHERE AIRCRAFT_ID = :aircraftID`;
-
-  console.log("Query:", query);  // Optional: Log the query to check for correctness
-  console.log("Binds:", binds);  // Optional: Log the bind parameters
-
-  let connection;
-  try {
-    connection = await oracledb.getConnection();
-    const result = await connection.execute(query, binds, { autoCommit: true });
-    return result.rowsAffected; // Returns the number of affected rows
   } catch (error) {
-    console.error("Error updating aircraft:", error);
+    console.error("Error fetching aircrafts:", error);
     throw error;
   } finally {
     if (connection) {
@@ -91,11 +44,58 @@ async function updateAircraft(aircraftID, data) {
   }
 }
 
+// Update aircraft details dynamically
+async function updateAircraft(updatedData) {
+  let conn;
+  try {
+    conn = await oracledb.getConnection();
 
+    // Prepare fields and values based on updatedData
+    let fieldsToUpdate = [];
+    let values = { AIRCRAFT_ID: updatedData.id }; // Assume `id` is always provided for identifying the row
+
+    // Dynamically add fields based on provided data
+    if (updatedData.modelNo !== undefined) {
+      fieldsToUpdate.push("MODELNO = :MODELNO");
+      values.MODELNO = updatedData.modelNo;
+    }
+    if (updatedData.capacity !== undefined) {
+      fieldsToUpdate.push("A_CAPACITY = :A_CAPACITY");
+      values.A_CAPACITY = updatedData.capacity;
+    }
+    if (updatedData.airlineId !== undefined) {
+      fieldsToUpdate.push("AIRLINE_ID = :AIRLINE_ID");
+      values.AIRLINE_ID = updatedData.airlineId;
+    }
+
+    // Check if there are fields to update
+    if (fieldsToUpdate.length === 0) {
+      throw new Error("No fields provided to update");
+    }
+
+    // Construct the final SQL statement
+    const sql = `UPDATE AIRCRAFTS SET ${fieldsToUpdate.join(", ")} WHERE AIRCRAFT_ID = :AIRCRAFT_ID`;
+
+    console.log("Executing SQL:", sql);
+    console.log("Values:", values);
+
+    // Execute the query
+    const result = await conn.execute(sql, values, { autoCommit: true });
+    console.log(`${result.rowsAffected} row(s) updated successfully`);
+    return result;
+  } catch (err) {
+    console.error("Update Error:", err);
+    throw err;
+  } finally {
+    if (conn) {
+      await conn.close();
+    }
+  }
+}
 
 
 module.exports = {
   createAircraft,
   listAllAircrafts,
-  updateAircraft
+  updateAircraft,
 };

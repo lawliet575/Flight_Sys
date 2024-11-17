@@ -20,41 +20,34 @@ async function getAllBookings(req, res) {
 
 // Add a new booking
 async function addBooking(req, res) {
-  const { PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = req.body;
-
-  if ( !PassengerID || !FlightID || !ClassID || !BookingDate || !SeatNo || !TotalPrice) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
   try {
-    const result = await newBooking({  PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice });
-    res.status(201).json({ message: "Booking added successfully", bookingId: result });
+    await newBooking(req.body); // Pass the entire request body to the newBooking function
+    res.status(201).json({ message: "Booking added successfully" });
   } catch (err) {
     console.error("Error adding booking:", err);
-    res.status(500).json({ message: "Error adding booking", error: err.message });
+    res.status(500).json({ message: "Error adding booking", error: err });
   }
 }
 
 // Update an existing booking by ID
 async function updateBooking(req, res) {
-  const { BookingID, PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice } = req.body;
-
-  if (!BookingID) {
-    return res.status(400).json({ message: "Booking ID is required" });
-  }
-
   try {
-    const result = await updateBookingByID(BookingID, { PassengerID, FlightID, ClassID, BookingDate, SeatNo, TotalPrice });
-    if (result > 0) {
+    const updatedData = req.body;
+    console.log(updatedData);
+
+    const result = await updateBookingByID(updatedData);
+
+    if (result.rowsAffected > 0) {
       res.json({ message: "Booking updated successfully" });
     } else {
       res.status(404).json({ message: "Booking not found" });
     }
   } catch (err) {
     console.error("Error updating booking:", err);
-    res.status(500).json({ message: "Error updating booking", error: err.message });
+    res.status(500).json({ message: "Error updating booking", error: err });
   }
 }
+
 
 // Delete a booking by ID
 async function deleteBooking(req, res) {

@@ -1,4 +1,4 @@
-const { createAirline, listAllAirlines, findAirlineById, updateAirline /*,deleteAirline*/ } = require("../models/AirlineModel");
+const { createAirline, listAllAirlines, findAirlineById, updateAirline } = require("../models/AirlineModel");
 
 /**
  * Add a new airline
@@ -59,8 +59,14 @@ async function updateAirlineDetails(req, res) {
   const { id } = req.params;
   const { airlineName, foundingDate, scope } = req.body;
 
+  // Prepare the data object dynamically for update
+  const updateData = {};
+  if (airlineName !== undefined) updateData.AIRLINE_NAME = airlineName;
+  if (foundingDate !== undefined) updateData.FOUNDING_DATE = foundingDate;
+  if (scope !== undefined) updateData.A_SCOPE = scope;
+
   try {
-    const result = await updateAirline(id, airlineName, foundingDate, scope);
+    const result = await updateAirline(id, updateData); // Passing the update data object
     if (result > 0) {
       res.json({ message: "Airline updated successfully" });
     } else {
@@ -71,30 +77,11 @@ async function updateAirlineDetails(req, res) {
   }
 }
 
-/**
- * Delete airline by ID
- * @param {Object} req - Request object
- * @param {Object} res - Response object
- */
-async function deleteAirline(req, res) {
-  const { id } = req.params;
-
-  try {
-    const result = await deleteAirline(id);
-    if (result > 0) {
-      res.json({ message: "Airline deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Airline not found" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: "Error deleting airline", error: err.message });
-  }
-}
 
 module.exports = {
   addAirline,
   getAllAirlines,
   getAirlineById,
-  updateAirlineDetails,
-  deleteAirline
+  updateAirlineDetails
+
 };

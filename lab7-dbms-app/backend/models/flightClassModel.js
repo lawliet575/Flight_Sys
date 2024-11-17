@@ -20,28 +20,31 @@ async function getAllFlightClasses() {
 }
 
 async function addFlightClass(data) {
-  const { Class_Description, BaggageAllowed } = data;
-  const query = `INSERT INTO flight_class (Class_Description, BaggageAllowed) VALUES ( :Class_Description, :BaggageAllowed)`;
-
-  const binds = {
-    Class_Description,
-    BaggageAllowed,
-  };
-
-  let connection;
+  let conn;
   try {
-    connection = await oracledb.getConnection();
-    await connection.execute(query, binds, { autoCommit: true });
-    return ID; // Return the ID as confirmation of the added flight class
-  } catch (error) {
-    console.error("Error adding flight class:", error);
-    throw error;
+    conn = await oracledb.getConnection();
+    console.log(data);
+
+    await conn.execute(
+      `INSERT INTO FLIGHT_CLASS (CLASS_DESCRIPTION, BAGGAGE_ALLOWED) 
+      VALUES (:CLASS_DESCRIPTION, :BAGGAGE_ALLOWED)`,
+      { 
+        CLASS_DESCRIPTION: data.Class_Description,
+        BAGGAGE_ALLOWED: data.BaggageAllowed
+      },
+      { autoCommit: true }
+    );
+    console.log('Flight class added successfully');
+  } catch (err) {
+    console.error('Error adding flight class:', err);
+    throw err;
   } finally {
-    if (connection) {
-      await connection.close();
+    if (conn) {
+      await conn.close();
     }
   }
 }
+
 
 module.exports = {
   getAllFlightClasses,

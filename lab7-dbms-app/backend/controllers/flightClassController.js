@@ -11,14 +11,8 @@ async function listAllFlightClasses(req, res) {
 }
 
 async function newFlightClass(req, res) {
-  const { Class_Description, BaggageAllowed } = req.body;
-
-  if ( !Class_Description || !BaggageAllowed) {
-    return res.status(400).json({ message: "Class description, and baggage allowance are required" });
-  }
-
   try {
-    const result = await addFlightClass({  Class_Description, BaggageAllowed });
+    const result = await addFlightClass(req.body);
     res.status(201).json({ message: "Flight class added successfully", classId: result });
   } catch (error) {
     console.error("Error adding flight class:", error);
