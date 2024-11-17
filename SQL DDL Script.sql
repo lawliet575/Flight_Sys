@@ -284,5 +284,6 @@ VALUES ('PS3', 'F4', 'C3', TO_DATE('2024-11-17', 'YYYY-MM-DD'), 'C10', 450.00);
 SELECT * FROM BOOKINGS;
 
 desc bookings;
+desc flights;
 
 
