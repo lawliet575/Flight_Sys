@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import './Passengers.css'; // Assuming the CSS is saved in a file named Passengers.css
 
 const Passengers = () => {
   const [passengers, setPassengers] = useState([]);
-  const [loading, setLoading] = useState(true); // To show loading indicator
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('http://localhost:3001/api/passengers/', {
@@ -12,11 +13,11 @@ const Passengers = () => {
       },
     })
       .then((response) => {
-        console.log('Response status:', response.status);  // Log response status
+        console.log('Response status:', response.status);
         return response.json();
       })
       .then((data) => {
-        console.log('Data received:', data);  // Log the data received
+        console.log('Data received:', data);
         if (data && data.data) {
           const formattedPassengers = data.data.map((passenger) => ({
             PassengerID: passenger[0],
@@ -28,6 +29,8 @@ const Passengers = () => {
             Address: passenger[6],
             Gender: passenger[7],
             DateOfBirth: passenger[8],
+            LoginID: passenger[9],
+            LoginPW: passenger[10],
           }));
           setPassengers(formattedPassengers);
         } else {
@@ -37,12 +40,12 @@ const Passengers = () => {
       })
       .catch((error) => {
         console.error('Error fetching passengers:', error);
-        setLoading(false); // Stop loading if error occurs
+        setLoading(false);
       });
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;  // Show loading message while data is being fetched
+    return <div>Loading...</div>;
   }
 
   return (
@@ -64,6 +67,8 @@ const Passengers = () => {
                 <th>Address</th>
                 <th>Gender</th>
                 <th>Date of Birth</th>
+                <th>Login ID</th>
+                <th>Login Password</th>
               </tr>
             </thead>
             <tbody>
@@ -78,6 +83,8 @@ const Passengers = () => {
                   <td>{passenger.Address}</td>
                   <td>{passenger.Gender}</td>
                   <td>{new Date(passenger.DateOfBirth).toLocaleDateString()}</td>
+                  <td>{passenger.LoginID}</td>
+                  <td>{passenger.LoginPW}</td>
                 </tr>
               ))}
             </tbody>

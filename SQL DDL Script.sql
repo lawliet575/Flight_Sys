@@ -69,8 +69,9 @@ CREATE TABLE PASSENGERS(
     CONTACT_NO VARCHAR(255),
     ADDRESS VARCHAR(255),
     GENDER VARCHAR(1) CHECK (GENDER='M' OR GENDER='F'),
-    DATE_OF_BIRTH DATE
-    -- HealthConcerns CHAR(1)
+    DATE_OF_BIRTH DATE,
+    LOGIN_ID varchar2(255),
+    LOGIN_PW varchar2(255)
 );
 
 CREATE TABLE FLIGHT_CLASS (
@@ -197,14 +198,6 @@ BEGIN
     :NEW.BOOKING_ID := 'B' || BOOKING_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE BOOKING_ID WITH PREFIX 'B'
 END;
 
--- TRIGGER FOR SYS_USER
---CREATE OR REPLACE TRIGGER SYS_USER_BEFORE_INSERT
---BEFORE INSERT ON SYS_USER
---FOR EACH ROW
---BEGIN
---    :NEW.U_ID := 'U' || SYS_USER_SEQ.NEXTVAL; -- USE SEQUENCE TO GENERATE THE U_ID WITH PREFIX 'U'
---END;
-
 
 --AIRPORTS
 INSERT INTO AIRPORTS (AIRPORT_NAME, CITY)
@@ -261,14 +254,14 @@ select * from flights;
 commit;
 
 --PASSENGERS
-INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH)
-VALUES (12345678, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', '123 Main St, Cityville', 'M', TO_DATE('1990-01-15', 'YYYY-MM-DD'));
+INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH,login_id,login_pw)
+VALUES (12345678, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', '123 Main St, Cityville', 'M', TO_DATE('1990-01-15', 'YYYY-MM-DD'),'user1','pw1');
 
-INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH)
-VALUES (87654321, 'Jane', 'Smith', 'jane.smith@example.com', '098-765-4321', '456 Elm St, Townville', 'F', TO_DATE('1985-03-22', 'YYYY-MM-DD'));
+INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH,login_id,login_pw)
+VALUES (87654321, 'Jane', 'Smith', 'jane.smith@example.com', '098-765-4321', '456 Elm St, Townville', 'F', TO_DATE('1985-03-22', 'YYYY-MM-DD'),'user2','pw2');
 
-INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH)
-VALUES (11223344, 'Alex', 'Johnson', 'alex.johnson@example.com', '555-123-4567', '789 Maple Ave, Villagetown', 'F', TO_DATE('1995-08-30', 'YYYY-MM-DD'));
+INSERT INTO PASSENGERS (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH,login_id,login_pw)
+VALUES (11223344, 'Alex', 'Johnson', 'alex.johnson@example.com', '555-123-4567', '789 Maple Ave, Villagetown', 'F', TO_DATE('1995-08-30', 'YYYY-MM-DD'),'user3','pw3');
 select * from passengers;
 
 --CLASSES
@@ -311,15 +304,16 @@ commit;
 }
 
 {
-    "id": 4,
-    "passportId": 213214351,
-    "firstName": "Lionel",
-    "lastName": "Messi",
-    "email": "messi@gmail.com",
-    "contact": "555-123-4567",
-    "address": "789 Maple Ave, Villagetown",
-    "gender": "Male",
-    "dob": "5-june-1990"
+    "passportid": 123456789,
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "contact": "9876543210",
+    "address": "123 Elm Street, Springfield",
+    "gender": "M",
+    "dob": "1990-01-15",
+    "loginid": "johndoe90",
+    "loginpw": "securepassword123"
 }
 
 booking sample
