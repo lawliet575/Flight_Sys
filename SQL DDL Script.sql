@@ -322,3 +322,13 @@ commit;
     "dob": "5-june-1990"
 }
 
+booking sample
+{
+    "PassengerID": "PS1",
+    "FlightID": "F2",
+    "ClassID": "C1",
+    "BookingDate": "18-dec-2024",
+    "SeatNo": "A34",
+    "TotalPrice": 999
+}
+
