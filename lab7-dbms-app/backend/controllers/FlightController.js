@@ -1,12 +1,13 @@
 const {
     listAllFlights,
+    getFlightByIdFromDB,
     newFlight,
     updateFlightByID,
+    deleteFlightByIdFromDB,
     filterByDate,
     filterByArrDep,
     filterByDateArrDep
   } = require("../models/FlightModel");
-  const db = require("../config/db");
   
   /**
    * Get all flights
@@ -27,6 +28,39 @@ const {
     }
   }
 
+  async function getFlightById(req, res) {
+    const { id } = req.params; // Get the flight ID from the URL parameters
+  
+    try {
+      const flight = await getFlightByIdFromDB(id); // Fetch the flight by ID from the model
+  
+      if (flight) {
+        res.json({ data: flight });
+      } else {
+        res.status(404).json({ message: "Flight not found" });
+      }
+    } catch (err) {
+      res.status(500).json({ message: "Error fetching flight details", error: err.message });
+    }
+  }
+
+  async function deleteFlightById(req, res) {
+    const { id } = req.params; // Get the flight ID from the URL parameters
+  
+    try {
+      const result = await deleteFlightByIdFromDB(id); // Delete the flight by ID from the model
+  
+      if (result) {
+        res.json({ message: "Flight deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Flight not found" });
+      }
+    } catch (err) {
+      res.status(500).json({ message: "Error deleting flight", error: err.message });
+    }
+  }
+
+
   /**
  * Add a new flight
  * @param req - Request object
@@ -42,19 +76,22 @@ async function addFlight(req, res) {
   }
 
   async function updateFlight(req, res) {
+    const flightId = req.params.id;  // Get the flight ID from the URL
+    const updatedData = req.body;    // Get the updated flight data from the request body
+  
     try {
-      const updatedData = req.body;
-      console.log(updatedData);
+      // Pass both the flightId and updatedData separately to the model function
+      const result = await updateFlightByID(flightId, updatedData);
   
-      const result = await updateFlightByID(updatedData);
-  
+      // Check if the flight was updated
       if (result.rowsAffected > 0) {
         res.json({ message: "Flight updated successfully" });
       } else {
         res.status(404).json({ message: "Flight not found" });
       }
     } catch (err) {
-      res.status(500).json({ message: "Error updating flight sad", error: err });
+      console.error('Error updating flight:', err);
+      res.status(500).json({ message: "Error updating flight", error: err.message });
     }
   }
  
@@ -76,19 +113,19 @@ async function filterByDateController(req, res) {
 }
 
 // Controller to filter flights by departure and arrival airports
-// async function filterByArrDepController(req, res) {
-//   const { dep_airport_id, arr_airport_id } = req.params;
+async function filterByArrDepController(req, res) {
+  const { dep_airport_id, arr_airport_id } = req.params;
 
-//   try {
-//     const flights = await filterByArrDep(dep_airport_id, arr_airport_id);
-//     res.status(200).json(flights);
-//   } catch (err) {
-//     res.status(500).json({
-//       message: "Error fetching flights by airports",
-//       error: err.message || err
-//     });
-//   }
-// }
+  try {
+    const flights = await filterByArrDep(dep_airport_id, arr_airport_id);
+    res.status(200).json(flights);
+  } catch (err) {
+    res.status(500).json({
+      message: "Error fetching flights by airports",
+      error: err.message || err
+    });
+  }
+}
 
 async function filterByArrDepController(req, res) {
   const { dep_airport_name, arr_airport_name } = req.params;
@@ -123,13 +160,17 @@ async function filterByDateArrDepController(req, res) {
 
 
 
+
+
   module.exports = {
     getAllFlights,
+    getFlightById,
     addFlight,
     updateFlight,
     filterByDateController,
     filterByArrDepController,
-    filterByDateArrDepController
+    filterByDateArrDepController,
+    deleteFlightById
   };
 
   

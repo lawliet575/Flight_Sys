@@ -17,6 +17,49 @@ async function listAllFlights() {
   }
 }
 
+async function getFlightByIdFromDB(id) {
+  const query = `SELECT * FROM FLIGHTS WHERE FLIGHT_ID = :id`; // Query to select a specific flight by ID
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(); // Get a connection from the pool
+    const result = await connection.execute(query, [id]); // Execute query with bind variable :id
+
+    if (result.rows.length === 0) {
+      return null; // No flight found, return null
+    }
+
+    return result.rows[0]; // Return the first matching flight
+  } catch (err) {
+    console.error('Error fetching flight:', err);
+    throw err; // Throw error to be caught in the controller
+  } finally {
+    if (connection) {
+      await connection.close(); // Always close the connection
+    }
+  }
+}
+
+
+async function deleteFlightByIdFromDB(id) {
+  const query = `DELETE FROM FLIGHTS WHERE FLIGHT_ID = :id`; // Query to delete a flight by ID
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(); // Get a connection from the pool
+    const result = await connection.execute(query, [id], { autoCommit: true }); // Execute query with bind variable and commit
+
+    return result.rowsAffected > 0; // Return true if at least one row was deleted
+  } catch (err) {
+    console.error('Error deleting flight:', err);
+    throw err; // Throw error to be caught in the controller
+  } finally {
+    if (connection) {
+      await connection.close(); // Always close the connection
+    }
+  }
+}
+
 async function newFlight(flightData) {
   let conn;
   try {
@@ -49,15 +92,15 @@ async function newFlight(flightData) {
 
 
 
-async function updateFlightByID(updatedData) {
+async function updateFlightByID(flightId, updatedData) {
   let conn;
   try {
     conn = await oracledb.getConnection();
-  
+
     // Prepare fields and values based on updatedData
     let fieldsToUpdate = [];
-    let values = { FlightID: updatedData.id };  // Assume `id` is always provided for identifying the row
-  
+    let values = { FlightID: flightId };  // Use flightId directly
+
     // Dynamically add fields based on provided data
     if (updatedData.dep_airport_id !== undefined) {
       fieldsToUpdate.push("DEP_AIRPORT_ID = :dep_airport_id");
@@ -87,21 +130,21 @@ async function updateFlightByID(updatedData) {
       fieldsToUpdate.push("AIRCRAFT_ID = :aircraft_id");
       values.aircraft_id = updatedData.aircraft_id;
     }
-  
+
     // Check if there are fields to update
     if (fieldsToUpdate.length === 0) {
       throw new Error("No fields provided to update");
     }
-  
+
     // Construct the final SQL statement
     const sql = `UPDATE FLIGHTS SET ${fieldsToUpdate.join(", ")} WHERE FLIGHT_ID = :FlightID`;
-  
+
     console.log("Executing SQL:", sql);
     console.log("Values:", values);
-  
+
     // Execute the query
     const result = await conn.execute(sql, values, { autoCommit: true });
-    return result;
+    return result;  // Returns the result of the update operation
   } catch (err) {
     console.error("Update Error:", err);
     throw err;
@@ -135,27 +178,27 @@ async function filterByDate(dep_date) {
 }
 
 
-// async function filterByArrDep(depAirportId, arrAirportId) {
-//   let connection;
-//   try {
-//     connection = await oracledb.getConnection();
+async function filterByArrDep(depAirportId, arrAirportId) {
+  let connection;
+  try {
+    connection = await oracledb.getConnection();
 
-//     const query = `
-//       SELECT * FROM FLIGHTS 
-//       WHERE DEP_AIRPORT_ID = :depAirportId AND ARR_AIRPORT_ID = :arrAirportId
-//     `;
-//     const result = await connection.execute(query, { depAirportId, arrAirportId });
+    const query = `
+      SELECT * FROM FLIGHTS 
+      WHERE DEP_AIRPORT_ID = :depAirportId AND ARR_AIRPORT_ID = :arrAirportId
+    `;
+    const result = await connection.execute(query, { depAirportId, arrAirportId });
     
-//     return result.rows;
-//   } catch (error) {
-//     console.error("Error fetching flights by airports:", error);
-//     throw error;
-//   } finally {
-//     if (connection) {
-//       await connection.close();
-//     }
-//   }
-// }
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching flights by airports:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
 
 async function filterByArrDep(depAirportName, arrAirportName) {
   let connection;
@@ -220,14 +263,14 @@ async function filterByDateArrDep(depDate, depAirportName, arrAirportName) {
 }
 
 
-   
-
 module.exports = {
     listAllFlights,
+    getFlightByIdFromDB,
     newFlight,
     updateFlightByID ,
     filterByDate,
     filterByArrDep,
-    filterByDateArrDep
+    filterByDateArrDep,
+    deleteFlightByIdFromDB
   };
   

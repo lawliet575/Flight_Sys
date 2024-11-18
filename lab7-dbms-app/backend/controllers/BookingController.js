@@ -4,7 +4,8 @@ const {
   listAllBookings,
   newBooking,
   updateBookingByID,
-  deleteBookingByID
+  deleteBookingByID,
+  getBookingByIdFromDB
 } = require('../models/BookingModels');
 
 // Get all bookings
@@ -17,6 +18,23 @@ async function getAllBookings(req, res) {
     res.status(500).json({ message: "Error fetching bookings", error: err.message });
   }
 }
+
+async function getBookingById(req, res) {
+  const { id } = req.params; // Get the booking ID from the URL parameters
+
+  try {
+    const booking = await getBookingByIdFromDB(id); // Fetch the booking by ID from the model
+
+    if (booking) {
+      res.json({ data: booking });
+    } else {
+      res.status(404).json({ message: "Booking not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching booking details", error: err.message });
+  }
+}
+
 
 // Add a new booking
 async function addBooking(req, res) {
@@ -32,10 +50,14 @@ async function addBooking(req, res) {
 // Update an existing booking by ID
 async function updateBooking(req, res) {
   try {
-    const updatedData = req.body;
-    console.log(updatedData);
+    const BookingID = req.params.id;  // Get the booking ID from the URL
+    const updatedData = req.body;     // Get the updated data from the request body
 
-    const result = await updateBookingByID(updatedData);
+    console.log("Booking ID:", BookingID);
+    console.log("Updated Data:", updatedData);
+
+    // Pass BookingID and updated data to the model
+    const result = await updateBookingByID(BookingID, updatedData);
 
     if (result.rowsAffected > 0) {
       res.json({ message: "Booking updated successfully" });
@@ -44,21 +66,20 @@ async function updateBooking(req, res) {
     }
   } catch (err) {
     console.error("Error updating booking:", err);
-    res.status(500).json({ message: "Error updating booking", error: err });
+    res.status(500).json({ message: "Error updating booking", error: err.message });
   }
 }
 
 
+
+
 // Delete a booking by ID
 async function deleteBooking(req, res) {
-  const { BookingID } = req.body;
-
-  if (!BookingID) {
-    return res.status(400).json({ message: "Booking ID is required" });
-  }
+  const { id } = req.params; // Get the booking ID from the URL parameters
 
   try {
-    const result = await deleteBookingByID(BookingID);
+    const result = await deleteBookingByID(id); // Call the model function to delete the booking by ID
+
     if (result > 0) {
       res.json({ message: "Booking deleted successfully" });
     } else {
@@ -70,8 +91,10 @@ async function deleteBooking(req, res) {
   }
 }
 
+
 module.exports = {
   getAllBookings,
+  getBookingById,
   addBooking,
   updateBooking,
   deleteBooking

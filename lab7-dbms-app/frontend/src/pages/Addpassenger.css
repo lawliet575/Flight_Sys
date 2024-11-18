@@ -1,0 +1,67 @@
+/* Container for the Add Passenger page */
+.add-passenger-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-passenger-heading {
+    text-align: center;
+    font-size: 30px;
+    color: #2a9df4;
+    margin-bottom: 20px;
+  }
+  
+  .add-passenger-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-passenger-form label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .add-passenger-form input,
+  .add-passenger-form select {
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .add-passenger-form input:focus,
+  .add-passenger-form select:focus {
+    border-color: #2a9df4;
+    outline: none;
+  }
+  
+  .submit-button {
+    padding: 15px;
+    background-color: #2a9df4;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #2385c5;
+  }
+  
+  /* For small screens */
+  @media (max-width: 768px) {
+    .add-passenger-container {
+      width: 90%;
+    }
+  }
+  
