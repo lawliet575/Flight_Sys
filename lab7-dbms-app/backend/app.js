@@ -6,6 +6,7 @@ const aircraftRoutes = require("./routes/AircraftRoutes");
 const bookingRoutes = require("./routes/BookingRoutes");
 const flight_classRoutes = require("./routes/FlightClassRoutes");  
 const admin_routes = require("./routes/AdminRoutes");  
+const airportRoutes = require("./routes/AirportRoutes");
 
 
 const db = require("./config/db");
@@ -30,6 +31,7 @@ app.use("/api", airlineRoutes);
 app.use("/api", aircraftRoutes);
 app.use("/api", flight_classRoutes);
 app.use("/api", admin_routes);
+app.use("/api", airportRoutes);
 
 
 // Catch-all route to verify that the app is running
