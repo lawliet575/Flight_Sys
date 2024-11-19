@@ -74,6 +74,8 @@ CREATE TABLE PASSENGERS(
     LOGIN_PW varchar2(255)
 );
 
+
+
 CREATE TABLE FLIGHT_CLASS (
     CLASS_ID VARCHAR(10) PRIMARY KEY,
     CLASS_DESCRIPTION VARCHAR(255) NOT NULL,
@@ -304,7 +306,7 @@ commit;
 }
 
 {
-    "passportid": 123456789,
+    "passportId": 123456789,
     "firstName": "John",
     "lastName": "Doe",
     "email": "john.doe@example.com",

@@ -7,10 +7,15 @@ import AddBooking from "./pages/Bookingpage/AddBooking";
 import EditBooking from "./pages/Bookingpage/EditBooking";
 import Passengers from "./pages/Passengerpage/Passengers";
 import AddPassenger from "./pages/Passengerpage/AddPassenger";
+import EditPassenger from "./pages/Passengerpage/EditPassenger";
 import Airlines from "./pages/Airlinepage/Airlines"; // New page for airlines
 import FlightClasses from "./pages/Flightclasspage/FlightClasses";
 import Login from "./pages/Loginpage/Login";
 import Admin_Home from "./pages/Homepage/Admin_Home";
+
+//will create a home page a general one for /
+//waha se admin login and admin home pe jayega
+//the 
 
 
 //import './App.css';
@@ -31,9 +36,10 @@ function App() {
           <Route path="/addbooking" element={<AddBooking />} />
           <Route path="/editbooking/:id" element={<EditBooking />} />
           <Route path="/passengers" element={<Passengers />} />
+          <Route path="/addpassenger" element={<AddPassenger />} />
+          <Route path="/editpassenger/:id" element={<EditPassenger />} />
           <Route path="/airlines" element={<Airlines />} />
           <Route path="/flightclass" element={<FlightClasses />} />
-          <Route path="/addpassenger" element={<AddPassenger />} />
 
         </Routes>
       </BrowserRouter>

@@ -48,7 +48,7 @@ async function newPassenger(passengerData) {
         VALUES 
         (:PASSPORT_ID, :FIRSTNAME, :LASTNAME, :EMAIL, :CONTACT_NO, :ADDRESS, :GENDER, :DATE_OF_BIRTH, :LOGIN_ID, :LOGIN_PW)`,
       {
-        PASSPORT_ID: passengerData.passportid,
+        PASSPORT_ID: passengerData.passportId,
         FIRSTNAME: passengerData.firstName,
         LASTNAME: passengerData.lastName,
         EMAIL: passengerData.email,
@@ -72,7 +72,7 @@ async function newPassenger(passengerData) {
 }
 
 
-async function updatePassengerByID(passengerid,updatedData) {
+async function updatePassengerByID(passengerid, updatedData) {
   let conn;
   try {
     conn = await oracledb.getConnection();
@@ -84,31 +84,31 @@ async function updatePassengerByID(passengerid,updatedData) {
     // Dynamically add fields based on provided data
     if (updatedData.passportId !== undefined) {
       fieldsToUpdate.push("PASSPORT_ID = :PASSPORT_ID");
-      values.PASSPORT_ID = updatedData.passportid;
+      values.PASSPORT_ID = updatedData.passportId;  // Updated to match the database field name
     }
     if (updatedData.firstName !== undefined) {
       fieldsToUpdate.push("FIRSTNAME = :FIRSTNAME");
-      values.FIRSTNAME = updatedData.firstName;
+      values.FIRSTNAME = updatedData.firstName;  // Updated to match the database field name
     }
     if (updatedData.lastName !== undefined) {
       fieldsToUpdate.push("LASTNAME = :LASTNAME");
-      values.LASTNAME = updatedData.lastName;
+      values.LASTNAME = updatedData.lastName;  // Updated to match the database field name
     }
     if (updatedData.email !== undefined) {
       fieldsToUpdate.push("EMAIL = :EMAIL");
-      values.EMAIL = updatedData.email;
+      values.EMAIL = updatedData.email;  // Updated to match the database field name
     }
     if (updatedData.contact !== undefined) {
       fieldsToUpdate.push("CONTACT_NO = :CONTACT_NO");
-      values.CONTACT_NO = updatedData.contact;
+      values.CONTACT_NO = updatedData.contact;  // Updated to match the database field name
     }
     if (updatedData.address !== undefined) {
       fieldsToUpdate.push("ADDRESS = :ADDRESS");
-      values.ADDRESS = updatedData.address;
+      values.ADDRESS = updatedData.address;  // Updated to match the database field name
     }
     if (updatedData.gender !== undefined) {
       fieldsToUpdate.push("GENDER = :GENDER");
-      values.GENDER = updatedData.gender;
+      values.GENDER = updatedData.gender;  // Updated to match the database field name
     }
     if (updatedData.dob !== undefined) {
       fieldsToUpdate.push("DATE_OF_BIRTH = :DATE_OF_BIRTH");
@@ -117,12 +117,12 @@ async function updatePassengerByID(passengerid,updatedData) {
 
     if (updatedData.loginid !== undefined) {
       fieldsToUpdate.push("LOGIN_ID = :LOGIN_ID");
-      values.LOGIN_ID = updatedData.loginid; 
+      values.LOGIN_ID = updatedData.loginid;  // Updated to match the database field name
     }
 
     if (updatedData.loginpw !== undefined) {
       fieldsToUpdate.push("LOGIN_PW = :LOGIN_PW");
-      values.LOGIN_PW =updatedData.loginpw; 
+      values.LOGIN_PW = updatedData.loginpw;  // Updated to match the database field name
     }
 
     // Check if there are fields to update

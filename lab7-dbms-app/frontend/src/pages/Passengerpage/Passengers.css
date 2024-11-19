@@ -1,29 +1,75 @@
+/* Position the Return to Home button at the top-left corner */
+.return-home-btn-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10; /* Ensures it stays on top of other elements */
+}
+
+.return-home-btn {
+  background-color: #2980b9;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.return-home-btn:hover {
+  background-color: #1d6f98;
+}
+
+/* Table styling */
 table {
-    width: 80%; /* Adjust width to leave space on the right */
-    margin-left: 0; /* Align table to the left */
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .passenger-list {
-    display: flex;
-    justify-content: flex-start; /* Align content to the left */
-  }
-  
+  width: 80%;
+  margin-left: 0;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Passenger List */
+.passenger-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Edit Button styling */
+button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Delete Button styling */
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}

@@ -83,6 +83,7 @@ const Flights = () => {
             border: 'none',
             borderRadius: '5px',
             cursor: 'pointer',
+            marginRight: '10px', // Space between buttons
           }}
         >
           Return to Home Page
