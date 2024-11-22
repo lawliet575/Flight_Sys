@@ -327,4 +327,3 @@ booking sample
     "SeatNo": "A34",
     "TotalPrice": 999
 }
-

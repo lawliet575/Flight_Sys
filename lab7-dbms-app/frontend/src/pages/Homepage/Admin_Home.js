@@ -24,48 +24,61 @@ function Admin_Home() {
     navigate("/flightclass");
   };
 
+  const goToAirports = () => {
+    navigate("/airports");
+  };
+
+  const logout = () => {
+    // Redirect to login or home page
+    navigate("/");
+  };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
+      {/* Logout Button */}
+      <button
+        onClick={logout}
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          backgroundColor: "#f44336", // Red color
+          color: "white",
+          padding: "10px 20px",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        Logout
+      </button>
+
       <h1>Welcome to Admin Dashboard</h1>
       <p>Manage flights, bookings, passengers, and more!</p>
 
       <div style={{ marginTop: "30px" }}>
-        <button
-          onClick={goToFlights}
-          style={buttonStyle}
-        >
+        <button onClick={goToFlights} style={buttonStyle}>
           View Flights
         </button>
         <br />
-        <button
-          onClick={goToBookings}
-          style={buttonStyle}
-        >
+        <button onClick={goToBookings} style={buttonStyle}>
           View Bookings
         </button>
         <br />
-        <button
-          onClick={goToPassengers}
-          style={buttonStyle}
-        >
+        <button onClick={goToPassengers} style={buttonStyle}>
           View Passengers
         </button>
         <br />
-        <button
-          onClick={goToAirlines}
-          style={buttonStyle}
-        >
+        <button onClick={goToAirlines} style={buttonStyle}>
           View Airlines
         </button>
         <br />
-        <button
-          onClick={goToFlightClasses}
-          style={buttonStyle}
-        >
+        <button onClick={goToFlightClasses} style={buttonStyle}>
           View Flight Classes
         </button>
-        
+        <br />
+        <button onClick={goToAirports} style={buttonStyle}>
+          View Airports
+        </button>
       </div>
     </div>
   );

@@ -10,8 +10,16 @@ import AddPassenger from "./pages/Passengerpage/AddPassenger";
 import EditPassenger from "./pages/Passengerpage/EditPassenger";
 import Airlines from "./pages/Airlinepage/Airlines"; // New page for airlines
 import FlightClasses from "./pages/Flightclasspage/FlightClasses";
+import Airports from "./pages/Airportpage/Airports";
 import Login from "./pages/Loginpage/Login";
+import { PassengerProvider } from "./pages/Loginpage/PassengerContext";
+import Signup from "./pages/Loginpage/Signup";
 import Admin_Home from "./pages/Homepage/Admin_Home";
+import Home from "./pages/Homepage/Home";
+
+//for user
+import ViewFlight from "./pages/User_Booking_Pages/View_Flights";
+import UserBook from "./pages/User_Booking_Pages/UserBooking";
 
 //will create a home page a general one for /
 //waha se admin login and admin home pe jayega
@@ -25,10 +33,15 @@ import Admin_Home from "./pages/Homepage/Admin_Home";
 function App() {
   return (
     <div className="app">
+      
+      <PassengerProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login/>} />
+          <Route path="/home" element={<Home/>} />
+          <Route path="/signup" element={<Signup/>} />
           <Route path="/adminhome" element={<Admin_Home/>} />
+
           <Route path="/flights" element={<Flights />} />
           <Route path="/addflight" element={<AddFlight />} />
           <Route path="/editflight/:id" element={<EditFlight />} />
@@ -40,9 +53,17 @@ function App() {
           <Route path="/editpassenger/:id" element={<EditPassenger />} />
           <Route path="/airlines" element={<Airlines />} />
           <Route path="/flightclass" element={<FlightClasses />} />
+          <Route path="/airports" element={<Airports />} />
+
+          <Route path="/viewflights" element={<ViewFlight/>} />
+          <Route path="/userbooking/:id" element={<UserBook/>} />
+
+
 
         </Routes>
       </BrowserRouter>
+      </PassengerProvider>
+
     </div>
   );
 }

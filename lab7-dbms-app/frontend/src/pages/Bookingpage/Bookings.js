@@ -112,8 +112,8 @@ const Bookings = () => {
             <thead>
               <tr>
                 <th>Booking ID</th>
-                <th>Flight ID</th>
                 <th>Passenger ID</th>
+                <th>Flight ID</th>
                 <th>Flight Class ID</th>
                 <th>Booking Date</th>
                 <th>Seat</th>

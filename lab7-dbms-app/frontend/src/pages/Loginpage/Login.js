@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { PassengerContext } from "./PassengerContext";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -7,6 +8,9 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Access the PassengerContext
+  const { setPassengerId } = useContext(PassengerContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,22 +25,37 @@ function Login() {
     setLoading(true); // Show loading state
 
     try {
-      // Fetch admin credentials from the API
-      const response = await fetch("http://localhost:3001/api/admin");
-
-      if (!response.ok) {
+      // Fetch admin credentials
+      const adminResponse = await fetch("http://localhost:3001/api/admin");
+      if (!adminResponse.ok) {
         throw new Error("Failed to fetch admin data.");
       }
+      const adminData = await adminResponse.json();
+      const adminCredentials = adminData.data[0]; // Admin credentials array
 
-      const data = await response.json();
-      const adminCredentials = data.data[0]; // The first item in the array
-
-      // Check if entered username and password match the admin credentials
+      // Check if the entered credentials match the admin credentials
       if (adminCredentials[0] === username && adminCredentials[1] === password) {
-        // Redirect to the Flights page if the credentials match
-        navigate("/adminhome"); //navigate to home page of admin here 
+        navigate("/adminhome"); // Redirect to admin home page
+        return;
+      }
+
+      // Fetch passenger credentials
+      const passengerResponse = await fetch("http://localhost:3001/api/passengers");
+      if (!passengerResponse.ok) {
+        throw new Error("Failed to fetch passenger data.");
+      }
+      const passengerData = await passengerResponse.json();
+
+      // Check if the entered credentials match any passenger credentials
+      const matchedPassenger = passengerData.data.find(
+        (passenger) => passenger[9] === username && passenger[10] === password
+      );
+
+      if (matchedPassenger) {
+        setPassengerId(matchedPassenger[0]); // Store passenger ID (e.g., "PS13") in the context
+        navigate("/home"); // Redirect to user home page
       } else {
-        setError("Invalid username or password.");
+        setError("Invalid username or password."); // Show error if no match is found
       }
     } catch (err) {
       setError("An error occurred while checking credentials.");
@@ -98,6 +117,19 @@ function Login() {
           Login
         </button>
       </form>
+      <p style={{ marginTop: "20px" }}>Don't have an account?</p>
+      <button
+        onClick={() => navigate("/signup")}
+        style={{
+          backgroundColor: "#007BFF",
+          color: "white",
+          padding: "10px 20px",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        Create Account
+      </button>
     </div>
   );
 }

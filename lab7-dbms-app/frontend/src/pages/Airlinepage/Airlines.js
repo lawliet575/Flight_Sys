@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Airlines = () => {
   const [airlines, setAirlines] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     fetch('http://localhost:3001/api/airlines/', {
@@ -35,6 +39,19 @@ const Airlines = () => {
 
   return (
     <div>
+      <button
+          onClick={() => navigate('/adminhome')}
+          style={{
+            backgroundColor: '#2980b9',
+            color: 'white',
+            padding: '10px 15px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+        >
+          Return to Home Page
+        </button>
       <h1>Airlines</h1>
       <div className="airline-list">
         {airlines.length === 0 ? (

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const FlightClasses = () => {
   const [flightClasses, setFlightClasses] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     // Fetching the flight classes from the backend
@@ -23,6 +27,19 @@ const FlightClasses = () => {
 
   return (
     <div>
+      <button
+          onClick={() => navigate('/adminhome')}
+          style={{
+            backgroundColor: '#2980b9',
+            color: 'white',
+            padding: '10px 15px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+        >
+          Return to Home Page
+        </button>
       <h1>Flight Classes</h1>
       <div className="flight-class-list">
         {flightClasses.length === 0 ? (

@@ -81,9 +81,16 @@ const Passengers = () => {
     <div>
       {/* Return to Home Page Button (Positioned Top Left) */}
       <div className="return-home-btn-container">
-        <button
+      <button
           onClick={() => navigate('/adminhome')}
-          className="return-home-btn"
+          style={{
+            backgroundColor: '#2980b9',
+            color: 'white',
+            padding: '10px 15px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
         >
           Return to Home Page
         </button>

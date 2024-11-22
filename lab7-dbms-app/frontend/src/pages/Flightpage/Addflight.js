@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 function AddFlight() {
   const [depAirportId, setDepAirportId] = useState("");
@@ -11,6 +13,8 @@ function AddFlight() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,8 +63,20 @@ function AddFlight() {
     }
   };
 
+  const handleReturn = () => {
+    navigate("/flights"); // Navigate to the bookings page
+  };
+
   return (
     <div style={{ maxWidth: "500px", margin: "50px auto", textAlign: "center" }}>
+      <button 
+        onClick={handleReturn} 
+        style={returnButtonStyle}
+        
+      >
+        Return to Flights
+      </button>
+      
       <h2>Add New Flight</h2>
       <form onSubmit={handleSubmit}>
         <div style={formFieldStyle}>
@@ -147,6 +163,18 @@ const buttonStyle = {
   padding: "10px 20px",
   border: "none",
   cursor: "pointer",
+};
+
+const returnButtonStyle = {
+  position: "absolute",
+  top: "20px",
+  left: "20px",
+  backgroundColor: "light-blue",  // Tomato color for distinction
+  color: "white",
+  padding: "8px 15px",
+  border: "none",
+  cursor: "pointer",
+  fontSize: "16px",
 };
 
 export default AddFlight;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
-function AddPassenger() {
+function Signup() {
   const [passportId, setPassportId] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -55,12 +55,12 @@ function AddPassenger() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add passenger");
+        throw new Error("Failed to create account");
       }
 
       const data = await response.json();
-      setSuccess(true); // If the passenger was added successfully
-      console.log("Passenger added:", data);
+      setSuccess(true); // If the account was created successfully
+      console.log("Account created:", data);
     } catch (err) {
       setError("Error: " + err.message);
     } finally {
@@ -69,14 +69,12 @@ function AddPassenger() {
   };
 
   const handleReturn = () => {
-    navigate("/passengers"); // Navigate to the /passengers page using useNavigate
+    navigate("/"); // Navigate to the login page
   };
 
   return (
-
     <div style={{ maxWidth: "500px", margin: "50px auto", textAlign: "center" }}>
-
-      <h2>Add New Passenger</h2>
+      <h2>Sign Up Page</h2>
       <form onSubmit={handleSubmit}>
         <div style={formFieldStyle}>
           <label>Passport ID:</label>
@@ -163,7 +161,7 @@ function AddPassenger() {
         </div>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>Passenger added successfully!</p>}
+        {success && <p style={{ color: "green" }}>Account created successfully!</p>}
         {loading && <p>Loading...</p>}
 
         <button
@@ -171,16 +169,15 @@ function AddPassenger() {
           style={buttonStyle}
           disabled={loading}
         >
-          Add Passenger
+          Sign Up
         </button>
       </form>
       <button
         onClick={handleReturn} // Trigger the return navigation
         style={returnButtonStyle}
       >
-        Return to Passengers
+        Back to Login Page
       </button>
-      
     </div>
   );
 }
@@ -207,4 +204,4 @@ const returnButtonStyle = {
   marginTop: "10px",
 };
 
-export default AddPassenger;
+export default Signup;
