@@ -1,0 +1,109 @@
+/* Apply the background image */
+.login-container {
+  background-image: url('./Loginpic.jpg');
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-position: center; /* Centers the image */
+  height: 100vh; /* Sets the container height to the viewport height */
+  margin: 0; /* Removes any default margin that may cause white space */
+  padding: 0; /* Ensures no padding adds space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-attachment: fixed; /* Makes the background stay fixed during scrolling */
+  position: relative;
+  overflow: hidden; /* Hides any overflowing content */
+}
+
+
+.body-overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+/* Login content styling */
+.login-content {
+  display: flex;
+  justify-content: center; /* Center the form and header text */
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+  z-index: 1;
+  position: relative; /* Keeps elements within this container aligned */
+}
+
+/* Form container styles */
+.form-container {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  margin-right: 30px; /* Reduced margin-right to move it more to the center */
+  margin-left: 30px; /* Added margin-left for some balance */
+  text-align: center; /* Centers the text horizontally */
+  margin-bottom: 20px; /* Adds some space below the heading */
+  font-size: 1.4em; /* Adjusts the font size for better visibility */
+}
+
+/* Input field styles */
+.input-field {
+  margin-bottom: 15px;
+}
+
+.input-field input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+}
+
+/* Button styling */
+.login-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Create account section styling */
+.create-account-text {
+  margin-top: 20px;
+  text-align: center; /* Center the text */
+}
+
+.create-account-btn {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px; /* Space above the button */
+  display: block;
+  margin-left: auto; /* Center the button horizontally */
+  margin-right: auto;
+}
+
+/* Header text styling */
+.header-text {
+  color: white;
+  font-size: 2.5em;
+  font-weight: bolder;
+  margin-left: 50px;
+  margin-bottom: 180px;
+  width: 40%;
+  text-align: center; /* Align the header text left */
+}

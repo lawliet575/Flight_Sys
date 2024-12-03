@@ -20,6 +20,14 @@ function UserBook() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Function to generate random seat number
+  const generateSeatNumber = () => {
+    const letters = ["A", "B", "C"];
+    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+    const randomNumber = Math.floor(Math.random() * 30) + 1; // Between 1 and 50
+    return `${randomLetter}${randomNumber}`;
+  };
+
   // Fetch flight details
   useEffect(() => {
     const fetchFlightDetails = async () => {
@@ -35,6 +43,10 @@ function UserBook() {
         // Format date
         const formattedDate = new Date(rawDate).toLocaleDateString("en-US");
         setFormattedDepartureDate(formattedDate);
+
+        // Generate a random seat number
+        setSeatNo(generateSeatNumber());
+
       } catch (err) {
         setError("Error fetching flight details: " + err.message);
       }
@@ -161,7 +173,7 @@ function UserBook() {
         </div>
         <div className="form-field">
           <label>Seat No:</label>
-          <input type="text" value={seatNo} onChange={(e) => setSeatNo(e.target.value)} />
+          <input type="text" value={seatNo} readOnly className="read-only-input" />
         </div>
         <div className="form-field">
           <label>Total Price:</label>

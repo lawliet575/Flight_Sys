@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
+import './Signupmodule.css'; // Import the CSS file
 
 function Signup() {
   const [passportId, setPassportId] = useState("");
@@ -16,22 +17,20 @@ function Signup() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const navigate = useNavigate(); // Initialize the useNavigate hook for navigation
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate required fields
     if (!passportId || !firstName || !lastName || !email || !contact || !address || !gender || !dob || !loginId || !loginPw) {
       setError("All fields are required.");
       return;
     }
 
     setLoading(true);
-    setError(""); // Clear previous errors
-    setSuccess(false); // Reset success message
+    setError("");
+    setSuccess(false);
 
-    // Prepare the data to be sent to the API
     const passengerData = {
       passportId,
       firstName,
@@ -59,149 +58,83 @@ function Signup() {
       }
 
       const data = await response.json();
-      setSuccess(true); // If the account was created successfully
+      setSuccess(true);
       console.log("Account created:", data);
     } catch (err) {
       setError("Error: " + err.message);
     } finally {
-      setLoading(false); // Stop loading spinner
+      setLoading(false);
     }
   };
 
   const handleReturn = () => {
-    navigate("/"); // Navigate to the login page
+    navigate("/");
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "50px auto", textAlign: "center" }}>
-      <h2>Sign Up Page</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={formFieldStyle}>
-          <label>Passport ID:</label>
-          <input
-            type="text"
-            value={passportId}
-            onChange={(e) => setPassportId(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>First Name:</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>Last Name:</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>Contact:</label>
-          <input
-            type="text"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>Address:</label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>Gender:</label>
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <option value="">Select Gender</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
-        </div>
-        <div style={formFieldStyle}>
-          <label>Date of Birth:</label>
-          <input
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>Login ID:</label>
-          <input
-            type="text"
-            value={loginId}
-            onChange={(e) => setLoginId(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
-          <label>Login Password:</label>
-          <input
-            type="password"
-            value={loginPw}
-            onChange={(e) => setLoginPw(e.target.value)}
-          />
-        </div>
+    <div className="signup-container">
+      <div className="body-overlay"></div>
+      <div className="form-container">
+        <h2>Sign Up</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="input-field">
+            <label>Passport ID:</label>
+            <input type="text" value={passportId} onChange={(e) => setPassportId(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>First Name:</label>
+            <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>Last Name:</label>
+            <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>Email:</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>Contact:</label>
+            <input type="text" value={contact} onChange={(e) => setContact(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>Address:</label>
+            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>Gender:</label>
+            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="">Select Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </div>
+          <div className="input-field">
+            <label>Date of Birth:</label>
+            <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>Login ID:</label>
+            <input type="text" value={loginId} onChange={(e) => setLoginId(e.target.value)} />
+          </div>
+          <div className="input-field">
+            <label>Login Password:</label>
+            <input type="password" value={loginPw} onChange={(e) => setLoginPw(e.target.value)} />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          {success && <p className="success-message">Account created successfully!</p>}
+          {loading && <p>Loading...</p>}
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>Account created successfully!</p>}
-        {loading && <p>Loading...</p>}
-
-        <button
-          type="submit"
-          style={buttonStyle}
-          disabled={loading}
-        >
-          Sign Up
+          <button type="submit" className="login-btn" disabled={loading}>
+            Sign Up
+          </button>
+        </form>
+        <button onClick={handleReturn} className="create-account-btn">
+          Back to Login Page
         </button>
-      </form>
-      <button
-        onClick={handleReturn} // Trigger the return navigation
-        style={returnButtonStyle}
-      >
-        Back to Login Page
-      </button>
+      </div>
     </div>
   );
 }
-
-const formFieldStyle = {
-  marginBottom: "15px",
-  textAlign: "left",
-};
-
-const buttonStyle = {
-  backgroundColor: "#4CAF50",
-  color: "white",
-  padding: "10px 20px",
-  border: "none",
-  cursor: "pointer",
-};
-
-const returnButtonStyle = {
-  backgroundColor: "#f44336", // Red color for the Return button
-  color: "white",
-  padding: "10px 20px",
-  border: "none",
-  cursor: "pointer",
-  marginTop: "10px",
-};
 
 export default Signup;

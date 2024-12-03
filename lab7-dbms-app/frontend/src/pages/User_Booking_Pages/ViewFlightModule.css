@@ -1,0 +1,138 @@
+/* ViewFlightModule.css */
+
+/* Container for the entire view flights page */
+.view-flight-container {
+
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+  }
+  
+  /* Header for View Flights */
+  .view-flight-header {
+    margin-bottom: 30px;
+    color: white;
+  }
+  
+  .view-flight-header h1 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  
+  .view-flight-header .subtitle {
+    font-size: 18px;
+    color: white;
+  }
+  
+  /* Back Button */
+  .view-flight-back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #f44336; /* Red color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(249, 248, 248, 0.1);
+  }
+  
+  /* Search filters container */
+  .search-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+  }
+  
+  /* Input container for search fields */
+  .input-container {
+    position: relative;
+    width: 45%;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: white;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1;
+  }
+  
+  .dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .swap-button {
+    margin: 0 10px;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .reset-button {
+    padding: 8px 16px;
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  /* Table styles */
+  .table-container {
+    margin-top: 20px;
+    width: 80%;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .book-button {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .book-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Footer */
+  .footer {
+    margin-top: 50px;
+    font-size: 14px;
+    color: white;
+  }
+  

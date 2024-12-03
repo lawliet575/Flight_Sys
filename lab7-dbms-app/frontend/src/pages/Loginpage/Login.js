@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { PassengerContext } from "./PassengerContext";
+import './loginmodule.css'; // Import the CSS file
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -66,70 +67,58 @@ function Login() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div style={{ marginBottom: "15px" }}>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px",
-                margin: "5px 0",
-                boxSizing: "border-box",
-              }}
-            />
-          </label>
+    <div className="login-container">
+      <div className="body-overlay"></div>
+      <div className="login-content">
+        <div className="form-container">
+          <h2>Login</h2>
+          <form onSubmit={handleLogin}>
+            <div className="input-field">
+              <label>
+                Username:
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </label>
+            </div>
+            <div className="input-field">
+              <label>
+                Password:
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </label>
+            </div>
+            {error && <p className="error-message">{error}</p>}
+            {loading && <p>Loading...</p>}
+            <button
+              type="submit"
+              className="login-btn"
+              disabled={loading}
+            >
+              Login
+            </button>
+          </form>
+          <p className="create-account-text">Don't have an account?</p>
+          <button
+            onClick={() => navigate("/signup")}
+            className="create-account-btn"
+          >
+            Create Account
+          </button>
         </div>
-        <div style={{ marginBottom: "15px" }}>
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px",
-                margin: "5px 0",
-                boxSizing: "border-box",
-              }}
-            />
-          </label>
+
+        <div className="header-text">
+          <h2>Boarding Awaits</h2>
+          <p>
+          Your gateway to seamless travel
+          </p>
         </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {loading && <p>Loading...</p>}
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#4CAF50",
-            color: "white",
-            padding: "10px 20px",
-            border: "none",
-            cursor: "pointer",
-          }}
-          disabled={loading}
-        >
-          Login
-        </button>
-      </form>
-      <p style={{ marginTop: "20px" }}>Don't have an account?</p>
-      <button
-        onClick={() => navigate("/signup")}
-        style={{
-          backgroundColor: "#007BFF",
-          color: "white",
-          padding: "10px 20px",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        Create Account
-      </button>
+      </div>
     </div>
   );
 }
