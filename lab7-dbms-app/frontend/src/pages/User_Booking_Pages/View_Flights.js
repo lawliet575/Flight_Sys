@@ -1,18 +1,20 @@
+
+// export default ViewFlight;
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./ViewFlightModule.css";
 
 function ViewFlight() {
   const [flights, setFlights] = useState([]);
   const [airportDetails, setAirportDetails] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [departureSearch, setDepartureSearch] = useState(""); // Search state for departure city
-  const [arrivalSearch, setArrivalSearch] = useState(""); // Search state for arrival city
-  const [departureCityOptions, setDepartureCityOptions] = useState([]); // List of available departure cities
-  const [arrivalCityOptions, setArrivalCityOptions] = useState([]); // List of available arrival cities
-  const [showDepartureDropdown, setShowDepartureDropdown] = useState(false); // Controls showing of dropdown
-  const [showArrivalDropdown, setShowArrivalDropdown] = useState(false); // Controls showing of dropdown
+  const [departureSearch, setDepartureSearch] = useState(""); 
+  const [arrivalSearch, setArrivalSearch] = useState(""); 
+  const [departureCityOptions, setDepartureCityOptions] = useState([]); 
+  const [arrivalCityOptions, setArrivalCityOptions] = useState([]); 
+  const [showDepartureDropdown, setShowDepartureDropdown] = useState(false); 
+  const [showArrivalDropdown, setShowArrivalDropdown] = useState(false); 
   const departureRef = useRef(null);
   const arrivalRef = useRef(null);
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ function ViewFlight() {
         const flightData = data.data;
 
         const airportIds = [
-          ...new Set(flightData.flatMap(flight => [flight[1], flight[4]])) // Collect unique airport IDs (departure and arrival)
+          ...new Set(flightData.flatMap(flight => [flight[1], flight[4]]))
         ];
 
         const airportPromises = airportIds.map(airportId => fetchAirportDetails(airportId));
@@ -71,7 +73,6 @@ function ViewFlight() {
           return acc;
         }, {});
 
-        // Extract cities for departure and arrival
         const departureCities = Array.from(new Set(flightData.map(flight => airportInfo[flight[1]]?.city))).filter(Boolean);
         const arrivalCities = Array.from(new Set(flightData.map(flight => airportInfo[flight[4]]?.city))).filter(Boolean);
 
@@ -89,7 +90,6 @@ function ViewFlight() {
     fetchFlights();
   }, []);
 
-  // Filter flights based on departure or arrival city
   const filteredFlights = flights.filter((flight) => {
     const departureCity = airportDetails[flight[1]]?.city.toLowerCase() || "";
     const arrivalCity = airportDetails[flight[4]]?.city.toLowerCase() || "";
@@ -101,11 +101,11 @@ function ViewFlight() {
   });
 
   if (loading) {
-    return <div>Loading flights...</div>;
+    return <div className="loading">Loading flights...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="error">{error}</div>;
   }
 
   const formatDate = (date) => new Date(date).toLocaleDateString();
@@ -118,13 +118,13 @@ function ViewFlight() {
   const handleDepartureSearchChange = (e) => {
     const value = e.target.value;
     setDepartureSearch(value);
-    setShowDepartureDropdown(value === ""); // Show dropdown if input is empty
+    setShowDepartureDropdown(value === "");
   };
 
   const handleArrivalSearchChange = (e) => {
     const value = e.target.value;
     setArrivalSearch(value);
-    setShowArrivalDropdown(value === ""); // Show dropdown if input is empty
+    setShowArrivalDropdown(value === "");
   };
 
   const handleSwapClick = () => {
@@ -132,7 +132,6 @@ function ViewFlight() {
     setArrivalSearch(departureSearch);
   };
 
-  // Reset the search fields and filtered flights
   const resetSearch = () => {
     setDepartureSearch("");
     setArrivalSearch("");
@@ -141,33 +140,33 @@ function ViewFlight() {
   };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.header}>Available Flights</h1>
-      
-      <button onClick={() => navigate("/home")} style={styles.backButton}>Go Back to Home</button>
+    <div className="view-flight-container">
+      <div className="view-flight-header">
+        <h1>Available Flights</h1>
+      </div>
 
-      {/* Search filters */}
-      <div style={styles.searchContainer}>
-        {/* Departure Search */}
-        <div style={styles.inputContainer} ref={departureRef}>
+      <button onClick={() => navigate("/home")} className="view-flight-back-button">←</button>
+
+      <div className="search-container">
+        <div className="input-container" ref={departureRef}>
           <input
             type="text"
             placeholder="From"
             value={departureSearch}
             onChange={handleDepartureSearchChange}
-            onFocus={() => setShowDepartureDropdown(true)} // Show dropdown when focused
-            style={styles.searchInput}
+            onFocus={() => setShowDepartureDropdown(true)}
+            className="search-input"
           />
           {showDepartureDropdown && (
-            <div style={styles.dropdown}>
+            <div className="dropdown">
               {departureCityOptions.map((city, index) => (
                 <div
                   key={index}
                   onClick={() => {
                     setDepartureSearch(city);
-                    setShowDepartureDropdown(false); // Close dropdown after selection
+                    setShowDepartureDropdown(false);
                   }}
-                  style={styles.dropdownItem}
+                  className="dropdown-item"
                 >
                   {city}
                 </div>
@@ -176,29 +175,27 @@ function ViewFlight() {
           )}
         </div>
 
-        {/* Swap Button */}
-        <button onClick={handleSwapClick} style={styles.swapButton}>↔</button>
+        <button onClick={handleSwapClick} className="swap-button">↔</button>
 
-        {/* Arrival Search */}
-        <div style={styles.inputContainer} ref={arrivalRef}>
+        <div className="input-container" ref={arrivalRef}>
           <input
             type="text"
             placeholder="To"
             value={arrivalSearch}
             onChange={handleArrivalSearchChange}
-            onFocus={() => setShowArrivalDropdown(true)} // Show dropdown when focused
-            style={styles.searchInput}
+            onFocus={() => setShowArrivalDropdown(true)}
+            className="search-input"
           />
           {showArrivalDropdown && (
-            <div style={styles.dropdown}>
+            <div className="dropdown">
               {arrivalCityOptions.map((city, index) => (
                 <div
                   key={index}
                   onClick={() => {
                     setArrivalSearch(city);
-                    setShowArrivalDropdown(false); // Close dropdown after selection
+                    setShowArrivalDropdown(false);
                   }}
-                  style={styles.dropdownItem}
+                  className="dropdown-item"
                 >
                   {city}
                 </div>
@@ -208,13 +205,10 @@ function ViewFlight() {
         </div>
       </div>
 
-      {/* Reset Button */}
-      <button onClick={resetSearch} style={styles.resetButton}>
-        Reset Search
-      </button>
+      <button onClick={resetSearch} className="reset-button">Reset Search</button>
 
-      <div style={styles.tableContainer}>
-        <table style={styles.table}>
+      <div className="table-container">
+        <table className="table">
           <thead>
             <tr>
               <th>Departure Airport Name</th>
@@ -242,7 +236,7 @@ function ViewFlight() {
                 <td>
                   <button
                     onClick={() => handleBookClick(flight[0])}
-                    style={styles.bookButton}
+                    className="book-button"
                   >
                     Book
                   </button>
@@ -256,72 +250,72 @@ function ViewFlight() {
   );
 }
 
-const styles = {
-  container: {
-    padding: "20px",
-  },
-  header: {
-    fontSize: "24px",
-    fontWeight: "bold",
-  },
-  searchContainer: {
-    marginBottom: "20px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  inputContainer: {
-    position: "relative",
-    width: "45%",
-  },
-  searchInput: {
-    width: "100%",
-    padding: "8px",
-    fontSize: "16px",
-    borderRadius: "4px",
-  },
-  dropdown: {
-    position: "absolute",
-    top: "100%",
-    left: "0",
-    right: "0",
-    border: "1px solid #ccc",
-    backgroundColor: "#fff",
-    maxHeight: "200px",
-    overflowY: "auto",
-    zIndex: "1",
-  },
-  dropdownItem: {
-    padding: "8px",
-    cursor: "pointer",
-  },
-  swapButton: {
-    margin: "0 10px",
-    padding: "8px",
-    cursor: "pointer",
-  },
-  resetButton: {
-    padding: "8px 16px",
-    backgroundColor: "#ff4500",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer",
-    marginTop: "20px",
-  },
-  tableContainer: {
-    marginTop: "20px",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-  bookButton: {
-    padding: "8px 16px",
-    backgroundColor: "#28a745",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer",
-  },
-};
-
 export default ViewFlight;
+
+// const styles = {
+//   container: {
+//     padding: "20px",
+//   },
+//   header: {
+//     fontSize: "24px",
+//     fontWeight: "bold",
+//   },
+//   searchContainer: {
+//     marginBottom: "20px",
+//     display: "flex",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//   },
+//   inputContainer: {
+//     position: "relative",
+//     width: "45%",
+//   },
+//   searchInput: {
+//     width: "100%",
+//     padding: "8px",
+//     fontSize: "16px",
+//     borderRadius: "4px",
+//   },
+//   dropdown: {
+//     position: "absolute",
+//     top: "100%",
+//     left: "0",
+//     right: "0",
+//     border: "1px solid #ccc",
+//     backgroundColor: "#fff",
+//     maxHeight: "200px",
+//     overflowY: "auto",
+//     zIndex: "1",
+//   },
+//   dropdownItem: {
+//     padding: "8px",
+//     cursor: "pointer",
+//   },
+//   swapButton: {
+//     margin: "0 10px",
+//     padding: "8px",
+//     cursor: "pointer",
+//   },
+//   resetButton: {
+//     padding: "8px 16px",
+//     backgroundColor: "#ff4500",
+//     color: "#fff",
+//     border: "none",
+//     cursor: "pointer",
+//     marginTop: "20px",
+//   },
+//   tableContainer: {
+//     marginTop: "20px",
+//   },
+//   table: {
+//     width: "100%",
+//     borderCollapse: "collapse",
+//   },
+//   bookButton: {
+//     padding: "8px 16px",
+//     backgroundColor: "#28a745",
+//     color: "#fff",
+//     border: "none",
+//     cursor: "pointer",
+//   },
+// };
