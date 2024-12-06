@@ -20,8 +20,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3); /* Dark overlay with 30% opacity */
-  z-index: 1; /* Place it below the text and buttons */
+  background-color: rgba(0, 0, 0, 0.3); 
+  z-index: 1; 
 }
 
 /* The text and buttons will appear above the overlay */
