@@ -2,17 +2,6 @@
 
 /* Container for the entire view flights page */
 .view-flight-container {
-
-    /* background-position: center;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    font-family: 'Arial', sans-serif;
-    overflow: hidden; */
     background-image: url('./homepic.jpg'); /* Reuse the same background image */
     background-size: cover; /* Ensure the image covers the entire container */
     background-position: center; /* Center the image */
@@ -64,6 +53,7 @@
   justify-content: space-between;
   align-items: center;
   width: 90%;
+  position: relative;
 }
 
 /* Swap button styles */
@@ -89,19 +79,22 @@
   padding: 8px;
   font-size: 16px;
   border-radius: 4px;
+  z-index: 5;
+  position: relative;
 }
 
   
 .dropdown {
-  position: absolute;
-  top: 100%; /* Places dropdown directly below the search input */
-  left: 0;
-  right: 0;
-  border: 1px solid #ccc;
-  background-color: white;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1;
+    position: absolute;
+    top: 100%; /* Places dropdown directly below the search input */
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: white;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10; /* Ensures dropdown is above other elements */
+  
 }
 
 .dropdown-item {
@@ -114,6 +107,7 @@
 .reset-button {
   padding: 8px 16px;
   margin-left: 80px;
+  margin-bottom: 5px;
   background-color: rgb(142, 42, 6);
   color: white;
   border: none;
@@ -135,6 +129,8 @@
   .table {
     width: 100%; /* Ensures the table fills the container */
     border-collapse: collapse; /* Removes spacing between table cells */
+    border-radius: 6px; /* Adds rounded corners to the entire table */
+     overflow: hidden;
    
   }
   .table tr:nth-child(even) {
