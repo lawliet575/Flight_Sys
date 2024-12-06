@@ -1,19 +1,25 @@
+
+html, body, #root, .app{
+  height: 100%;
+}
 /* Apply the background image */
 .login-container {
   background-image: url('./Loginpic.jpg');
   background-size: cover; /* Ensures the image covers the entire container */
   background-position: center; /* Centers the image */
-  height: 100vh; /* Sets the container height to the viewport height */
+  background-repeat: no-repeat;  /* Prevents the image from repeating */
+  background-attachment: fixed; 
+  height: 100%;
   margin: 0; /* Removes any default margin that may cause white space */
   padding: 0; /* Ensures no padding adds space */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-attachment: fixed; /* Makes the background stay fixed during scrolling */
-  position: relative;
-  overflow: hidden; /* Hides any overflowing content */
 }
 
+.form-control.input-box, .form-control.input-box:active, .form-control.input-box:hover, .form-control.input-box:focus {
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.253);
+  color: azure;
+  border-radius: 0%;
+}
 
 .body-overlay {
   content: '';
@@ -40,7 +46,6 @@
 
 /* Form container styles */
 .form-container {
-  background-color: white;
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -86,7 +91,7 @@
 }
 
 .create-account-btn {
-  background-color: #007BFF;
+  background-color: #343434;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -105,5 +110,6 @@
   margin-left: 50px;
   margin-bottom: 180px;
   width: 40%;
-  text-align: center; /* Align the header text left */
+  text-align: center;
+ /* Align the header text left */
 }

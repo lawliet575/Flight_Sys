@@ -6,8 +6,6 @@
   height: 100vh; /* Full height of the screen */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
   position: relative; /* Allows absolute positioning of elements */
   font-family: 'Arial', sans-serif; /* Clean and readable font */
@@ -50,7 +48,6 @@
 
 /* Header Styles */
 .header {
-  margin-bottom: 30px;
   font-size: 35px;
   color: white; /* Make the header text white */
 }
@@ -62,9 +59,7 @@
 }
 
 /* Content Section */
-.content {
-  margin-top: 20px;
-}
+
 
 
 
@@ -86,7 +81,6 @@
 
 /* Footer */
 .footer {
-  margin-top: 100px;
   font-size: 14px;
   color:white;
 }
