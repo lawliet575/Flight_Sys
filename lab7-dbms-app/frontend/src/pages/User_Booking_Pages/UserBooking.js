@@ -136,9 +136,9 @@ function UserBook() {
   };
 
   return (
-    <div className="container">
+    <div className="booking-container">
       <button onClick={handleReturn} className="return-button">
-        Return to Bookings
+      ←
       </button>
 
       <h2>Flight Booking</h2>
