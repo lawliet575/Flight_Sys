@@ -1,6 +1,7 @@
 const {
     listAllPassengers,
     getPassengerByIdFromDB,
+    getPassengerBypptfromDB,
     newPassenger,
     updatePassengerByID,
     deletePassengerByIdFromDB
@@ -37,6 +38,24 @@ const {
         res.status(500).json({ message: "Error fetching passenger details", error: err.message });
     }
 }
+
+// Controller function to fetch passenger by passport ID
+async function getPassengerByppt(req, res) {
+  const { id } = req.params; // Get the passenger ID from the URL parameters
+
+  try {
+      const passenger = await getPassengerBypptfromDB(id); // Fetch the passenger by ID from the model
+
+      if (passenger) {
+          res.json({ data: passenger });
+      } else {
+          res.status(404).json({ message: "Passenger not found" });
+      }
+  } catch (err) {
+      res.status(500).json({ message: "Error fetching passenger details", error: err.message });
+  }
+}
+
 
 
   
@@ -102,6 +121,7 @@ const {
   module.exports = {
     getAllPassengers,
     getPassengerById,
+    getPassengerByppt,
     addPassenger,
     updatePassenger,
     deletePassengerById

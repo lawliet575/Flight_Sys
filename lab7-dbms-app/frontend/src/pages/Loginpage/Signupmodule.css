@@ -28,7 +28,7 @@
 .form-container {
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  background-color: rgba(0, 0, 0, 0.1) ;
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   max-width: 800px;  /* Increased width */
   width: 100%;
@@ -38,13 +38,14 @@
   z-index: 1;
   overflow: hidden;
 }
+
 .input-field select {
   margin: 10px;
   font-size: 16px; /* Set font size to 16px */
   padding: 8px; /* Optional: Add some padding for better appearance */
   border-radius: 4px; /* Optional: Add rounded corners */
   border: 1px solid #ccc; /* Optional: Border for the dropdown */
-  color:rgb(65, 65, 65);
+  color: rgb(65, 65, 65);
 }
 
 form {
@@ -54,7 +55,6 @@ form {
 }
 
 .form-container h2 {
-
   color: white;
   text-shadow: 0px 0px 10px rgba(252, 252, 252, 0.381);
 }
@@ -64,13 +64,13 @@ form {
 }
 
 .login-btn {
-  background-color: #17601b; 
-  color: white; 
-  font-size: 16px; 
-  padding: 10px 20px; 
+  background-color: #17601b;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
   border-radius: 5px;
-  cursor: pointer; 
-  margin-top: 10px; 
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 .login-btn:disabled {
@@ -84,18 +84,34 @@ form {
 
 /* Styles for the Back to Login Button */
 .create-account-btn {
-  background-color: #375c84; 
-  color: white; 
-  font-size: 25px; 
-  padding: 8px 15px; 
+  background-color: #375c84;
+  color: white;
+  font-size: 25px;
+  padding: 8px 15px;
   border-radius: 5px;
-  cursor: pointer; 
-  position: fixed; 
+  cursor: pointer;
+  position: fixed;
   top: 20px; /* Space from the top */
-  left: 20px;  
-  /* margin-top: -50px; */
+  left: 20px;
 }
 
 .create-account-btn:hover {
   background-color: #45709d; /* Darker red when hovering */
+}
+
+/* Success message style */
+.success-message {
+  background-color: #17601b; /* Darker green background like the sign-up button */
+  color: white; /* White text color */
+  padding: 15px; /* Increased padding for better appearance */
+  border-radius: 8px; /* Slightly rounded corners */
+  margin-top: 20px; /* Add space from the button */
+  text-align: center; /* Center align text */
+  font-weight: bold;
+  width: 80%; /* Slightly smaller width to fit the form better */
+  max-width: 600px; /* Limit the width */
+  margin-left: auto;
+  margin-right: auto; /* Center the message */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow for a raised effect */
+  font-size: 18px; /* Increase the font size for better readability */
 }

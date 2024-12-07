@@ -38,15 +38,38 @@ async function getPassengerByIdFromDB(id) {
   }
 }
 
+async function getPassengerBypptfromDB(id) {
+  const query = `SELECT PASSENGER_ID FROM PASSENGERS WHERE PASSPORT_ID = :id`; // Query to select a specific passenger by ID
+  let connection;
+
+  try {
+      connection = await oracledb.getConnection(); // Get a connection from the pool
+      const result = await connection.execute(query, [id]); // Execute query with bind variable :id
+
+      if (result.rows.length === 0) {
+          return null; // No passenger found, return null
+      }
+
+      return result.rows[0]; // Return the first matching passenger
+  } catch (err) {
+      console.error('Error fetching passenger:', err);
+      throw err; // Throw error to be caught in the controller
+  } finally {
+      if (connection) {
+          await connection.close(); // Always close the connection
+      }
+  }
+}
+
 async function newPassenger(passengerData) {
   let conn;
   try {
     conn = await oracledb.getConnection();
     await conn.execute(
       `INSERT INTO PASSENGERS 
-        (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH, LOGIN_ID, LOGIN_PW)
+        (PASSPORT_ID, FIRSTNAME, LASTNAME, EMAIL, CONTACT_NO, ADDRESS, GENDER, DATE_OF_BIRTH, LOGIN_PW)
         VALUES 
-        (:PASSPORT_ID, :FIRSTNAME, :LASTNAME, :EMAIL, :CONTACT_NO, :ADDRESS, :GENDER, :DATE_OF_BIRTH, :LOGIN_ID, :LOGIN_PW)`,
+        (:PASSPORT_ID, :FIRSTNAME, :LASTNAME, :EMAIL, :CONTACT_NO, :ADDRESS, :GENDER, :DATE_OF_BIRTH, :LOGIN_PW)`,
       {
         PASSPORT_ID: passengerData.passportId,
         FIRSTNAME: passengerData.firstName,
@@ -56,7 +79,6 @@ async function newPassenger(passengerData) {
         ADDRESS: passengerData.address,
         GENDER: passengerData.gender,
         DATE_OF_BIRTH: new Date(passengerData.dob),
-        LOGIN_ID: passengerData.loginid,
         LOGIN_PW: passengerData.loginpw,
       },
       { autoCommit: true }
@@ -115,11 +137,6 @@ async function updatePassengerByID(passengerid, updatedData) {
       values.DATE_OF_BIRTH = new Date(updatedData.dob); // Ensure it's a Date object
     }
 
-    if (updatedData.loginid !== undefined) {
-      fieldsToUpdate.push("LOGIN_ID = :LOGIN_ID");
-      values.LOGIN_ID = updatedData.loginid;  // Updated to match the database field name
-    }
-
     if (updatedData.loginpw !== undefined) {
       fieldsToUpdate.push("LOGIN_PW = :LOGIN_PW");
       values.LOGIN_PW = updatedData.loginpw;  // Updated to match the database field name
@@ -172,6 +189,7 @@ async function deletePassengerByIdFromDB(id) {
 module.exports = {
   listAllPassengers,
   getPassengerByIdFromDB,
+  getPassengerBypptfromDB,
   newPassenger,
   updatePassengerByID,
   deletePassengerByIdFromDB,

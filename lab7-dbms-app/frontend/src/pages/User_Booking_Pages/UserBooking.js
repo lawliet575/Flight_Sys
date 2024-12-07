@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PassengerContext } from "../Loginpage/PassengerContext";
-import "./UserBooking.css"; // Import the CSS file
+import "./UserBook.css"; // Import the CSS file
+
+
 
 function UserBook() {
   const [classId, setClassId] = useState("");
@@ -24,7 +26,7 @@ function UserBook() {
   const generateSeatNumber = () => {
     const letters = ["A", "B", "C"];
     const randomLetter = letters[Math.floor(Math.random() * letters.length)];
-    const randomNumber = Math.floor(Math.random() * 30) + 1; // Between 1 and 50
+    const randomNumber = Math.floor(Math.random() * 30) + 1; // Between 1 and 30
     return `${randomLetter}${randomNumber}`;
   };
 
@@ -73,6 +75,7 @@ function UserBook() {
     fetchFlightClasses();
   }, []);
 
+  // Fetch price based on flight ID and class ID
   const fetchPrice = async (flightId, classId) => {
     try {
       const response = await fetch(`http://localhost:3001/api/bookingprice/${flightId}/${classId}`);
@@ -160,7 +163,7 @@ function UserBook() {
   return (
     <div className="booking-container">
       <button onClick={handleReturn} className="return-button">
-      ←
+        ←
       </button>
 
       <h2>Flight Booking</h2>

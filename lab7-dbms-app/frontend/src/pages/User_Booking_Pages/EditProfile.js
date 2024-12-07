@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-function EditPassenger() {
-  const { id } = useParams();  // Extract the passenger ID from the URL parameter
-  const navigate = useNavigate();  // Initialize the useNavigate hook
+function EditProfile() {
+  const { id } = useParams(); // Extract the passenger ID from the URL parameter
+  const navigate = useNavigate(); // Navigation hook for routing
+
   const [passportId, setPassportId] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -12,10 +13,13 @@ function EditPassenger() {
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
+  const [loginPw, setLoginPw] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
+  // Fetch passenger data when component mounts
   useEffect(() => {
     const fetchPassengerData = async () => {
       try {
@@ -24,23 +28,20 @@ function EditPassenger() {
 
         if (data && data.data) {
           const passenger = data.data;
-          if (passenger) {
-            setPassportId(passenger[1]);
-            setFirstName(passenger[2]);
-            setLastName(passenger[3]);
-            setEmail(passenger[4]);
-            setContact(passenger[5]);
-            setAddress(passenger[6]);
-            setGender(passenger[7]);
-            setDob(passenger[8].split('T')[0]);
-          } else {
-            setError("Passenger not found");
-          }
+          setPassportId(passenger[1]);
+          setFirstName(passenger[2]);
+          setLastName(passenger[3]);
+          setEmail(passenger[4]);
+          setContact(passenger[5]);
+          setAddress(passenger[6]);
+          setGender(passenger[7]);
+          setDob(passenger[8].split("T")[0]);
+          setLoginPw(passenger[10]);
         } else {
-          setError("Error fetching passenger data");
+          setError("Passenger not found.");
         }
       } catch (err) {
-        setError("Error fetching passenger data");
+        setError("Error fetching passenger data.");
       } finally {
         setLoading(false);
       }
@@ -49,27 +50,29 @@ function EditPassenger() {
     fetchPassengerData();
   }, [id]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
+    setSuccess(false); // Reset success state
 
-    if (!passportId || !firstName || !lastName || !email || !contact || !address || !gender || !dob) {
+    if (!passportId || !firstName || !lastName || !email || !contact || !address || !gender || !dob || !loginPw) {
       setError("All fields are required.");
       return;
     }
 
     setLoading(true);
-    setError("");
-    setSuccess(false);
 
     const passengerData = {
-      passportId: passportId,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      contact: contact,
-      address: address,
-      gender: gender,
-      dob: dob,
+      passportId,
+      firstName,
+      lastName,
+      email,
+      contact,
+      address,
+      gender,
+      dob,
+      loginpw: loginPw,
     };
 
     try {
@@ -82,7 +85,7 @@ function EditPassenger() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update passenger");
+        throw new Error("Failed to update passenger.");
       }
 
       const data = await response.json();
@@ -97,25 +100,30 @@ function EditPassenger() {
 
   return (
     <div style={{ maxWidth: "500px", margin: "50px auto", textAlign: "center" }}>
-      {/* Return to Home Page Button */}
+      {/* Return to Home Button */}
+      <div style={{ position: "absolute", top: "20px", left: "20px" }}>
       <button
-        onClick={() => navigate('/passengers')}
-        style={{
-          backgroundColor: '#2980b9',
-          color: 'white',
-          padding: '10px 15px',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          position: 'absolute',
-          top: '10px',
-          left: '10px',
-          zIndex: 1000,  // Ensure it stays on top
-        }}
-      >
-        Return to Home Page
-      </button>
-      <h2>Edit Passenger</h2>
+  onClick={() => navigate("/")}
+  style={{
+    position: "fixed",
+    top: "20px",
+    left: "20px",
+    padding: "10px 20px",
+    backgroundColor: "rgb(142, 42, 6)",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "16px",
+    boxShadow: "0 4px 6px rgba(249, 248, 248, 0.1)"
+  }}
+>
+  Return to Home Page
+</button>
+      </div>
+
+      <h2>Update Profile Info</h2>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -183,16 +191,37 @@ function EditPassenger() {
               onChange={(e) => setDob(e.target.value)}
             />
           </div>
+          <div style={formFieldStyle}>
+            <label>Login Password:</label>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={loginPw}
+                onChange={(e) => setLoginPw(e.target.value)}
+                style={{ flex: 1 }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  padding: "6px 12px",
+                  backgroundColor: showPassword ? "green" : "red",
+                  color: "white",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  marginLeft: "10px",
+                }}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
 
           {error && <p style={{ color: "red" }}>{error}</p>}
-          {success && <p style={{ color: "green" }}>Passenger updated successfully!</p>}
+          {success && <p style={{ color: "green" }}>Account Details updated successfully!</p>}
 
-          <button
-            type="submit"
-            style={buttonStyle}
-            disabled={loading}
-          >
-            Update Passenger
+          <button type="submit" style={buttonStyle} disabled={loading}>
+            Update
           </button>
         </form>
       )}
@@ -213,4 +242,4 @@ const buttonStyle = {
   cursor: "pointer",
 };
 
-export default EditPassenger;
+export default EditProfile;

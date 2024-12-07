@@ -11,18 +11,19 @@ function Signup() {
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
-  const [loginId, setLoginId] = useState("");
-  const [loginPw, setLoginPw] = useState("");
+  const [loginPw, setLoginPw] = useState(""); // Keep the login password field
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(""); // For displaying success message
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!passportId || !firstName || !lastName || !email || !contact || !address || !gender || !dob || !loginId || !loginPw) {
+    // Check if any of the required fields are empty
+    if (!passportId || !firstName || !lastName || !email || !contact || !address || !gender || !dob || !loginPw) {
       setError("All fields are required.");
       return;
     }
@@ -30,6 +31,7 @@ function Signup() {
     setLoading(true);
     setError("");
     setSuccess(false);
+    setSuccessMessage(""); // Reset success message
 
     const passengerData = {
       passportId,
@@ -40,11 +42,11 @@ function Signup() {
       address,
       gender,
       dob,
-      loginid: loginId,
-      loginpw: loginPw,
+      loginpw: loginPw,  // Pass the login password to the API
     };
 
     try {
+      // Step 1: Create the account
       const response = await fetch("http://localhost:3001/api/passengers/", {
         method: "POST",
         headers: {
@@ -60,6 +62,23 @@ function Signup() {
       const data = await response.json();
       setSuccess(true);
       console.log("Account created:", data);
+
+      // Step 2: Call the /api/passengerpss/{passportId} API to get the login ID
+      const loginIdResponse = await fetch(`http://localhost:3001/api/passengerpss/${passportId}`);
+      if (!loginIdResponse.ok) {
+        throw new Error("Failed to fetch login ID");
+      }
+
+      const loginIdData = await loginIdResponse.json();
+      const loginId = loginIdData.data[0]; // Assuming the login ID is in the first element of the data array
+
+      // Step 3: Display the login ID
+      setSuccess(true);
+      setError(""); // Clear any previous errors
+      setSuccessMessage(`Account created successfully! Here is your login ID: ${loginId}`);
+
+      console.log("Login ID: ", loginId); // Log the login ID for debugging
+
     } catch (err) {
       setError("Error: " + err.message);
     } finally {
@@ -68,7 +87,7 @@ function Signup() {
   };
 
   const handleReturn = () => {
-    navigate("/");
+    navigate("/Login");
   };
 
   return (
@@ -114,23 +133,22 @@ function Signup() {
             <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
           </div>
           <div className="input-field">
-            <label>Login ID:</label>
-            <input type="text" value={loginId} onChange={(e) => setLoginId(e.target.value)} />
-          </div>
-          <div className="input-field">
             <label>Login Password:</label>
             <input type="password" value={loginPw} onChange={(e) => setLoginPw(e.target.value)} />
           </div>
-          {error && <p className="error-message">{error}</p>}
-          {success && <p className="success-message">Account created successfully!</p>}
-          {loading && <p>Loading...</p>}
 
           <button type="submit" className="login-btn" disabled={loading}>
             Sign Up
           </button>
+          
+          {error && <p className="error-message">{error}</p>}
+          {success && !error && <p className="success-message">{successMessage}</p>}
+          {loading && <p>Loading...</p>}
+
+          
         </form>
         <button onClick={handleReturn} className="create-account-btn">
-        ←
+          ←
         </button>
       </div>
     </div>

@@ -32,8 +32,6 @@ const Passengers = () => {
             Address: passenger[6],
             Gender: passenger[7],
             DateOfBirth: passenger[8],
-            LoginID: passenger[9],
-            LoginPW: passenger[10],
           }));
           setPassengers(formattedPassengers);
         } else {
@@ -81,7 +79,7 @@ const Passengers = () => {
     <div>
       {/* Return to Home Page Button (Positioned Top Left) */}
       <div className="return-home-btn-container">
-      <button
+        <button
           onClick={() => navigate('/adminhome')}
           style={{
             backgroundColor: '#2980b9',
@@ -131,8 +129,6 @@ const Passengers = () => {
                 <th>Address</th>
                 <th>Gender</th>
                 <th>Date of Birth</th>
-                <th>Login ID</th>
-                <th>Login Password</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -148,19 +144,31 @@ const Passengers = () => {
                   <td>{passenger.Address}</td>
                   <td>{passenger.Gender}</td>
                   <td>{new Date(passenger.DateOfBirth).toLocaleDateString()}</td>
-                  <td>{passenger.LoginID}</td>
-                  <td>{passenger.LoginPW}</td>
                   <td>
-                    <button onClick={() => handleEditPassenger(passenger.PassengerID)}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <button
+                      onClick={() => handleEditPassenger(passenger.PassengerID)}
+                      style={{
+                        marginRight: '10px', // Add gap between Edit and Delete buttons
+                        padding: '5px 10px',
+                        cursor: 'pointer',
+                      }}
+                    >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDeletePassenger(passenger.PassengerID)}
                       className="delete-button"
+                      style={{
+                        padding: '5px 10px',
+                        cursor: 'pointer',
+                      }}
                     >
                       Delete
                     </button>
-                  </td>
+                  </div>
+                </td>
+
                 </tr>
               ))}
             </tbody>
