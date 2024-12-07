@@ -74,7 +74,7 @@ function Login() {
     <div className="login-container">
       <nav className="navbar navbar-expand-lg pt-2" style={{ textShadow: "0 0 15px #8c8c8c" }}>
         <div className="container-fluid px-5">
-          <a className="navbar-brand text-light fw-bold fs-3 mt-2 ms-3" href="#" style={{ letterSpacing: "2px" }}>
+          <a className="navbar-brand text-light fw-bold fs-3 mt-2 ms-3" href="/" style={{ letterSpacing: "2px" }}>
             FlyEase
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-send mx-2 fw-bold" viewBox="0 0 16 16">
               <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
