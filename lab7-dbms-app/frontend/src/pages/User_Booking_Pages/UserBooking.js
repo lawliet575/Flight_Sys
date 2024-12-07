@@ -73,6 +73,25 @@ function UserBook() {
     fetchFlightClasses();
   }, []);
 
+  const fetchPrice = async (flightId, classId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/bookingprice/${flightId}/${classId}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch price");
+      }
+      const priceData = await response.json();
+      const price = priceData.price.rows?.[0]?.[0]; // Extract price from the response
+
+      if (price !== undefined) {
+        setTotalPrice(price); // Update total price
+      } else {
+        throw new Error("Price not found in response");
+      }
+    } catch (err) {
+      setError("Error fetching price: " + err.message);
+    }
+  };
+
   const handleClassChange = (e) => {
     const selectedClass = e.target.value;
     setClassId(selectedClass);
@@ -84,6 +103,9 @@ function UserBook() {
     if (selectedClassData) {
       setSelectedClassDescription(selectedClassData.CLASS_DESCRIPTION);
       setBaggageAllowed(selectedClassData.BAGGAGE_ALLOWED);
+
+      // Fetch price after selecting the class
+      fetchPrice(id, selectedClass);
     }
   };
 
@@ -162,11 +184,6 @@ function UserBook() {
             ))}
           </select>
         </div>
-        {selectedClassDescription && (
-          <div className="form-field">
-            <p>Baggage Allowed: {baggageAllowed} kg</p>
-          </div>
-        )}
         <div className="form-field">
           <label>Departure Date:</label>
           <input type="text" value={formattedDepartureDate} readOnly className="read-only-input" />
@@ -180,16 +197,22 @@ function UserBook() {
           <input
             type="number"
             value={totalPrice}
-            onChange={(e) => setTotalPrice(e.target.value)}
+            readOnly
+            className="read-only-input"
           />
         </div>
+        {selectedClassDescription && (
+          <div className="form-field">
+            <label>Baggage Allowed:</label>
+            <p className="baggage-info">{baggageAllowed} kg</p>
+          </div>
+        )}
 
         {loading && <p>Loading...</p>}
 
         <button type="submit" className="button" disabled={loading}>
           Book
         </button>
-        
       </form>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">Booking Done successfully!</p>}

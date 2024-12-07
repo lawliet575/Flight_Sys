@@ -5,8 +5,24 @@ const {
   newBooking,
   updateBookingByID,
   deleteBookingByID,
-  getBookingByIdFromDB
+  getBookingByIdFromDB,
+  calculateprice
 } = require('../models/BookingModels');
+
+
+async function getprice(req, res) {
+  try {
+    const { flightId, classId } = req.params; // If using route parameters
+    // const { flightId, classId } = req.query; // Use this if using query parameters
+    // Pass the flightId and classId to the calculateprice function
+    const price = await calculateprice(flightId, classId);
+
+    res.json({ flightId, classId, price });
+  } catch (err) {
+    console.error("Error calculating price:", err);
+    res.status(500).json({ message: "Error calculating price", error: err.message });
+  }
+}
 
 // Get all bookings
 async function getAllBookings(req, res) {
@@ -93,6 +109,7 @@ async function deleteBooking(req, res) {
 
 
 module.exports = {
+  getprice,
   getAllBookings,
   getBookingById,
   addBooking,
