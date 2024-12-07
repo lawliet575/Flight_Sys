@@ -130,7 +130,7 @@ function Signup() {
           </button>
         </form>
         <button onClick={handleReturn} className="create-account-btn">
-          Back to Login Page
+        ←
         </button>
       </div>
     </div>
