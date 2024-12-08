@@ -16,6 +16,7 @@ import { PassengerProvider } from "./pages/Loginpage/PassengerContext";
 import Signup from "./pages/Loginpage/Signup";
 import Admin_Home from "./pages/Homepage/Admin_Home";
 import Home from "./pages/Homepage/Home";
+import Stats from "./pages/StatsPage/Stats";
 
 //for user
 import ViewFlight from "./pages/User_Booking_Pages/View_Flights";
@@ -59,6 +60,7 @@ function App() {
           <Route path="/airlines" element={<Airlines />} />
           <Route path="/flightclass" element={<FlightClasses />} />
           <Route path="/airports" element={<Airports />} />
+          <Route path="/stats" element={<Stats />} />
 
           <Route path="/viewflights" element={<ViewFlight/>} />
           <Route path="/userbooking/:id" element={<UserBook/>} />
