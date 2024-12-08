@@ -130,7 +130,7 @@ const EditFlight = () => {
       <h1>Edit Flight</h1>
       {message && <p>{message}</p>}
 
-      <form onSubmit={handleUpdateFlight}>
+      <form  className="edit" onSubmit={handleUpdateFlight}>
         <div>
           <label>Departure Airport</label>
           <select

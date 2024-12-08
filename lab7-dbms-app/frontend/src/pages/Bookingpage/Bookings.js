@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import "../User_Booking_Pages/ViewBookingModule.css"
 
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -67,48 +68,32 @@ const Bookings = () => {
   };
 
   return (
-    <div>
-      {/* Navigation button to Home Page */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', margin: '10px 0' }}>
+    <div className="view-booking-container">
+     
+      <div className='view-booking-header mt-5'>
+      <h1>Bookings</h1>
         <button
           onClick={() => navigate('/adminhome')}
-          style={{
-            backgroundColor: '#2980b9',
-            color: 'white',
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+          className="view-booking-back-button"
         >
-          Return to Home Page
+           ←
         </button>
-      </div>
-
-      <h1>Bookings</h1>
-
-      {/* Add New Booking Button - aligned to the left above the table */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px' }}>
+    
         <button
           onClick={() => navigate('/addbooking')}
-          style={{
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+          className="view-booking-add-button"
         >
           Add New Booking
         </button>
-      </div>
+      </div>      
 
-      <div className="booking-list">
-        {bookings.length === 0 ? (
-          <p>No bookings available</p>
-        ) : (
-          <table>
+      {bookings.length === 0 ? (
+        <div className="no-bookings">
+          <p>No bookings.</p>
+        </div>
+      ) : (
+        <div className='table-container ms-5'>
+          <table className='table'>
             <thead>
               <tr>
                 <th>Booking ID</th>
@@ -133,13 +118,30 @@ const Bookings = () => {
                   <td>{booking.Price}</td>
                   <td>
                     {/* Edit button */}
-                    <button onClick={() => handleEditBooking(booking.BookingID)}>
+                    <button style={{
+                          marginRight: '10px',
+                          backgroundColor: '#2980b9',
+                          color: 'white',
+                          padding: '5px 10px',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: 'pointer',
+                          height: '30px'
+                        }} onClick={() => handleEditBooking(booking.BookingID)}>
                       Edit
                     </button>
                     {/* Add gap and style Delete button */}
                     <button 
                       onClick={() => handleDeleteBooking(booking.BookingID)} 
-                      style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}>
+                      style={{
+                        backgroundColor: '#e74c3c',
+                        color: 'white',
+                        padding: '5px 10px',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        height: '30px'
+                      }}>
                       Delete
                     </button>
                   </td>
@@ -147,9 +149,10 @@ const Bookings = () => {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
-    </div>
+    
   );
 };
 

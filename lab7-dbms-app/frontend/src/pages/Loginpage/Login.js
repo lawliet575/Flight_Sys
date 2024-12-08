@@ -46,15 +46,19 @@ function Login() {
         const passengerResponse = await fetch("http://localhost:3001/api/passengers");
         if (!passengerResponse.ok) {
           throw new Error("Failed to fetch passenger data.");
+          
         }
         const passengerData = await passengerResponse.json();
+
+        
+       
 
         // Check if the entered username matches either the User ID or the Email for passengers
         const matchedPassenger = passengerData.data.find(
           (passenger) =>
             (passenger[0] === username || passenger[4] === username) && passenger[9] === password
         );
-
+        console.log(matchedPassenger);
         if (matchedPassenger) {
           setPassengerId(matchedPassenger[0]); // Store passenger ID (e.g., "PS13") in the context
           navigate("/home"); // Redirect to passenger home page

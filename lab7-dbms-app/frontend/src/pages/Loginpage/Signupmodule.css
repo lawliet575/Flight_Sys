@@ -124,7 +124,9 @@ form {
   height: 40px;
   background-color: rgba(0, 0, 0, 0.253);
   color: azure;
+  font-size: medium;
   border-radius: 0%;
+  border: transparent;
 }
 
 option.input-box {
