@@ -1,0 +1,119 @@
+/* ViewBookingModule.css */
+
+/* Container for the entire view bookings page */
+.view-booking-container {
+    background-image: url('./homepic.jpg'); /* Reuse the same background image */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    height: 100vh; /* Full height of the screen */
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative; /* Allows absolute positioning of elements */
+    font-family: 'Arial', sans-serif; /* Clean and readable font */
+    overflow: auto;
+  }
+  .view-booking-container::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Dark overlay with 30% opacity */
+    z-index: 1; /* Place it below the text and buttons */
+  }
+  
+  .view-booking-container > * {
+    position: relative;
+    z-index: 2; 
+  }
+  
+  /* Header for View Bookings */
+  .view-booking-header {
+    margin: 30px;
+    color: white;
+    text-shadow: 0 4px 6px rgba(249, 248, 248, 0.1);
+  }
+  
+  .view-booking-header h1 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  
+  .view-booking-header .subtitle {
+    font-size: 18px;
+    color: white;
+  }
+  
+  /* Back Button */
+  .view-booking-back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: rgb(142, 42, 6); 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(249, 248, 248, 0.1);
+  }
+  
+  /* Table container */
+  .table-container {
+    margin: 20px auto; /* Centers the table horizontally */
+    width: 90%; /* Adjusts the table width */
+  }
+  
+  /* Table styling */
+  .table {
+    width: 100%; /* Ensures the table fills the container */
+    border-collapse: collapse; /* Removes spacing between table cells */
+    border-radius: 6px; /* Adds rounded corners to the entire table */
+    overflow: hidden;
+  }
+  .table tr:nth-child(even) {
+    background-color: transparent; /* Removes any alternating color for even rows */
+  }
+  
+  .table tr:nth-child(odd) {
+    background-color: transparent; /* Removes any alternating color for odd rows */
+  }
+  
+  table.table th,
+  table.table td {
+    padding: 10px 20px;
+    text-align: left;
+    background-color: rgba(0, 0, 0, 0.686);
+    color: white;
+    font-size: 15px;
+  }
+  
+  /* Empty bookings message */
+  .no-bookings {
+    margin: 50px auto;
+    padding: 20px;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+  }
+  
+  /* Footer */
+  .footer {
+    margin-top: 50px;
+    font-size: 14px;
+    color: white;
+  }
+  
+  /* Add hover effect for buttons */
+  .view-booking-back-button:hover {
+    background-color: rgb(195, 59, 10); /* Example: changes background color to red */
+    cursor: pointer;
+  }
+  

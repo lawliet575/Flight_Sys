@@ -21,6 +21,8 @@ import Home from "./pages/Homepage/Home";
 import ViewFlight from "./pages/User_Booking_Pages/View_Flights";
 import UserBook from "./pages/User_Booking_Pages/UserBooking";
 import EditProfile from "./pages/User_Booking_Pages/EditProfile";
+import ViewBooking from "./pages/User_Booking_Pages/View_Bookings";
+
 
 
 //will create a home page a general one for /
@@ -61,6 +63,8 @@ function App() {
           <Route path="/viewflights" element={<ViewFlight/>} />
           <Route path="/userbooking/:id" element={<UserBook/>} />
           <Route path="/editprofile/:id" element={<EditProfile/>} />
+          <Route path="/viewbooking/:id" element={<ViewBooking/>} />
+
 
 
 
