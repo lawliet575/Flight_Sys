@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "./EditProfileModule.css";
 
 function EditProfile() {
   const { id } = useParams(); // Extract the passenger ID from the URL parameter
@@ -99,36 +100,19 @@ function EditProfile() {
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "50px auto", textAlign: "center" }}>
+    <div className="edit-profile-container">
       {/* Return to Home Button */}
-      <div style={{ position: "absolute", top: "20px", left: "20px" }}>
-      <button
-  onClick={() => navigate("/")}
-  style={{
-    position: "fixed",
-    top: "20px",
-    left: "20px",
-    padding: "10px 20px",
-    backgroundColor: "rgb(142, 42, 6)",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontSize: "16px",
-    boxShadow: "0 4px 6px rgba(249, 248, 248, 0.1)"
-  }}
->
-  Return to Home Page
-</button>
-      </div>
+      <button className="edit-profile-back-button" onClick={() => navigate("/")}>
+        Return to Home Page
+      </button>
 
       <h2>Update Profile Info</h2>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <form onSubmit={handleSubmit}>
-          <div style={formFieldStyle}>
+        <form className="edit-profile-form" onSubmit={handleSubmit}>
+          <div className="form-field">
             <label>Passport ID:</label>
             <input
               type="text"
@@ -136,7 +120,7 @@ function EditProfile() {
               onChange={(e) => setPassportId(e.target.value)}
             />
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>First Name:</label>
             <input
               type="text"
@@ -144,7 +128,7 @@ function EditProfile() {
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>Last Name:</label>
             <input
               type="text"
@@ -152,7 +136,7 @@ function EditProfile() {
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>Email:</label>
             <input
               type="email"
@@ -160,7 +144,7 @@ function EditProfile() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>Contact:</label>
             <input
               type="text"
@@ -168,7 +152,7 @@ function EditProfile() {
               onChange={(e) => setContact(e.target.value)}
             />
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>Address:</label>
             <input
               type="text"
@@ -176,14 +160,14 @@ function EditProfile() {
               onChange={(e) => setAddress(e.target.value)}
             />
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>Gender:</label>
             <select value={gender} onChange={(e) => setGender(e.target.value)}>
               <option value="M">Male</option>
               <option value="F">Female</option>
             </select>
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>Date of Birth:</label>
             <input
               type="date"
@@ -191,36 +175,28 @@ function EditProfile() {
               onChange={(e) => setDob(e.target.value)}
             />
           </div>
-          <div style={formFieldStyle}>
+          <div className="form-field">
             <label>Login Password:</label>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="password-field">
               <input
                 type={showPassword ? "text" : "password"}
                 value={loginPw}
                 onChange={(e) => setLoginPw(e.target.value)}
-                style={{ flex: 1 }}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  padding: "6px 12px",
-                  backgroundColor: showPassword ? "green" : "red",
-                  color: "white",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                  marginLeft: "10px",
-                }}
+                className="password-toggle-button"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
           </div>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          {success && <p style={{ color: "green" }}>Account Details updated successfully!</p>}
+          {error && <p className="error-message">{error}</p>}
+          {success && <p className="success-message">Account Details updated successfully!</p>}
 
-          <button type="submit" style={buttonStyle} disabled={loading}>
+          <button type="submit" className="submit-button" disabled={loading}>
             Update
           </button>
         </form>
@@ -228,18 +204,5 @@ function EditProfile() {
     </div>
   );
 }
-
-const formFieldStyle = {
-  marginBottom: "15px",
-  textAlign: "left",
-};
-
-const buttonStyle = {
-  backgroundColor: "#4CAF50",
-  color: "white",
-  padding: "10px 20px",
-  border: "none",
-  cursor: "pointer",
-};
 
 export default EditProfile;

@@ -242,9 +242,6 @@ BEGIN
 END;
 /
 
-
-
-
 --AIRPORTS
 TRUNCATE TABLE AIRPORTS;
 INSERT INTO AIRPORTS (AIRPORT_NAME, CITY, LATITUDE, LONGITUDE)
@@ -327,6 +324,8 @@ VALUES ('PS1', 'F3', 'C2', TO_DATE('2024-11-16', 'YYYY-MM-DD'), 'B12');
 INSERT INTO BOOKINGS (PASSENGER_ID, FLIGHT_ID, f_ClassID, BOOKING_DATE, SEAT_NO)
 VALUES ('PS3', 'F4', 'C3', TO_DATE('2024-11-17', 'YYYY-MM-DD'), 'C10');
 
+--SOME TESTINGS
+
 select CALCULATE_PRICE('F3', 'C3') from dual;
 
 
@@ -335,4 +334,41 @@ select CALCULATE_PRICE('F3', 'C3') from dual;
 commit;
 
 
-SELECT * FROM FLIGHTS;
+--FOR STATS IN ADMIN TESTINGS
+--MOST POPULAR FLIGHT/MOST BOOKED flight currently
+select flight_id,count(*) from bookings group by flight_id order by 2 desc fetch first row only;
+--yaha se jo flight id ayegi uski details show kara dena in a row
+
+--avg price of all bookings
+select round(avg(total_price),2) from bookings group by ;
+
+select flight_id,max(total_price) from bookings group by flight_id order by 2 desc fetch first row only;
+select max(total_price) from bookings;
+
+
+select flight_id,min(total_price) from bookings group by flight_id order by 2 asc fetch first row only;
+select round(avg(total_price),2) from bookings;
+
+
+
+--count of each flight classes booked
+select  fc.class_description,count(f_classid) 
+from bookings b
+inner join flight_class fc on b.f_classid=fc.class_id
+group by fc.class_description;
+
+
+--most profitable airline
+select al.airline_name,sum(b.total_price) 
+from bookings b 
+inner join flights f on f.flight_id=b.flight_id
+inner join aircrafts ar on f.aircraft_id=ar.aircraft_id
+inner join airlines al on ar.airline_id=al.airline_id
+group by al.airline_name order by 2 desc fetch first row only;
+
+
+
+
+
+
+

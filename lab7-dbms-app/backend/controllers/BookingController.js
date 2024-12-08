@@ -6,7 +6,13 @@ const {
   updateBookingByID,
   deleteBookingByID,
   getBookingByIdFromDB,
-  calculateprice
+  calculateprice,
+  getpopularflight,
+  getbookedflightclasses,
+  getexpensiveflight,
+  getcheapestflight,
+  getaverageflightcost,
+  getprofitableairline
 } = require('../models/BookingModels');
 
 
@@ -107,6 +113,70 @@ async function deleteBooking(req, res) {
   }
 }
 
+async function mostpopularflight(req, res) {
+  try {
+    const bookings = await getpopularflight();
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).json({ message: "Error fetching bookings", error: err.message });
+  }
+}
+
+async function bookedflightclass(req, res) {
+  try {
+    const bookings = await getbookedflightclasses();
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).json({ message: "Error fetching bookings", error: err.message });
+  }
+}
+
+async function expensiveflight(req, res) {
+  try {
+    const bookings = await getexpensiveflight();
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).json({ message: "Error fetching bookings", error: err.message });
+  }
+}
+
+async function cheapestflight(req, res) {
+  try {
+    const bookings = await getcheapestflight();
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).json({ message: "Error fetching bookings", error: err.message });
+  }
+}
+
+async function averageflightcost(req, res) {
+  try {
+    const bookings = await getaverageflightcost();
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).json({ message: "Error fetching bookings", error: err.message });
+  }
+}
+
+async function profitableairline(req, res) {
+  try {
+    const bookings = await getprofitableairline();
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).json({ message: "Error fetching bookings", error: err.message });
+  }
+}
+
+
+
+
+
 
 module.exports = {
   getprice,
@@ -114,5 +184,11 @@ module.exports = {
   getBookingById,
   addBooking,
   updateBooking,
-  deleteBooking
+  deleteBooking,
+  mostpopularflight,
+  bookedflightclass,
+  expensiveflight,
+  cheapestflight,
+  averageflightcost,
+  profitableairline
 };
