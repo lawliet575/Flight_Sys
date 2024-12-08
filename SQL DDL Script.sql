@@ -336,3 +336,35 @@ select CALCULATE_PRICE('F3', 'C3') from dual;
 commit;
 
 
+--FOR STATS\
+--MOST POPULAR FLIGHT/MOST BOOKED flight currently
+select flight_id,count(flight_id) from bookings group by flight_id order by 2 desc fetch first row only;
+--yaha se jo flight id ayegi uski details show kara dena in a row
+
+--avg price of all bookings
+select round(avg(total_price),2) from bookings group by ;
+
+select flight_id,max(total_price) from bookings group by flight_id order by 2 desc fetch first row only;
+select max(total_price) from bookings;
+
+
+select flight_id,min(total_price) from bookings group by flight_id order by 2 asc fetch first row only;
+select avg(total_price) from bookings;
+
+
+
+--count of each flight classes booked
+select  fc.class_description,count(f_classid) 
+from bookings b
+inner join flight_class fc on b.f_classid=fc.class_id
+group by fc.class_description;
+
+select  fc.class_description,max(total_price) --max price of each class booked isi se min and avg bhe hoskta
+from bookings b
+inner join flight_class fc on b.f_classid=fc.class_id
+group by fc.class_description;
+
+
+
+
+

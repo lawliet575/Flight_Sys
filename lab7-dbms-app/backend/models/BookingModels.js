@@ -180,6 +180,122 @@ async function calculateprice(flightId, classId) {
   }
 }
 
+async function getpopularflight() {
+  let query = `select flight_id,count(flight_id) from bookings group by flight_id order by 2 desc fetch first row only`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+async function getbookedflightclasses() {
+  let query = `select  fc.class_description,count(f_classid) 
+from bookings b
+inner join flight_class fc on b.f_classid=fc.class_id
+group by fc.class_description`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+async function getexpensiveflight() {
+  let query = `select flight_id,max(total_price) from bookings group by flight_id order by 2 desc fetch first row only`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+async function getcheapestflight() {
+  let query = `select flight_id,min(total_price) from bookings group by flight_id order by 2 asc fetch first row only`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+async function getaverageflightcost() {
+  let query = `select round(avg(total_price),2) from bookings`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+async function getprofitableairline() {
+  let query = `select al.airline_name,max(b.total_price) 
+  from bookings b 
+  inner join flights f on f.flight_id=b.flight_id
+  inner join aircrafts ar on f.aircraft_id=ar.aircraft_id
+  inner join airlines al on ar.airline_id=al.airline_id
+  group by al.airline_name order by 2 desc fetch first row only`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
 
 
 
@@ -189,5 +305,11 @@ module.exports = {
   newBooking,
   updateBookingByID,
   deleteBookingByID,
-  calculateprice
+  calculateprice,
+  getpopularflight,
+  getbookedflightclasses,
+  getexpensiveflight,
+  getcheapestflight,
+  getaverageflightcost,
+  getprofitableairline
 };
