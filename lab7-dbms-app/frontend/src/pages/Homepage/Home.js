@@ -86,12 +86,12 @@ function Home() {
       </nav>
 
       <div className="header" style={{ textShadow: "0 0 15px #5c5c5c" }}>
-        <h2 className="fw-semibold">"Welcome to the FlyEase.pk"</h2>
+        <h2 className="fw-semibold">Welcome to FlyEase</h2>
         <p className="subtitle fw-semibold fst-italic">
           Your one-stop solution for booking and managing flights
         </p>
         <button onClick={handleBookNow} className="btn btn-large w-25 text-light fs-5 fw-semibold" style={{ backgroundColor: "#375c84", textShadow: "0 0 5px #303030" }}>
-          View Flights
+        Book Now
         </button>
       </div>
 

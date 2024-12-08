@@ -130,7 +130,7 @@ function Login() {
           </div>
         </div>
         <div className="text-light pb-5" style={{ width: "30%", textShadow: "0 0 8px #303030" }}>
-          <h2 className="fs-1 text-start" style={{ fontWeight: "700" }}>Boarding Awaits</h2>
+          <h2 className="fs-1 text-start" style={{ fontWeight: "700" }}>Boarding Awaits!</h2>
           <p className="fw-bold fs-4 ps-0 text-start fst-italic">Your gateway to seamless travel</p>
         </div>
       </div>
