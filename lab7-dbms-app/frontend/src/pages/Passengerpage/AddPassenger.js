@@ -1,5 +1,7 @@
 import React, { useState } from "react"; 
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import "../User_Booking_Pages/ViewBookingModule.css"
+
 
 function AddPassenger() {
   const [passportId, setPassportId] = useState("");

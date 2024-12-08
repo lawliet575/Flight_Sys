@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import "../User_Booking_Pages/ViewBookingModule.css"
+
 
 
 const Airports = () => {
@@ -37,27 +39,25 @@ const Airports = () => {
   }, []);
 
   return (
-    <div>
+    <div className="view-booking-container">
+      <div className="view-booking-header mt-5">
+        <h1>Airports</h1>
+  
         <button
-          onClick={() => navigate('/adminhome')}
-          style={{
-            backgroundColor: '#2980b9',
-            color: 'white',
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+          onClick={() => navigate("/adminhome")}
+          className="view-booking-back-button"
         >
-          Return to Home Page
+          ←
         </button>
-
-      <h1>Airports</h1>
-      <div className="airport-list">
-        {airports.length === 0 ? (
+      </div>
+  
+      {airports.length === 0 ? (
+        <div className="no-bookings">
           <p>No airports available</p>
-        ) : (
-          <table>
+        </div>
+      ) : (
+        <div className="table-container ms-5">
+          <table className="table">
             <thead>
               <tr>
                 <th>Airport ID</th>
@@ -75,10 +75,11 @@ const Airports = () => {
               ))}
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
+  
 };
 
 export default Airports;

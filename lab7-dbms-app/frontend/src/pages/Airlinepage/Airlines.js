@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "../User_Booking_Pages/ViewBookingModule.css"
+
 
 
 const Airlines = () => {
@@ -38,26 +40,25 @@ const Airlines = () => {
   }, []);
 
   return (
-    <div>
-      <button
-          onClick={() => navigate('/adminhome')}
-          style={{
-            backgroundColor: '#2980b9',
-            color: 'white',
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+    <div className="view-booking-container">
+      <div className="view-booking-header mt-5">
+        <h1>Airlines</h1>
+  
+        <button
+          onClick={() => navigate("/adminhome")}
+          className="view-booking-back-button"
         >
-          Return to Home Page
+          ←
         </button>
-      <h1>Airlines</h1>
-      <div className="airline-list">
-        {airlines.length === 0 ? (
+      </div>
+  
+      {airlines.length === 0 ? (
+        <div className="no-bookings">
           <p>No airlines available</p>
-        ) : (
-          <table>
+        </div>
+      ) : (
+        <div className="table-container ms-5">
+          <table className="table">
             <thead>
               <tr>
                 <th>Airline ID</th>
@@ -73,14 +74,16 @@ const Airlines = () => {
                   <td>{airline.AirlineName}</td>
                   <td>{new Date(airline.FoundedDate).toLocaleDateString()}</td>
                   <td>{airline.Type}</td>
+                 
                 </tr>
               ))}
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
+  
 };
 
 export default Airlines;
