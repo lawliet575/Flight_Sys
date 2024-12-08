@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "../User_Booking_Pages/ViewBookingModule.css"
 
 const Flights = () => {
   const [flights, setFlights] = useState([]);
@@ -144,33 +145,23 @@ const Flights = () => {
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', margin: '10px 0' }}>
-        <button
-          onClick={() => navigate('/adminhome')}
-          style={{
-            backgroundColor: '#2980b9',
-            color: 'white',
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            marginRight: '10px', // Space between buttons
-          }}
-        >
-          Return to Home Page
-        </button>
-      </div>
+    <div className="view-booking-container">
+      <div className='view-booking-header mt-5'>
+      <h1 >Flights</h1>
 
-      <h1>Flights</h1>
+      <button onClick={() => navigate("/home")} className="view-booking-back-button">
+        ←
+      </button>
+      <button onClick={handleAddFlight} className='view-booking-add-button'>Add Flight</button>
+      
+      </div>    
 
-      <button onClick={handleAddFlight}>Add Flight</button>
-
-      <div className="flight-list">
-        {flights.length === 0 ? (
-          <p>No flights available</p>
-        ) : (
-          <table>
+      {flights.length === 0 ? (
+        <div className="no-bookings">
+          <p>No flights.</p>
+        </div>
+      ) : ( <div className='table-container ms-5'>
+          <table className='table'>
             <thead>
               <tr>
                 <th>Flight ID</th>
@@ -205,7 +196,7 @@ const Flights = () => {
                     <td>{new Date(flight.ArrivalDate).toLocaleDateString()}</td>
                     <td>{flight.ArrivalTime}</td>
                     <td>{airlineName}</td> {/* Display airline name */}
-                    <td style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <td style={{ display: 'flex', justifyContent: 'flex-center', alignItems: 'center', height: '88.17px'}}>
                       <button
                         onClick={() => handleEditFlight(flight.FlightID)}
                         style={{
@@ -216,6 +207,7 @@ const Flights = () => {
                           border: 'none',
                           borderRadius: '5px',
                           cursor: 'pointer',
+                          height: '30px'
                         }}
                       >
                         Edit
@@ -229,6 +221,7 @@ const Flights = () => {
                           border: 'none',
                           borderRadius: '5px',
                           cursor: 'pointer',
+                          height: '30px'
                         }}
                       >
                         Delete
@@ -239,9 +232,10 @@ const Flights = () => {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </div>
-    </div>
+    
   );
 };
 

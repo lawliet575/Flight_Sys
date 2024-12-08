@@ -45,10 +45,11 @@ async function deleteFlightByIdFromDB(id) {
   const query = `DELETE FROM FLIGHTS WHERE FLIGHT_ID = :id`; // Query to delete a flight by ID
   let connection;
 
+
   try {
     connection = await oracledb.getConnection(); // Get a connection from the pool
     const result = await connection.execute(query, [id], { autoCommit: true }); // Execute query with bind variable and commit
-
+    console.log(result)
     return result.rowsAffected > 0; // Return true if at least one row was deleted
   } catch (err) {
     console.error('Error deleting flight:', err);

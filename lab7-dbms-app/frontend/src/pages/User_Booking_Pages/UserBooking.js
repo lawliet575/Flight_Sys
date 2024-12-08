@@ -3,8 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PassengerContext } from "../Loginpage/PassengerContext";
 import "./UserBook.css"; // Import the CSS file
 
-
-
 function UserBook() {
   const [classId, setClassId] = useState("");
   const [departureDate, setDepartureDate] = useState("");
@@ -20,6 +18,7 @@ function UserBook() {
 
   const { passengerId } = useContext(PassengerContext);
   const { id } = useParams();
+  console.log(PassengerContext);
   const navigate = useNavigate();
 
   // Function to generate random seat number
