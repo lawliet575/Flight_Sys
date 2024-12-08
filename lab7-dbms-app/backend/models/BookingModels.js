@@ -53,15 +53,14 @@ async function newBooking(data) {
     console.log(data);
 
     await conn.execute(
-      `INSERT INTO BOOKINGS (PASSENGER_ID, FLIGHT_ID, f_ClassID, BOOKING_DATE, SEAT_NO, TOTAL_PRICE) 
-      VALUES (:PASSENGER_ID, :FLIGHT_ID, :f_ClassID, :BOOKING_DATE, :SEAT_NO, :TOTAL_PRICE)`,
+      `INSERT INTO BOOKINGS (PASSENGER_ID, FLIGHT_ID, f_ClassID, BOOKING_DATE, SEAT_NO) 
+      VALUES (:PASSENGER_ID, :FLIGHT_ID, :f_ClassID, :BOOKING_DATE, :SEAT_NO)`,
       { 
         PASSENGER_ID: data.PassengerID,
         FLIGHT_ID: data.FlightID,
         f_ClassID: data.ClassID,
         BOOKING_DATE: new Date(data.BookingDate), // Convert to Date if necessary
         SEAT_NO: data.SeatNo,
-        TOTAL_PRICE: data.TotalPrice
       },
       { autoCommit: true }
     );
@@ -163,6 +162,25 @@ async function deleteBookingByID(BookingID) {
 }
 
 
+async function calculateprice(flightId, classId) {
+  const query = `SELECT CALCULATE_PRICE(:flightId, :classId) AS PRICE FROM dual`;
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection();
+    const result = await connection.execute(query, { flightId, classId });
+    return result; // Return the full result object directly
+  } catch (error) {
+    console.error("Error calculating price:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
+
 
 
 module.exports = {
@@ -170,5 +188,6 @@ module.exports = {
   getBookingByIdFromDB,
   newBooking,
   updateBookingByID,
-  deleteBookingByID
+  deleteBookingByID,
+  calculateprice
 };

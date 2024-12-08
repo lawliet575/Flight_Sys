@@ -1,10 +1,10 @@
-
-// export default ViewFlight;
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { PassengerContext } from "../Loginpage/PassengerContext"; // Import the context
 import "./ViewFlightModule.css";
 
 function ViewFlight() {
+  const { passengerId } = useContext(PassengerContext); // Access the passengerId from context
   const [flights, setFlights] = useState([]);
   const [airportDetails, setAirportDetails] = useState({});
   const [loading, setLoading] = useState(true);
@@ -112,7 +112,13 @@ function ViewFlight() {
   const formatTime = (time) => time;
 
   const handleBookClick = (flightId) => {
-    navigate(`/userbooking/${flightId}`);
+    if (!passengerId) {
+      // Show alert and redirect to login if passengerId is empty
+      alert("Please log in first to book a flight.");
+      navigate("/login");
+    } else {
+      navigate(`/userbooking/${flightId}`);
+    }
   };
 
   const handleDepartureSearchChange = (e) => {
@@ -251,71 +257,3 @@ function ViewFlight() {
 }
 
 export default ViewFlight;
-
-// const styles = {
-//   container: {
-//     padding: "20px",
-//   },
-//   header: {
-//     fontSize: "24px",
-//     fontWeight: "bold",
-//   },
-//   searchContainer: {
-//     marginBottom: "20px",
-//     display: "flex",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//   },
-//   inputContainer: {
-//     position: "relative",
-//     width: "45%",
-//   },
-//   searchInput: {
-//     width: "100%",
-//     padding: "8px",
-//     fontSize: "16px",
-//     borderRadius: "4px",
-//   },
-//   dropdown: {
-//     position: "absolute",
-//     top: "100%",
-//     left: "0",
-//     right: "0",
-//     border: "1px solid #ccc",
-//     backgroundColor: "#fff",
-//     maxHeight: "200px",
-//     overflowY: "auto",
-//     zIndex: "1",
-//   },
-//   dropdownItem: {
-//     padding: "8px",
-//     cursor: "pointer",
-//   },
-//   swapButton: {
-//     margin: "0 10px",
-//     padding: "8px",
-//     cursor: "pointer",
-//   },
-//   resetButton: {
-//     padding: "8px 16px",
-//     backgroundColor: "#ff4500",
-//     color: "#fff",
-//     border: "none",
-//     cursor: "pointer",
-//     marginTop: "20px",
-//   },
-//   tableContainer: {
-//     marginTop: "20px",
-//   },
-//   table: {
-//     width: "100%",
-//     borderCollapse: "collapse",
-//   },
-//   bookButton: {
-//     padding: "8px 16px",
-//     backgroundColor: "#28a745",
-//     color: "#fff",
-//     border: "none",
-//     cursor: "pointer",
-//   },
-// };

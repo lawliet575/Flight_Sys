@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 function AddPassenger() {
@@ -10,7 +10,6 @@ function AddPassenger() {
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
-  const [loginId, setLoginId] = useState("");
   const [loginPw, setLoginPw] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +21,7 @@ function AddPassenger() {
     e.preventDefault();
 
     // Validate required fields
-    if (!passportId || !firstName || !lastName || !email || !contact || !address || !gender || !dob || !loginId || !loginPw) {
+    if (!passportId || !firstName || !lastName || !email || !contact || !address || !gender || !dob) {
       setError("All fields are required.");
       return;
     }
@@ -41,7 +40,6 @@ function AddPassenger() {
       address,
       gender,
       dob,
-      loginid: loginId,
       loginpw: loginPw,
     };
 
@@ -73,8 +71,13 @@ function AddPassenger() {
   };
 
   return (
-
     <div style={{ maxWidth: "500px", margin: "50px auto", textAlign: "center" }}>
+      <button
+        onClick={handleReturn} // Trigger the return navigation
+        style={returnButtonStyle}
+      >
+        Return to Passengers
+      </button>
 
       <h2>Add New Passenger</h2>
       <form onSubmit={handleSubmit}>
@@ -146,17 +149,8 @@ function AddPassenger() {
           />
         </div>
         <div style={formFieldStyle}>
-          <label>Login ID:</label>
-          <input
-            type="text"
-            value={loginId}
-            onChange={(e) => setLoginId(e.target.value)}
-          />
-        </div>
-        <div style={formFieldStyle}>
           <label>Login Password:</label>
           <input
-            type="password"
             value={loginPw}
             onChange={(e) => setLoginPw(e.target.value)}
           />
@@ -174,13 +168,6 @@ function AddPassenger() {
           Add Passenger
         </button>
       </form>
-      <button
-        onClick={handleReturn} // Trigger the return navigation
-        style={returnButtonStyle}
-      >
-        Return to Passengers
-      </button>
-      
     </div>
   );
 }
@@ -205,6 +192,9 @@ const returnButtonStyle = {
   border: "none",
   cursor: "pointer",
   marginTop: "10px",
+  position: "absolute", // To position the button at top left
+  left: "20px", // Adjust left distance
+  top: "20px", // Adjust top distance
 };
 
 export default AddPassenger;

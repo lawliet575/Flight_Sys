@@ -7,6 +7,8 @@ const PassengerController = require("../controllers/PassengerController");
 router.get("/passengers", PassengerController.getAllPassengers);
 
 router.get('/passengers/:id', PassengerController.getPassengerById);
+router.get('/passengerpss/:id', PassengerController.getPassengerByppt); //get  by passportid
+
 
 
 //get id vali

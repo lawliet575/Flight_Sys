@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import './EditFlight.css';
-
 
 const EditFlight = () => {
   const { id } = useParams(); // Get the flight ID from the URL
@@ -15,8 +13,8 @@ const EditFlight = () => {
     arr_airport_id: "",
     arr_date: "",
     arr_time: "",
-    aircraft_id: "",
   });
+  const [airports, setAirports] = useState([]);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);  // Set initial state to true for loading
   const [isSubmitting, setIsSubmitting] = useState(false); // Handle submit loading
@@ -30,12 +28,11 @@ const EditFlight = () => {
           // Pre-fill the form fields with flight data
           setFlightData({
             dep_airport_id: data.data[1],  // Assuming data[1] is dep_airport_id
-            dep_date: new Date(data.data[2]).toLocaleDateString(),
+            dep_date: formatDate(data.data[2]), // Fixed the date format issue
             dep_time: data.data[3],
             arr_airport_id: data.data[4],  // Assuming data[4] is arr_airport_id
-            arr_date: new Date(data.data[5]).toLocaleDateString(),
+            arr_date: formatDate(data.data[5]), // Fixed the date format issue
             arr_time: data.data[6],
-            aircraft_id: data.data[7], // Assuming data[7] is aircraft_id
           });
           setIsLoading(false);  // Set loading to false after data is loaded
         } else {
@@ -48,7 +45,26 @@ const EditFlight = () => {
         setMessage("Error fetching flight data.");
         setIsLoading(false);  // Set loading to false if there's an error
       });
+
+    // Fetch airports list for dropdowns
+    fetch("http://localhost:3001/api/airports")
+      .then((response) => response.json())
+      .then((data) => {
+        setAirports(data.data); // Set airports data for dropdown
+      })
+      .catch((error) => {
+        console.error("Error fetching airports:", error);
+      });
   }, [id]);
+
+  // Utility function to format date to 'YYYY-MM-DD' format
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   // Handle form submission to update flight data
   const handleUpdateFlight = (e) => {
@@ -63,7 +79,6 @@ const EditFlight = () => {
       arr_airport_id: flightData.arr_airport_id,
       arr_date: flightData.arr_date,
       arr_time: flightData.arr_time,
-      aircraft_id: flightData.aircraft_id,
     };
 
     // Send PUT request to update the flight
@@ -109,22 +124,26 @@ const EditFlight = () => {
   }
 
   return (
-
     <div>
-            <button onClick={handleBack}>Back to Flights</button>
+      <button onClick={handleBack}>Back to Flights</button>
 
       <h1>Edit Flight</h1>
       {message && <p>{message}</p>}
 
       <form onSubmit={handleUpdateFlight}>
         <div>
-          <label>Departure Airport ID</label>
-          <input
-            type="text"
+          <label>Departure Airport</label>
+          <select
             name="dep_airport_id"
             value={flightData.dep_airport_id}
             onChange={handleChange}
-          />
+          >
+            {airports.map((airport) => (
+              <option key={airport[0]} value={airport[0]}>
+                {airport[1]} {/* Display the airport name */}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
@@ -148,13 +167,18 @@ const EditFlight = () => {
         </div>
 
         <div>
-          <label>Arrival Airport ID</label>
-          <input
-            type="text"
+          <label>Arrival Airport</label>
+          <select
             name="arr_airport_id"
             value={flightData.arr_airport_id}
             onChange={handleChange}
-          />
+          >
+            {airports.map((airport) => (
+              <option key={airport[0]} value={airport[0]}>
+                {airport[1]} {/* Display the airport name */}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
@@ -178,22 +202,11 @@ const EditFlight = () => {
         </div>
 
         <div>
-          <label>Aircraft ID</label>
-          <input
-            type="text"
-            name="aircraft_id"
-            value={flightData.aircraft_id}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Updating..." : "Update Flight"}
           </button>
         </div>
       </form>
-
     </div>
   );
 };

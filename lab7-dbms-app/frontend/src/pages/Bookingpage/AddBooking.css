@@ -1,0 +1,74 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+
+.select, .input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submitButton:disabled {
+  background-color: gray;
+}
+
+.returnButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  text-align: center;
+  color: #3c763d; /* Green text color */
+  border: 1px solid #3c763d; /* Green border */
+  border-radius: 4px;
+  background-color: #dff0d8; /* Light green background */
+}
+
+.message.success {
+  color: #5bc0de;
+  border-color: #5bc0de;
+  background-color: #d9edf7;
+}
+
+.input.readonly {
+  background-color: #f2f2f2; /* Lighter gray background */
+  color: #666; /* Darker text color for contrast */
+  cursor: not-allowed;
+  border: 1px solid #ccc; /* Light gray border */
+}

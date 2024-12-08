@@ -20,6 +20,8 @@ import Home from "./pages/Homepage/Home";
 //for user
 import ViewFlight from "./pages/User_Booking_Pages/View_Flights";
 import UserBook from "./pages/User_Booking_Pages/UserBooking";
+import EditProfile from "./pages/User_Booking_Pages/EditProfile";
+
 
 //will create a home page a general one for /
 //waha se admin login and admin home pe jayega
@@ -58,6 +60,7 @@ function App() {
 
           <Route path="/viewflights" element={<ViewFlight/>} />
           <Route path="/userbooking/:id" element={<UserBook/>} />
+          <Route path="/editprofile/:id" element={<EditProfile/>} />
 
 
 
