@@ -199,7 +199,7 @@ async function getpopularflight() {
 }
 
 async function getbookedflightclasses() {
-  let query = `select  fc.class_description,count(f_classid) 
+  let query = `select  fc.class_description,count(*) 
 from bookings b
 inner join flight_class fc on b.f_classid=fc.class_id
 group by fc.class_description`;

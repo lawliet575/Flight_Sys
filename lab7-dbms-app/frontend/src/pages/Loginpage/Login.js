@@ -52,7 +52,7 @@ function Login() {
         // Check if the entered username matches either the User ID or the Email for passengers
         const matchedPassenger = passengerData.data.find(
           (passenger) =>
-            (passenger[0] === username || passenger[4] === username) && passenger[10] === password
+            (passenger[0] === username || passenger[4] === username) && passenger[9] === password
         );
 
         if (matchedPassenger) {
