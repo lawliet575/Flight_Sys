@@ -149,7 +149,7 @@ const Flights = () => {
       <div className='view-booking-header mt-5'>
       <h1 >Flights</h1>
 
-      <button onClick={() => navigate("/home")} className="view-booking-back-button">
+      <button onClick={() => navigate("/adminhome")} className="view-booking-back-button">
         ←
       </button>
       <button onClick={handleAddFlight} className='view-booking-add-button'>Add Flight</button>

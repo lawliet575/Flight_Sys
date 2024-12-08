@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Passengers.css'; // Assuming the CSS is saved in a file named Passengers.css
+//import './Passengers.css'; // Assuming the CSS is saved in a file named Passengers.css
+import "../User_Booking_Pages/ViewBookingModule.css"
+
 
 const Passengers = () => {
   const [passengers, setPassengers] = useState([]);
@@ -76,48 +78,31 @@ const Passengers = () => {
   }
 
   return (
-    <div>
-      {/* Return to Home Page Button (Positioned Top Left) */}
-      <div className="return-home-btn-container">
+    <div className="view-booking-container">
+      <div className="view-booking-header mt-5">
+        <h1>Passengers</h1>
+  
         <button
-          onClick={() => navigate('/adminhome')}
-          style={{
-            backgroundColor: '#2980b9',
-            color: 'white',
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+          onClick={() => navigate("/adminhome")}
+          className="view-booking-back-button"
         >
-          Return to Home Page
+          ←
         </button>
-      </div>
-
-      <h1>Passengers</h1>
-
-      {/* Buttons Container */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', margin: '10px 0' }}>
         <button
-          onClick={() => navigate('/addpassenger')}
-          style={{
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+          onClick={() => navigate("/addpassenger")}
+          className="view-booking-add-button"
         >
           Add New Passenger
         </button>
       </div>
-
-      <div className="passenger-list">
-        {passengers.length === 0 ? (
+  
+      {passengers.length === 0 ? (
+        <div className="no-bookings">
           <p>No passengers available</p>
-        ) : (
-          <table>
+        </div>
+      ) : (
+        <div className="table-container ms-5">
+          <table className="table">
             <thead>
               <tr>
                 <th>Passenger ID</th>
@@ -144,39 +129,53 @@ const Passengers = () => {
                   <td>{passenger.Address}</td>
                   <td>{passenger.Gender}</td>
                   <td>{new Date(passenger.DateOfBirth).toLocaleDateString()}</td>
-                  <td>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <td
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-center",
+                      alignItems: "center",
+                      height: "88.17px",
+                    }}
+                  >
                     <button
                       onClick={() => handleEditPassenger(passenger.PassengerID)}
                       style={{
-                        marginRight: '10px', // Add gap between Edit and Delete buttons
-                        padding: '5px 10px',
-                        cursor: 'pointer',
+                        marginRight: "10px",
+                        backgroundColor: "#2980b9",
+                        color: "white",
+                        padding: "5px 10px",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        height: "30px",
                       }}
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDeletePassenger(passenger.PassengerID)}
-                      className="delete-button"
                       style={{
-                        padding: '5px 10px',
-                        cursor: 'pointer',
+                        backgroundColor: "#e74c3c",
+                        color: "white",
+                        padding: "5px 10px",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        height: "30px",
                       }}
                     >
                       Delete
                     </button>
-                  </div>
-                </td>
-
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
+  
 };
 
 export default Passengers;
