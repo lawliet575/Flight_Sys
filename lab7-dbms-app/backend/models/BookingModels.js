@@ -181,7 +181,7 @@ async function calculateprice(flightId, classId) {
 }
 
 async function getpopularflight() {
-  let query = `select flight_id,count(flight_id) from bookings group by flight_id order by 2 desc fetch first row only`;
+  let query = `select flight_id,count(*) from bookings group by flight_id order by 2 desc fetch first row only`;
   let connection;
 
   try {
@@ -274,7 +274,7 @@ async function getaverageflightcost() {
 }
 
 async function getprofitableairline() {
-  let query = `select al.airline_name,max(b.total_price) 
+  let query = `select al.airline_name,sum(b.total_price) 
   from bookings b 
   inner join flights f on f.flight_id=b.flight_id
   inner join aircrafts ar on f.aircraft_id=ar.aircraft_id
