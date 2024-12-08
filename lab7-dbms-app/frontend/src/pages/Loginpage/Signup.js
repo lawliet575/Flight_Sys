@@ -94,61 +94,66 @@ function Signup() {
     <div className="signup-container">
       <div className="body-overlay"></div>
       <div className="form-container">
-        <h2>Sign Up</h2>
-        <form onSubmit={handleSubmit}>
+        <h2 className="text-center fs-2 text-light fw-bold">Sign Up</h2>
+        <form onSubmit={handleSubmit} className="mt-0 pt-4">
           <div className="input-field">
             <label>Passport ID:</label>
-            <input type="text" value={passportId} onChange={(e) => setPassportId(e.target.value)} />
+            <input type="text" className="input-box" value={passportId} onChange={(e) => setPassportId(e.target.value)} />
           </div>
           <div className="input-field">
             <label>First Name:</label>
-            <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+            <input type="text" className="input-box" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           </div>
           <div className="input-field">
             <label>Last Name:</label>
-            <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            <input type="text" className="input-box" value={lastName} onChange={(e) => setLastName(e.target.value)} />
           </div>
           <div className="input-field">
             <label>Email:</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="email" className="input-box" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="input-field">
             <label>Contact:</label>
-            <input type="text" value={contact} onChange={(e) => setContact(e.target.value)} />
+            <input type="text" className="input-box" value={contact} onChange={(e) => setContact(e.target.value)} />
           </div>
           <div className="input-field">
             <label>Address:</label>
-            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+            <input type="text" className="input-box" value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
           <div className="input-field">
             <label>Gender:</label>
-            <select value={gender} onChange={(e) => setGender(e.target.value)}>
-              <option value="">Select Gender</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
+            <select value={gender} className="input-box" onChange={(e) => setGender(e.target.value)}>
+              <option className="input-box" value="">Select Gender</option>
+              <option className="input-box" value="M">Male</option>
+              <option className="input-box" value="F">Female</option>
             </select>
           </div>
           <div className="input-field">
             <label>Date of Birth:</label>
-            <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+            <input className="input-box" type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
           </div>
           <div className="input-field">
             <label>Login Password:</label>
-            <input type="password" value={loginPw} onChange={(e) => setLoginPw(e.target.value)} />
+            <input className="input-box" type="password" value={loginPw} onChange={(e) => setLoginPw(e.target.value)} />
           </div>
 
-          <button type="submit" className="login-btn" disabled={loading}>
+          <button type="submit" className="btn text-light fw-semibold btn-success" disabled={loading}>
             Sign Up
           </button>
-          
+
           {error && <p className="error-message">{error}</p>}
           {success && !error && <p className="success-message">{successMessage}</p>}
           {loading && <p>Loading...</p>}
 
-          
+
         </form>
         <button onClick={handleReturn} className="create-account-btn">
-          ←
+          {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+          </svg> */}
+          Back
+
+
         </button>
       </div>
     </div>
