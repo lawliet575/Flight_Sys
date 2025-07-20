@@ -30,10 +30,10 @@ npm run dev
 <img width="1920" height="878" alt="Screenshot 2025-07-20 162134" src="https://github.com/user-attachments/assets/ece4d0ef-2e44-42d2-ae55-7b06fd9caadd" />
 
 ## Available Flights Page
-<img width="1920" height="865" alt="Screenshot 2025-07-20 162446" src="https://github.com/user-attachments/assets/c93708ee-134a-41ae-bd2f-dd62be4fc058" />
+<img width="1920" height="862" alt="Screenshot 2025-07-20 162933" src="https://github.com/user-attachments/assets/26644363-2bb7-4e57-85f1-c6995696cc00" />
 
 ## User Home Page
-<img width="1600" height="731" alt="User Home" src="https://github.com/user-attachments/assets/ce45f378-9756-458f-8377-06bea35e52cf" />
+<img width="1920" height="865" alt="Screenshot 2025-07-20 163116" src="https://github.com/user-attachments/assets/26e09a6f-3b4e-4fad-9150-435750b0a22a" />
 
 ## Admin Dashboard
 <img width="1600" height="725" alt="Admin_Dashboard" src="https://github.com/user-attachments/assets/1407ee07-f88f-4ce5-9b21-b531f3031e38" />
